@@ -1,18 +1,18 @@
-﻿const fs = require('fs');
+const fs = require('fs');
 const path = require('path');
 const vm = require('vm');
 
 function loadData(filename, variableName) {
-  const src = fs.readFileSync(path.join(__dirname, 'data', filename), 'utf-8');
+  const src = fs.readFileSync(path.join(__dirname, '..', 'data', filename), 'utf-8');
   const sandbox = { exports: {} };
   vm.createContext(sandbox);
   vm.runInContext(src + `\nexports.${variableName} = ${variableName};`, sandbox, { filename });
   return sandbox.exports[variableName];
 }
 
-const barangays = loadData('barangays.js', 'BARANGAYS_DATA');
+const geojson = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'meycauayan-barangays.geojson'), 'utf-8'));
 const facilities = loadData('facilities.js', 'FACILITIES_DATA');
-const polygons = new Map(barangays.map(b => [b.name, b.geojson.geometry.coordinates[0]]));
+const polygons = new Map(geojson.features.map(f => [f.properties.barangay, f.geometry.coordinates[0]]));
 const allFacilities = [].concat(...Object.values(facilities).filter(Array.isArray));
 
 function pointInPoly(x, y, poly) {

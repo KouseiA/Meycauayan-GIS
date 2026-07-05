@@ -21,6 +21,28 @@ const State = {
   allFacilityMarkers: [],     // flat list of all Leaflet markers
 };
 
+// Remove obvious placeholder rectangle boundaries from BARANGAYS_DATA
+if (typeof BARANGAYS_DATA !== 'undefined' && Array.isArray(BARANGAYS_DATA)) {
+  BARANGAYS_DATA.forEach(b => {
+    try {
+      const f = b.geojson;
+      if (!f || f.type !== 'Feature' || !f.geometry || f.geometry.type !== 'Polygon') return;
+      const coords = f.geometry.coordinates && f.geometry.coordinates[0];
+      if (!Array.isArray(coords) || coords.length !== 5) return;
+      const xs = coords.slice(0,4).map(p => p[0]);
+      const ys = coords.slice(0,4).map(p => p[1]);
+      const uniqueXs = new Set(xs);
+      const uniqueYs = new Set(ys);
+      if (uniqueXs.size === 2 && uniqueYs.size === 2) {
+        console.warn(`Removed placeholder rectangle boundary for barangay: ${b.name}`);
+        b.geojson = null;
+      }
+    } catch (e) {
+      // ignore malformed entries
+    }
+  });
+}
+
 /* ============================================================
    ICON FACTORY
    ============================================================ */
@@ -245,11 +267,32 @@ function openBarangayInfoPanel(barangay) {
   body.innerHTML = `
     ${rows.join('')}
     ${facilitySection}
+    
+    <div class="download-section">
+      <div class="download-title">DOWNLOAD BOUNDARY</div>
+      <div class="download-btns">
+        <button class="btn-download" onclick="downloadBoundary('${barangay.name}', 'geojson')">
+          <i class="fas fa-file-code"></i> GEOJSON
+        </button>
+        <button class="btn-download kml" onclick="downloadBoundary('${barangay.name}', 'kml')">
+          <i class="fas fa-file-import"></i> KML
+        </button>
+      </div>
+    </div>
+
     <button class="btn-reset-view" onclick="resetMapView()">
       <i class="fas fa-arrow-left"></i>
       Back to Full Map
     </button>
   `;
+
+  // Update HUD breadcrumbs
+  document.getElementById('hud-breadcrumbs').innerHTML = `
+    PHILIPPINES <span class="hud-sep">/</span> BULACAN <span class="hud-sep">/</span> MEYCAUAYAN CITY <span class="hud-sep">/</span> <span style="color:#00ff66;font-weight:bold;">${barangay.name.toUpperCase()}</span>
+  `;
+
+  // Play click sound
+  AudioSynth.playClick();
 
   panel.classList.add('open');
   document.body.classList.add('popup-open');
@@ -275,8 +318,9 @@ function closeInfoPanel() {
   document.getElementById('info-panel').classList.remove('open');
   document.body.classList.remove('popup-open');
   document.getElementById('map-container')?.classList.remove('panel-open');
+  // Wait for CSS width transition then re-measure map
   if (State.map) {
-    setTimeout(() => State.map.invalidateSize(), 400);
+    setTimeout(() => State.map.invalidateSize({ animate: false }), 420);
   }
 }
 
@@ -328,18 +372,6 @@ function focusBarangay(barangayId) {
     }
   });
 
-  // Fly to the selected barangay bounds
-  const selectedLayer = State.geojsonLayers[barangayId];
-  if (selectedLayer) {
-    const bounds = selectedLayer.getBounds();
-    State.map.flyToBounds(bounds, {
-      padding: [50, 50],
-      maxZoom: 16,
-      duration: 1.2,
-      easeLinearity: 0.4
-    });
-  }
-
   // Filter facility markers to only show markers inside this barangay
   State.allFacilityMarkers.forEach(m => {
     const facility = ALL_FACILITIES.find(f => f.id === m.id);
@@ -352,8 +384,23 @@ function focusBarangay(barangayId) {
     }
   });
 
-  // Open info panel with barangay details
+  // Open info panel first, then wait for CSS transition before fitting bounds
   openBarangayInfoPanel(barangay);
+
+  const selectedLayer = State.geojsonLayers[barangayId];
+  if (selectedLayer) {
+    // Wait for panel width transition (400ms) then re-measure and flyToBounds
+    setTimeout(() => {
+      State.map.invalidateSize({ animate: false });
+      const bounds = selectedLayer.getBounds();
+      State.map.flyToBounds(bounds, {
+        padding: [60, 60],
+        maxZoom: 16,
+        duration: 1.0,
+        easeLinearity: 0.4
+      });
+    }, 420);
+  }
 }
 
 /* ============================================================
@@ -362,6 +409,14 @@ function focusBarangay(barangayId) {
 function resetMapView() {
   State.selectedBarangayId = null;
   State.activeFilter = 'all';
+
+  // Reset HUD breadcrumbs
+  document.getElementById('hud-breadcrumbs').innerHTML = `
+    PHILIPPINES <span class="hud-sep">/</span> BULACAN <span class="hud-sep">/</span> MEYCAUAYAN CITY
+  `;
+
+  // Play click sound
+  AudioSynth.playClick();
 
   // Reset all boundary styles
   Object.keys(State.geojsonLayers).forEach(id => {
@@ -450,11 +505,14 @@ function populateDropdowns() {
   // Barangays
   const bDropdown = document.getElementById('dropdown-barangays');
   bDropdown.innerHTML = '';
-  BARANGAYS_DATA.forEach(b => {
+  BARANGAYS_DATA.forEach((b, idx) => {
     const btn = document.createElement('button');
     btn.className = 'dropdown-item-custom';
+    btn.setAttribute('data-index', String(idx + 1).padStart(2, '0'));
     btn.textContent = b.name;
-    btn.addEventListener('click', () => focusBarangay(b.id));
+    btn.addEventListener('click', () => {
+      focusBarangay(b.id);
+    });
     bDropdown.appendChild(btn);
   });
 
@@ -534,116 +592,20 @@ function populateHotlinesModal() {
    UPDATE STAT COUNTS
    ============================================================ */
 function updateStatCounts() {
-  document.getElementById('count-police').textContent = FACILITIES_DATA.police.length;
-  document.getElementById('count-fire').textContent   = FACILITIES_DATA.fire.length;
-  document.getElementById('count-hosp').textContent   = FACILITIES_DATA.hospitals.length;
-  document.getElementById('count-health').textContent = FACILITIES_DATA.healthCenters.length;
+  const policeCount = document.getElementById('count-police');
+  const fireCount = document.getElementById('count-fire');
+  const hospCount = document.getElementById('count-hosp');
+  const healthCount = document.getElementById('count-health');
+
+  if (policeCount) policeCount.textContent = FACILITIES_DATA.police.length;
+  if (fireCount) fireCount.textContent = FACILITIES_DATA.fire.length;
+  if (hospCount) hospCount.textContent = FACILITIES_DATA.hospitals.length;
+  if (healthCount) healthCount.textContent = FACILITIES_DATA.healthCenters.length;
 }
 
 /* ============================================================
    SEARCH
    ============================================================ */
-function setupSearch() {
-  const input   = document.getElementById('search-input');
-  const results = document.getElementById('search-results');
-
-  input.addEventListener('input', () => {
-    const query = input.value.trim().toLowerCase();
-
-    if (query.length < 2) {
-      results.style.display = 'none';
-      return;
-    }
-
-    const matches = [];
-
-    // Search barangays
-    BARANGAYS_DATA.forEach(b => {
-      if (b.name.toLowerCase().includes(query) || (b.captain && b.captain.toLowerCase().includes(query))) {
-        matches.push({
-          type:    'barangay',
-          icon:    'fas fa-map',
-          name:    b.name,
-          meta:    `Barangay · Pop: ${b.population ? b.population.toLocaleString() : 0}`,
-          action:  () => focusBarangay(b.id)
-        });
-      }
-    });
-
-    // Search facilities
-    ALL_FACILITIES.forEach(f => {
-      if (
-        f.name.toLowerCase().includes(query) ||
-        (f.address && f.address.toLowerCase().includes(query)) ||
-        (f.barangay && f.barangay.toLowerCase().includes(query))
-      ) {
-        const iconMap = {
-          police:       'fas fa-shield-halved',
-          fire:         'fas fa-fire',
-          hospital:     'fas fa-hospital',
-          healthCenter: 'fas fa-kit-medical'
-        };
-        const meta = {
-          police:       'Police Station',
-          fire:         'Fire Station',
-          hospital:     'Hospital',
-          healthCenter: 'Health Center'
-        };
-        matches.push({
-          type:    f.type,
-          icon:    iconMap[f.type],
-          name:    f.name,
-          meta:    `${meta[f.type]} · Brgy. ${f.barangay || '—'}`,
-          action:  () => zoomToFacility(f.id)
-        });
-      }
-    });
-
-    if (matches.length === 0) {
-      results.style.display = 'none';
-      return;
-    }
-
-    results.innerHTML = matches.slice(0, 8).map(m => `
-      <div class="search-result-item" tabindex="0" data-type="${m.type}">
-        <div class="search-result-icon type-${m.type}">
-          <i class="${m.icon}"></i>
-        </div>
-        <div class="search-result-text">
-          <div class="search-result-name">${m.name}</div>
-          <div class="search-result-meta">${m.meta}</div>
-        </div>
-      </div>
-    `).join('');
-
-    // Attach click handlers
-    results.querySelectorAll('.search-result-item').forEach((el, idx) => {
-      el.addEventListener('click', () => {
-        matches[idx].action();
-        input.value = '';
-        results.style.display = 'none';
-      });
-    });
-
-    results.style.display = 'block';
-  });
-
-  // Hide on outside click
-  document.addEventListener('click', e => {
-    if (!input.contains(e.target) && !results.contains(e.target)) {
-      results.style.display = 'none';
-    }
-  });
-
-  // Keyboard: Escape
-  input.addEventListener('keydown', e => {
-    if (e.key === 'Escape') {
-      results.style.display = 'none';
-      input.blur();
-    }
-  });
-}
-
 /* ============================================================
    MAP INITIALIZATION
    ============================================================ */
@@ -666,9 +628,24 @@ function initMap() {
 
   State.map.zoomControl.setPosition('topright');
 
+  // Real-time HUD coordinate & zoom tracking
+  State.map.on('mousemove', (e) => {
+    document.getElementById('hud-lat').textContent = e.latlng.lat.toFixed(6);
+    document.getElementById('hud-lng').textContent = e.latlng.lng.toFixed(6);
+  });
+
+  State.map.on('zoomend', () => {
+    document.getElementById('hud-zoom').textContent = State.map.getZoom();
+  });
+
   // Render barangay GeoJSON boundaries
   BARANGAYS_DATA.forEach(barangay => {
     if (!barangay.geojson) return;
+    if (isPlaceholderBoundary(barangay.geojson)) {
+      console.warn(`Skipping placeholder boundary for barangay: ${barangay.name}`);
+      return;
+    }
+
     const layer = L.geoJSON(barangay.geojson, {
       style:       BOUNDARY_STYLE_NORMAL,
       onEachFeature: (feature, featureLayer) => {
@@ -807,19 +784,81 @@ function hideLoadingOverlay() {
   }, 1000);
 }
 
+function fetchWithTimeout(url, timeout = 12000) {
+  return Promise.race([
+    fetch(url).then(r => {
+      if (!r.ok) throw new Error(`${url} returned ${r.status}`);
+      return r.json();
+    }),
+    new Promise((_, reject) => setTimeout(() => reject(new Error(`Timeout fetching ${url}`)), timeout))
+  ]);
+}
+
+function isPlaceholderBoundary(feature) {
+  if (!feature || feature.type !== 'Feature' || !feature.geometry || feature.geometry.type !== 'Polygon') {
+    return false;
+  }
+
+  const coords = feature.geometry.coordinates?.[0];
+  if (!Array.isArray(coords) || coords.length !== 5) {
+    return false;
+  }
+
+  const [p0, p1, p2, p3, p4] = coords;
+  if (p4[0] !== p0[0] || p4[1] !== p0[1]) {
+    return false;
+  }
+
+  const xs = coords.slice(0, 4).map(p => p[0]);
+  const ys = coords.slice(0, 4).map(p => p[1]);
+  const uniqueXs = new Set(xs);
+  const uniqueYs = new Set(ys);
+
+  return uniqueXs.size === 2 && uniqueYs.size === 2;
+}
+
+function updateBoundaryLegendVisibility() {
+  const boundaryRow = document.querySelector('[data-key="boundary"]');
+  if (!boundaryRow) return;
+  const hasBoundaries = BARANGAYS_DATA.some(b => b.geojson && !isPlaceholderBoundary(b.geojson));
+  boundaryRow.style.display = hasBoundaries ? '' : 'none';
+}
+
 /* ============================================================
    AJAX DATA SOURCE FETCH & INIT ORCHESTRATION
    ============================================================ */
 async function loadBackendDataAndInit() {
   try {
+    // Attempt to load a local Meycauayan GeoJSON file (exported) and merge it
+    let localMunicipalGeoJSON = null;
+    try {
+      localMunicipalGeoJSON = await fetchWithTimeout('data/meycauayan-barangays.geojson', 5000);
+      if (localMunicipalGeoJSON && Array.isArray(localMunicipalGeoJSON.features)) {
+        console.log('Loaded local Meycauayan GeoJSON:', localMunicipalGeoJSON.features.length, 'features');
+        localMunicipalGeoJSON.features.forEach(f => {
+          const prop = f.properties || {};
+          const featureName = (prop.barangay || prop.adm4_en || prop.name || prop.NAME || '').toString().trim();
+          if (!featureName) return;
+          const localB = BARANGAYS_DATA.find(b => b.name.toLowerCase() === featureName.toLowerCase());
+          if (localB && f && f.type === 'Feature' && !isPlaceholderBoundary(f)) {
+            localB.geojson = f;
+          }
+        });
+      }
+    } catch (e) {
+      // ignore — fallback to existing BARANGAYS_DATA / backend
+      console.info('No local Meycauayan GeoJSON found or failed to load:', e.message);
+    }
+
     const [resBrgys, resFacs, resHotlines, resAnnounces] = await Promise.all([
-      fetch('api/barangays.php').then(r => r.json()),
-      fetch('api/facilities.php').then(r => r.json()),
-      fetch('api/hotlines.php').then(r => r.json()),
-      fetch('api/announcements.php?active=1').then(r => r.json())
+      fetchWithTimeout('api/barangays.php'),
+      fetchWithTimeout('api/facilities.php'),
+      fetchWithTimeout('api/hotlines.php'),
+      fetchWithTimeout('api/announcements.php?active=1')
     ]);
 
-    // 1. Merge barangay parameters from DB into the GeoJSON boundaries array
+    // 1. Merge barangay parameters from DB into the GeoJSON boundaries array,
+    //    and update any placeholder geometry with real backend geojson when available.
     resBrgys.forEach(dbB => {
       const localB = BARANGAYS_DATA.find(b => b.name.toLowerCase() === dbB.name.toLowerCase());
       if (localB) {
@@ -830,6 +869,17 @@ async function loadBackendDataAndInit() {
         localB.address = dbB.address;
         localB.contact = dbB.contact;
         localB.description = dbB.description;
+
+        if (dbB.geojson && !isPlaceholderBoundary(dbB.geojson)) {
+          localB.geojson = dbB.geojson;
+        }
+      }
+    });
+
+    BARANGAYS_DATA.forEach(barangay => {
+      if (barangay.geojson && isPlaceholderBoundary(barangay.geojson)) {
+        console.warn(`Placeholder boundary removed for barangay: ${barangay.name}`);
+        barangay.geojson = null;
       }
     });
 
@@ -860,13 +910,17 @@ async function loadBackendDataAndInit() {
     console.error('Error fetching backend data:', err);
   } finally {
     // Fire init routines once data is merged
-    injectTooltipStyles();
-    initMap();
-    populateDropdowns();
-    populateHotlinesModal();
-    updateStatCounts();
-    setupSearch();
-    hideLoadingOverlay();
+    try {
+      injectTooltipStyles();
+      initMap();
+      populateDropdowns();
+      populateHotlinesModal();
+      updateStatCounts();
+    } catch (initErr) {
+      console.error('Error during init routines:', initErr);
+    } finally {
+      hideLoadingOverlay();
+    }
   }
 }
 
@@ -875,4 +929,142 @@ async function loadBackendDataAndInit() {
    ============================================================ */
 document.addEventListener('DOMContentLoaded', () => {
   loadBackendDataAndInit();
+  setTimeout(() => {
+    const overlay = document.getElementById('loading-overlay');
+    if (overlay && !overlay.classList.contains('hidden')) {
+      console.warn('Fallback hideLoadingOverlay triggered');
+      hideLoadingOverlay();
+    }
+  }, 8000);
 });
+
+/* ============================================================
+   BYZENTERRA GIS EXTENSIONS (SOUNDS & EXPORTER)
+   ============================================================ */
+
+const AudioSynth = {
+  ctx: null,
+  muted: false,
+  init() {
+    if (this.ctx) return;
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    if (AudioContext) {
+      this.ctx = new AudioContext();
+    }
+  },
+  playClick() {
+    if (this.muted) return;
+    try {
+      this.init();
+      if (!this.ctx) return;
+      
+      // Keep synthesized audio contexts active
+      if (this.ctx.state === 'suspended') {
+        this.ctx.resume();
+      }
+
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+      
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(900, this.ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(1300, this.ctx.currentTime + 0.06);
+      
+      gain.gain.setValueAtTime(0.015, this.ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.0001, this.ctx.currentTime + 0.06);
+      
+      osc.connect(gain);
+      gain.connect(this.ctx.destination);
+      
+      osc.start();
+      osc.stop(this.ctx.currentTime + 0.06);
+    } catch (e) {
+      console.warn('Audio click synth failed:', e);
+    }
+  }
+};
+
+function toggleSound() {
+  AudioSynth.muted = !AudioSynth.muted;
+  const btn = document.getElementById('btn-sound-toggle');
+  if (btn) {
+    if (AudioSynth.muted) {
+      btn.classList.add('muted');
+      btn.innerHTML = '<i class="fas fa-volume-mute"></i>';
+    } else {
+      btn.classList.remove('muted');
+      btn.innerHTML = '<i class="fas fa-volume-up"></i>';
+      // Play a confirmation sound
+      AudioSynth.playClick();
+    }
+  }
+}
+
+function downloadBoundary(barangayName, format) {
+  const barangay = BARANGAYS_DATA.find(b => b.name.toLowerCase() === barangayName.toLowerCase());
+  if (!barangay || !barangay.geojson) {
+    alert(`No boundary geometry loaded for ${barangayName}.`);
+    return;
+  }
+
+  let content = '';
+  let filename = `${barangay.name.toLowerCase().replace(/\s+/g, '-')}-boundary`;
+  let mimeType = '';
+
+  if (format === 'geojson') {
+    // Generate clean GeoJSON
+    const featureCollection = {
+      type: "FeatureCollection",
+      features: [barangay.geojson]
+    };
+    content = JSON.stringify(featureCollection, null, 2);
+    filename += '.geojson';
+    mimeType = 'application/json';
+  } else if (format === 'kml') {
+    // Convert GeoJSON to KML
+    const coordinates = barangay.geojson.geometry.coordinates[0];
+    const kmlCoords = coordinates.map(c => `${c[0]},${c[1]},0`).join(' ');
+    
+    content = `<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+  <Document>
+    <name>${barangay.name} Boundary</name>
+    <description>Meycauayan City administrative boundary for Barangay ${barangay.name}</description>
+    <Style id="neonGlow">
+      <LineStyle>
+        <color>ff66ff00</color>
+        <width>3</width>
+      </LineStyle>
+      <PolyStyle>
+        <color>1a66ff00</color>
+      </PolyStyle>
+    </Style>
+    <Placemark>
+      <name>${barangay.name}</name>
+      <styleUrl>#neonGlow</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>${kmlCoords}</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+  </Document>
+</kml>`;
+    filename += '.kml';
+    mimeType = 'application/vnd.google-earth.kml+xml';
+  }
+
+  // Trigger browser download
+  const blob = new Blob([content], { type: mimeType });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+}
+

@@ -96,7 +96,7 @@
           </button>
           <div class="dropdown-panel" id="dropdown-barangays" role="menu">
             <div class="dropdown-panel-header">
-              21 Barangays of Meycauayan City
+              26 Barangays of Meycauayan City
             </div>
             <!-- Dynamically populated by script.js -->
           </div>
@@ -172,6 +172,17 @@
           EMERGENCY HOTLINES
         </button>
 
+        <!-- Sound Toggle Button -->
+        <button
+          class="nav-link-custom"
+          id="btn-sound-toggle"
+          onclick="toggleSound()"
+          style="font-size: 14px; padding: 6px 10px; border: none; background: none; color: var(--clr-text-secondary); margin-right: 8px;"
+          title="Toggle UI Interface Sounds"
+        >
+          <i class="fas fa-volume-up"></i>
+        </button>
+
         <!-- Admin link -->
         <a
           href="admin.html"
@@ -193,90 +204,6 @@
       <div id="map-container" role="main" aria-label="Interactive map">
         <!-- The Leaflet map -->
         <div id="main-map" aria-label="Meycauayan City interactive map"></div>
-
-        <div id="map-controls" class="map-controls" aria-label="Map controls">
-          <div class="map-controls-card">
-            <div class="map-panel-title">Search the map</div>
-            <div class="search-wrap map-search-wrap">
-              <span class="search-icon"><i class="fas fa-magnifying-glass"></i></span>
-              <input
-                type="text"
-                id="search-input"
-                placeholder="Search barangay, hospital, station..."
-                autocomplete="off"
-                aria-label="Search facilities and barangays"
-              />
-              <div
-                id="search-results"
-                role="listbox"
-                aria-label="Search suggestions"
-                aria-live="polite"
-              ></div>
-            </div>
-
-            <div class="map-panel-title" style="margin-top: 18px;">Quick filters</div>
-            <div class="sidebar-stats map-stats">
-              <button
-                type="button"
-                class="stat-cell type-police"
-                onclick="filterFacilities('police')"
-                id="stat-police"
-                title="Show Police Stations"
-                aria-label="Show Police Stations"
-              >
-                <i class="fas fa-shield-halved"></i>
-                <div class="stat-count" id="count-police">5</div>
-                <div class="stat-label">Police</div>
-              </button>
-              <button
-                type="button"
-                class="stat-cell type-fire"
-                onclick="filterFacilities('fire')"
-                id="stat-fire"
-                title="Show Fire Stations"
-                aria-label="Show Fire Stations"
-              >
-                <i class="fas fa-fire"></i>
-                <div class="stat-count" id="count-fire">2</div>
-                <div class="stat-label">Fire</div>
-              </button>
-              <button
-                type="button"
-                class="stat-cell type-hosp"
-                onclick="filterFacilities('hospital')"
-                id="stat-hosp"
-                title="Show Hospitals"
-                aria-label="Show Hospitals"
-              >
-                <i class="fas fa-hospital"></i>
-                <div class="stat-count" id="count-hosp">3</div>
-                <div class="stat-label">Hospitals</div>
-              </button>
-              <button
-                type="button"
-                class="stat-cell type-health"
-                onclick="filterFacilities('healthCenter')"
-                id="stat-health"
-                title="Show Health Centers"
-                aria-label="Show Health Centers"
-              >
-                <i class="fas fa-kit-medical"></i>
-                <div class="stat-count" id="count-health">21</div>
-                <div class="stat-label">Health</div>
-              </button>
-            </div>
-
-            <button
-              class="btn-reset-view map-reset-btn"
-              onclick="filterFacilities('all')"
-              id="btn-show-all"
-              style="margin-top: 14px"
-            >
-              <i class="fas fa-layer-group"></i>
-              Show All Facilities
-            </button>
-          </div>
-        </div>
 
         <!-- MAP LEGEND -->
         <div id="map-legend" aria-label="Map legend">
@@ -301,9 +228,21 @@
             <div class="legend-dot barangay"></div>
             <span class="legend-label">Barangay Hall</span>
           </div>
-          <div class="legend-row">
+          <div class="legend-row" data-key="boundary">
             <div class="legend-dot boundary"></div>
             <span class="legend-label">Barangay Boundary</span>
+          </div>
+        </div>
+        
+        <!-- MAP COORDINATES & BREADCRUMBS HUD -->
+        <div id="map-hud" aria-label="Map status HUD">
+          <div class="hud-breadcrumbs" id="hud-breadcrumbs">
+            PHILIPPINES <span class="hud-sep">/</span> BULACAN <span class="hud-sep">/</span> MEYCAUAYAN CITY
+          </div>
+          <div class="hud-stats">
+            <span class="hud-stat-item"><span class="hud-stat-lbl">LAT</span> <span id="hud-lat">14.736800</span></span>
+            <span class="hud-stat-item"><span class="hud-stat-lbl">LNG</span> <span id="hud-lng">120.961000</span></span>
+            <span class="hud-stat-item"><span class="hud-stat-lbl">ZOOM</span> <span id="hud-zoom">14</span></span>
           </div>
         </div>
 
@@ -320,36 +259,36 @@
             EMERGENCY HOTLINES
           </button>
         </div>
+      </div>
 
-        <!-- INFO PANEL (slides in from right over map) -->
-        <div
-          id="info-panel"
-          role="complementary"
-          aria-label="Information panel"
-        >
-          <div class="info-panel-header">
-            <div style="flex: 1">
-              <div id="info-type-badge" class="info-type-badge"></div>
-              <h2 class="info-panel-title" id="info-panel-title">—</h2>
-            </div>
-            <button
-              class="info-panel-close"
-              id="info-panel-close"
-              onclick="closeInfoPanel()"
-              aria-label="Close info panel"
-            >
-              <i class="fas fa-xmark"></i>
-            </button>
+      <!-- INFO PANEL (slides in from right over map) -->
+      <div
+        id="info-panel"
+        role="complementary"
+        aria-label="Information panel"
+      >
+        <div class="info-panel-header">
+          <div style="flex: 1">
+            <div id="info-type-badge" class="info-type-badge"></div>
+            <h2 class="info-panel-title" id="info-panel-title">—</h2>
           </div>
-          <div class="info-panel-main">
-            <div class="info-panel-body" id="info-panel-body">
-              <!-- Dynamically populated -->
-            </div>
-            <div class="info-panel-media">
-              <div class="info-panel-image-wrap">
-                <img id="info-panel-image" src="" alt="Barangay or facility photo" />
-                <div class="info-panel-image-label">Photo</div>
-              </div>
+          <button
+            class="info-panel-close"
+            id="info-panel-close"
+            onclick="resetMapView()"
+            aria-label="Close info panel"
+          >
+            <i class="fas fa-xmark"></i>
+          </button>
+        </div>
+        <div class="info-panel-main">
+          <div class="info-panel-body" id="info-panel-body">
+            <!-- Dynamically populated -->
+          </div>
+          <div class="info-panel-media">
+            <div class="info-panel-image-wrap">
+              <img id="info-panel-image" src="" alt="Barangay or facility photo" />
+              <div class="info-panel-image-label">Photo</div>
             </div>
           </div>
         </div>
@@ -464,7 +403,7 @@
                   The Meycauayan City Emergency Facility Portal is an
                   interactive Geographic Information System (GIS) platform
                   designed to provide residents with quick access to emergency
-                  facility information across all 21 barangays of Meycauayan
+                  facility information across all 26 barangays of Meycauayan
                   City, Bulacan.
                 </p>
               </div>
@@ -560,5 +499,13 @@
 
     <!-- Main Script -->
     <script src="assets/js/script.js"></script>
+    <script>
+      setTimeout(() => {
+        const overlay = document.getElementById('loading-overlay');
+        if (overlay && !overlay.classList.contains('hidden')) {
+          overlay.classList.add('hidden');
+        }
+      }, 12000);
+    </script>
   </body>
 </html>
