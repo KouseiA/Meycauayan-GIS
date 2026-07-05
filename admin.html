@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Admin Panel | Meycauayan City Emergency Portal</title>
+
+  <!-- Bootstrap 5 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+
+  <!-- Font Awesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <!-- Admin CSS -->
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+
+  <!-- ============================================================
+       LOGIN SCREEN
+       ============================================================ -->
+  <div id="login-screen">
+    <div class="login-card">
+      <div class="login-logo">
+        <div class="login-shield"><i class="fas fa-shield-halved"></i></div>
+        <div class="login-title-wrap">
+          <div class="login-city">Meycauayan City</div>
+          <div class="login-sub">Emergency Facility Portal</div>
+        </div>
+      </div>
+      <h1 class="login-heading">Admin Access</h1>
+      <p class="login-sub">Restricted to authorized personnel only.</p>
+      <form id="login-form" onsubmit="handleLogin(event)">
+        <div class="form-group-admin">
+          <label class="form-label-admin" for="login-username">Username</label>
+          <input
+            type="text"
+            id="login-username"
+            class="form-control-admin"
+            placeholder="Enter username"
+            autocomplete="username"
+            required
+          >
+        </div>
+        <div class="form-group-admin">
+          <label class="form-label-admin" for="login-password">Password</label>
+          <input
+            type="password"
+            id="login-password"
+            class="form-control-admin"
+            placeholder="Enter password"
+            autocomplete="current-password"
+            required
+          >
+        </div>
+        <div class="login-error" id="login-error" role="alert" aria-live="assertive">
+          <i class="fas fa-circle-exclamation"></i>
+          Invalid credentials. Please try again.
+        </div>
+        <button type="submit" class="btn-login" id="btn-login">
+          <i class="fas fa-arrow-right-to-bracket"></i>
+          ACCESS DASHBOARD
+        </button>
+      </form>
+      <a href="index.html" class="login-back">
+        <i class="fas fa-arrow-left" style="margin-right:5px;"></i>
+        Return to Public Portal
+      </a>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       ADMIN APP (shown after login)
+       ============================================================ -->
+  <div id="admin-app">
+
+    <!-- ADMIN HEADER -->
+    <header id="admin-header">
+      <div class="admin-brand">
+        <div class="admin-brand-icon"><i class="fas fa-shield-halved"></i></div>
+        MEYCAUAYAN <span>ADMIN</span>
+      </div>
+
+      <div class="admin-header-right">
+        <div class="admin-user">
+          <i class="fas fa-user-shield"></i>
+          <span id="admin-username-display">Administrator</span>
+        </div>
+        <a href="index.html" class="btn-view-portal" target="_blank">
+          <i class="fas fa-eye"></i> VIEW PORTAL
+        </a>
+        <button class="btn-logout" onclick="handleLogout()" id="btn-logout-header">
+          <i class="fas fa-arrow-right-from-bracket"></i> LOGOUT
+        </button>
+      </div>
+    </header>
+
+    <!-- ADMIN SIDEBAR -->
+    <nav id="admin-sidebar" aria-label="Admin navigation">
+
+      <div class="sidebar-section-header">Dashboard</div>
+      <button class="sidebar-nav-item active" onclick="showSection('dashboard')" id="nav-dashboard">
+        <i class="fas fa-chart-simple"></i> Dashboard
+      </button>
+
+      <div class="sidebar-divider"></div>
+      <div class="sidebar-section-header">Manage</div>
+
+      <button class="sidebar-nav-item" onclick="showSection('barangays')" id="nav-barangays">
+        <i class="fas fa-map"></i> Barangays
+      </button>
+      <button class="sidebar-nav-item" onclick="showSection('police')" id="nav-police">
+        <i class="fas fa-shield-halved"></i> Police Stations
+      </button>
+      <button class="sidebar-nav-item" onclick="showSection('fire')" id="nav-fire">
+        <i class="fas fa-fire"></i> Fire Stations
+      </button>
+      <button class="sidebar-nav-item" onclick="showSection('hospitals')" id="nav-hospitals">
+        <i class="fas fa-hospital"></i> Hospitals
+      </button>
+      <button class="sidebar-nav-item" onclick="showSection('health')" id="nav-health">
+        <i class="fas fa-kit-medical"></i> Health Centers
+      </button>
+
+      <div class="sidebar-divider"></div>
+      <div class="sidebar-section-header">System</div>
+
+      <button class="sidebar-nav-item" onclick="showSection('hotlines')" id="nav-hotlines">
+        <i class="fas fa-phone-volume"></i> Emergency Hotlines
+      </button>
+      <button class="sidebar-nav-item" onclick="showSection('announcements')" id="nav-announcements">
+        <i class="fas fa-bullhorn"></i> Announcements
+      </button>
+
+      <div class="sidebar-divider"></div>
+      <button class="sidebar-nav-item" onclick="handleLogout()" id="nav-logout" style="color: var(--clr-red-400);">
+        <i class="fas fa-arrow-right-from-bracket"></i> Logout
+      </button>
+    </nav>
+
+    <!-- ADMIN MAIN CONTENT -->
+    <main id="admin-content">
+
+      <!-- ======================================================
+           DASHBOARD SECTION
+           ====================================================== -->
+      <div id="section-dashboard" class="admin-section active">
+        <div class="page-header">
+          <div>
+            <div class="page-title"><i class="fas fa-chart-simple"></i> Dashboard</div>
+            <div class="page-subtitle">System overview and statistics</div>
+          </div>
+        </div>
+
+        <!-- Stat Cards -->
+        <div class="stat-cards-grid" id="dashboard-stats">
+          <div class="stat-card barangay">
+            <div class="stat-card-value" id="dash-barangay-count">21</div>
+            <div class="stat-card-label">Total Barangays</div>
+            <div class="stat-card-icon"><i class="fas fa-map"></i></div>
+            <div class="stat-card-bar"></div>
+          </div>
+          <div class="stat-card police">
+            <div class="stat-card-value" id="dash-police-count">5</div>
+            <div class="stat-card-label">Police Stations</div>
+            <div class="stat-card-icon"><i class="fas fa-shield-halved"></i></div>
+            <div class="stat-card-bar"></div>
+          </div>
+          <div class="stat-card fire">
+            <div class="stat-card-value" id="dash-fire-count">2</div>
+            <div class="stat-card-label">Fire Stations</div>
+            <div class="stat-card-icon"><i class="fas fa-fire"></i></div>
+            <div class="stat-card-bar"></div>
+          </div>
+          <div class="stat-card hospital">
+            <div class="stat-card-value" id="dash-hosp-count">3</div>
+            <div class="stat-card-label">Hospitals</div>
+            <div class="stat-card-icon"><i class="fas fa-hospital"></i></div>
+            <div class="stat-card-bar"></div>
+          </div>
+          <div class="stat-card health">
+            <div class="stat-card-value" id="dash-health-count">21</div>
+            <div class="stat-card-label">Health Centers</div>
+            <div class="stat-card-icon"><i class="fas fa-kit-medical"></i></div>
+            <div class="stat-card-bar"></div>
+          </div>
+        </div>
+
+        <!-- Info Grid -->
+        <div class="info-grid">
+          <div class="info-box">
+            <div class="info-box-title">
+              <i class="fas fa-circle-info"></i> System Information
+            </div>
+            <div class="info-box-row">
+              <span class="info-box-row-label">City</span>
+              <span class="info-box-row-val">Meycauayan City, Bulacan</span>
+            </div>
+            <div class="info-box-row">
+              <span class="info-box-row-label">Total Barangays</span>
+              <span class="info-box-row-val">21</span>
+            </div>
+            <div class="info-box-row">
+              <span class="info-box-row-label">Map Technology</span>
+              <span class="info-box-row-val">Leaflet.js + OpenStreetMap</span>
+            </div>
+            <div class="info-box-row">
+              <span class="info-box-row-label">Data Storage</span>
+              <span class="info-box-row-val">localStorage (Browser)</span>
+            </div>
+            <div class="info-box-row">
+              <span class="info-box-row-label">Last Updated</span>
+              <span class="info-box-row-val" id="dash-last-updated">—</span>
+            </div>
+          </div>
+
+          <div class="info-box">
+            <div class="info-box-title">
+              <i class="fas fa-phone-volume"></i> Emergency Contacts
+            </div>
+            <div class="info-box-row">
+              <span class="info-box-row-label">Police</span>
+              <span class="info-box-row-val">117</span>
+            </div>
+            <div class="info-box-row">
+              <span class="info-box-row-label">Fire</span>
+              <span class="info-box-row-val">160</span>
+            </div>
+            <div class="info-box-row">
+              <span class="info-box-row-label">Medical</span>
+              <span class="info-box-row-val">911</span>
+            </div>
+            <div class="info-box-row">
+              <span class="info-box-row-label">MDRRMO</span>
+              <span class="info-box-row-val">(044) 840-5000</span>
+            </div>
+            <div class="info-box-row">
+              <span class="info-box-row-label">Red Cross</span>
+              <span class="info-box-row-val">143</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ======================================================
+           BARANGAYS SECTION
+           ====================================================== -->
+      <div id="section-barangays" class="admin-section">
+        <div class="page-header">
+          <div>
+            <div class="page-title"><i class="fas fa-map"></i> Barangays</div>
+            <div class="page-subtitle">Manage barangay information</div>
+          </div>
+          <button class="btn-admin-add" onclick="openBarangayModal()" id="btn-add-barangay">
+            <i class="fas fa-plus"></i> ADD BARANGAY
+          </button>
+        </div>
+
+        <div class="admin-table-wrap">
+          <div class="admin-table-header">
+            <div class="admin-table-title">All Barangays (21)</div>
+            <input type="text" class="admin-search" id="search-barangays" placeholder="Search barangays..." oninput="filterTable('barangay-table', this.value)">
+          </div>
+          <div style="overflow-x:auto;">
+            <table class="table-admin" id="barangay-table">
+              <thead>
+                <tr>
+                  <th>Barangay Name</th>
+                  <th>Captain</th>
+                  <th>Population</th>
+                  <th>Area</th>
+                  <th>Contact</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="barangay-tbody">
+                <!-- Populated by admin.js -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ======================================================
+           POLICE SECTION
+           ====================================================== -->
+      <div id="section-police" class="admin-section">
+        <div class="page-header">
+          <div>
+            <div class="page-title"><i class="fas fa-shield-halved"></i> Police Stations</div>
+            <div class="page-subtitle">Manage police station records</div>
+          </div>
+          <button class="btn-admin-add" onclick="openFacilityModal('police')" id="btn-add-police">
+            <i class="fas fa-plus"></i> ADD STATION
+          </button>
+        </div>
+        <div class="admin-table-wrap" id="police-table-wrap">
+          <div class="admin-table-header">
+            <div class="admin-table-title">Police Stations</div>
+            <input type="text" class="admin-search" placeholder="Search..." oninput="filterTable('police-table', this.value)">
+          </div>
+          <div style="overflow-x:auto;">
+            <table class="table-admin" id="police-table">
+              <thead><tr>
+                <th>Name</th><th>Sub-type</th><th>Barangay</th><th>Contact</th><th>Commander</th><th>Actions</th>
+              </tr></thead>
+              <tbody id="police-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ======================================================
+           FIRE SECTION
+           ====================================================== -->
+      <div id="section-fire" class="admin-section">
+        <div class="page-header">
+          <div>
+            <div class="page-title"><i class="fas fa-fire"></i> Fire Stations</div>
+            <div class="page-subtitle">Manage fire station records</div>
+          </div>
+          <button class="btn-admin-add" onclick="openFacilityModal('fire')" id="btn-add-fire">
+            <i class="fas fa-plus"></i> ADD STATION
+          </button>
+        </div>
+        <div class="admin-table-wrap">
+          <div class="admin-table-header">
+            <div class="admin-table-title">Fire Stations</div>
+            <input type="text" class="admin-search" placeholder="Search..." oninput="filterTable('fire-table', this.value)">
+          </div>
+          <div style="overflow-x:auto;">
+            <table class="table-admin" id="fire-table">
+              <thead><tr>
+                <th>Name</th><th>Sub-type</th><th>Barangay</th><th>Contact</th><th>Commander</th><th>Actions</th>
+              </tr></thead>
+              <tbody id="fire-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ======================================================
+           HOSPITALS SECTION
+           ====================================================== -->
+      <div id="section-hospitals" class="admin-section">
+        <div class="page-header">
+          <div>
+            <div class="page-title"><i class="fas fa-hospital"></i> Hospitals</div>
+            <div class="page-subtitle">Manage hospital records</div>
+          </div>
+          <button class="btn-admin-add" onclick="openFacilityModal('hospital')" id="btn-add-hospital">
+            <i class="fas fa-plus"></i> ADD HOSPITAL
+          </button>
+        </div>
+        <div class="admin-table-wrap">
+          <div class="admin-table-header">
+            <div class="admin-table-title">Hospitals</div>
+            <input type="text" class="admin-search" placeholder="Search..." oninput="filterTable('hospitals-table', this.value)">
+          </div>
+          <div style="overflow-x:auto;">
+            <table class="table-admin" id="hospitals-table">
+              <thead><tr>
+                <th>Name</th><th>Sub-type</th><th>Barangay</th><th>Contact</th><th>Person in Charge</th><th>Actions</th>
+              </tr></thead>
+              <tbody id="hospitals-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ======================================================
+           HEALTH CENTERS SECTION
+           ====================================================== -->
+      <div id="section-health" class="admin-section">
+        <div class="page-header">
+          <div>
+            <div class="page-title"><i class="fas fa-kit-medical"></i> Health Centers</div>
+            <div class="page-subtitle">Manage health center records</div>
+          </div>
+          <button class="btn-admin-add" onclick="openFacilityModal('healthCenter')" id="btn-add-health">
+            <i class="fas fa-plus"></i> ADD CENTER
+          </button>
+        </div>
+        <div class="admin-table-wrap">
+          <div class="admin-table-header">
+            <div class="admin-table-title">Health Centers</div>
+            <input type="text" class="admin-search" placeholder="Search..." oninput="filterTable('health-table', this.value)">
+          </div>
+          <div style="overflow-x:auto;">
+            <table class="table-admin" id="health-table">
+              <thead><tr>
+                <th>Name</th><th>Barangay</th><th>Contact</th><th>Person in Charge</th><th>Hours</th><th>Actions</th>
+              </tr></thead>
+              <tbody id="health-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ======================================================
+           HOTLINES SECTION
+           ====================================================== -->
+      <div id="section-hotlines" class="admin-section">
+        <div class="page-header">
+          <div>
+            <div class="page-title"><i class="fas fa-phone-volume"></i> Emergency Hotlines</div>
+            <div class="page-subtitle">Manage emergency contact information</div>
+          </div>
+        </div>
+        <div class="admin-table-wrap">
+          <div class="admin-table-header">
+            <div class="admin-table-title">Hotlines (Read-only in this version)</div>
+          </div>
+          <div style="overflow-x:auto;">
+            <table class="table-admin" id="hotlines-table">
+              <thead><tr><th>Category</th><th>Name</th><th>Hotline</th><th>National</th></tr></thead>
+              <tbody id="hotlines-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ======================================================
+           ANNOUNCEMENTS SECTION
+           ====================================================== -->
+      <div id="section-announcements" class="admin-section">
+        <div class="page-header">
+          <div>
+            <div class="page-title"><i class="fas fa-bullhorn"></i> Announcements</div>
+            <div class="page-subtitle">Manage ticker announcements on the public portal</div>
+          </div>
+          <button class="btn-admin-add" onclick="document.getElementById('announcement-text').focus()" id="btn-add-announce">
+            <i class="fas fa-plus"></i> ADD MESSAGE
+          </button>
+        </div>
+
+        <div class="admin-table-wrap" style="padding:20px;">
+          <div class="admin-table-title" style="margin-bottom:16px;">Ticker Messages</div>
+          <label class="form-label-admin" for="announcement-text">New Announcement Message</label>
+          <textarea
+            class="form-control-admin"
+            id="announcement-text"
+            placeholder="Type your announcement message here..."
+            rows="3"
+          ></textarea>
+          <button class="btn-save" onclick="saveAnnouncement()" id="btn-save-announcement">
+            <i class="fas fa-check"></i> SAVE ANNOUNCEMENT
+          </button>
+        </div>
+
+        <div style="margin-top:16px;" class="admin-table-wrap">
+          <div class="admin-table-header">
+            <div class="admin-table-title">Saved Announcements</div>
+          </div>
+          <table class="table-admin" id="announcements-table">
+            <thead><tr><th>#</th><th>Message</th><th>Actions</th></tr></thead>
+            <tbody id="announcements-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- ============================================================
+       FACILITY FORM MODAL
+       ============================================================ -->
+  <div class="modal fade" id="facility-modal" tabindex="-1" aria-labelledby="facility-modal-label" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="facility-modal-label">Add Facility</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" id="fac-id">
+          <input type="hidden" id="fac-type">
+          <div class="row g-3">
+            <div class="col-12">
+              <label class="form-label-admin">Facility Name *</label>
+              <input type="text" class="form-control-admin" id="fac-name" placeholder="e.g. Meycauayan City Police Station" style="margin-bottom:0;">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label-admin">Sub-type</label>
+              <input type="text" class="form-control-admin" id="fac-subtype" placeholder="e.g. Main Station" style="margin-bottom:0;">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label-admin">Barangay</label>
+              <select class="form-select-admin" id="fac-barangay" style="margin-bottom:0;">
+                <option value="">Select Barangay</option>
+              </select>
+            </div>
+            <div class="col-12">
+              <label class="form-label-admin">Address *</label>
+              <input type="text" class="form-control-admin" id="fac-address" placeholder="Full address" style="margin-bottom:0;">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label-admin">Contact Number</label>
+              <input type="text" class="form-control-admin" id="fac-contact" placeholder="(044) 000-0000" style="margin-bottom:0;">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label-admin">Emergency Hotline</label>
+              <input type="text" class="form-control-admin" id="fac-hotline" placeholder="Emergency contact" style="margin-bottom:0;">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label-admin">Person in Charge / Commander</label>
+              <input type="text" class="form-control-admin" id="fac-pic" placeholder="Name and title" style="margin-bottom:0;">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label-admin">Operating Hours</label>
+              <input type="text" class="form-control-admin" id="fac-hours" placeholder="e.g. 24 Hours / 7 Days" style="margin-bottom:0;">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label-admin">Latitude *</label>
+              <input type="number" step="0.0001" class="form-control-admin" id="fac-lat" placeholder="14.7240" style="margin-bottom:0;">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label-admin">Longitude *</label>
+              <input type="number" step="0.0001" class="form-control-admin" id="fac-lng" placeholder="120.9639" style="margin-bottom:0;">
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-cancel-admin" data-bs-dismiss="modal" id="btn-modal-cancel">
+            <i class="fas fa-xmark"></i> CANCEL
+          </button>
+          <button class="btn-save" onclick="saveFacility()" id="btn-modal-save">
+            <i class="fas fa-check"></i> SAVE FACILITY
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       BARANGAY FORM MODAL
+       ============================================================ -->
+  <div class="modal fade" id="barangay-modal" tabindex="-1" aria-labelledby="barangay-modal-label" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="barangay-modal-label">Edit Barangay</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" id="brgy-id">
+          <label class="form-label-admin" for="brgy-name">Barangay Name</label>
+          <input type="text" class="form-control-admin" id="brgy-name" placeholder="Barangay name">
+          <label class="form-label-admin" for="brgy-captain">Barangay Captain</label>
+          <input type="text" class="form-control-admin" id="brgy-captain" placeholder="Hon. Full Name">
+          <label class="form-label-admin" for="brgy-population">Population</label>
+          <input type="number" class="form-control-admin" id="brgy-population" placeholder="00000">
+          <label class="form-label-admin" for="brgy-contact">Contact Number</label>
+          <input type="text" class="form-control-admin" id="brgy-contact" placeholder="(044) 000-0000">
+          <label class="form-label-admin" for="brgy-description">Description</label>
+          <textarea class="form-control-admin" id="brgy-description" rows="3" placeholder="Short description..."></textarea>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-cancel-admin" data-bs-dismiss="modal" id="btn-brgy-cancel">
+            <i class="fas fa-xmark"></i> CANCEL
+          </button>
+          <button class="btn-save" onclick="saveBarangay()" id="btn-brgy-save">
+            <i class="fas fa-check"></i> SAVE CHANGES
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST CONTAINER -->
+  <div id="toast-container"></div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Data Files -->
+  <script src="data/barangays.js"></script>
+  <script src="data/facilities.js"></script>
+
+  <!-- Admin Script -->
+  <script src="admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,564 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Meycauayan City Emergency Facility GIS Portal — Interactive map of all barangays, police stations, fire stations, hospitals, and health centers in Meycauayan City, Bulacan."
+    />
+    <meta
+      name="keywords"
+      content="Meycauayan, emergency, GIS, barangay, police, fire station, hospital, health center, Bulacan"
+    />
+    <meta name="author" content="Meycauayan City Government" />
+    <title>Meycauayan City | Emergency Facility Portal</title>
+
+    <!-- Bootstrap 5 -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    />
+
+    <!-- Font Awesome 6 -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+
+    <!-- Leaflet.js -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
+
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="styles.css" />
+
+    <!-- Favicon placeholder -->
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#128737;</text></svg>"
+    />
+  </head>
+  <body>
+    <!-- ============================================================
+       LOADING OVERLAY
+       ============================================================ -->
+    <div id="loading-overlay">
+      <div class="loading-logo">MEYCAUAYAN <span>CITY</span></div>
+      <div class="loading-bar-wrap"><div class="loading-bar"></div></div>
+      <div class="loading-text">Initializing Emergency Portal...</div>
+    </div>
+
+
+    <!-- ============================================================
+       NAVIGATION BAR
+       ============================================================ -->
+    <nav id="main-navbar" role="navigation" aria-label="Main navigation">
+      <!-- Brand / Logo -->
+      <a
+        href="#"
+        class="navbar-brand-custom me-4"
+        id="nav-brand"
+        onclick="
+          resetMapView();
+          return false;
+        "
+      >
+        <div class="brand-shield">
+          <i class="fas fa-shield-halved"></i>
+        </div>
+        <div class="brand-text-wrap">
+          <span class="brand-city">Meycauayan City</span>
+          <span class="brand-subtitle">Emergency Facility Portal</span>
+        </div>
+      </a>
+
+      <!-- Nav Links -->
+      <div class="nav-links-wrap" id="nav-links-main">
+        <!-- HOME -->
+        <div class="nav-item-custom">
+          <button
+            class="nav-link-custom"
+            onclick="resetMapView()"
+            id="nav-home"
+          >
+            <i class="fas fa-circle-dot"></i>
+            HOME
+          </button>
+        </div>
+
+        <!-- BARANGAYS DROPDOWN -->
+        <div class="nav-item-custom dropdown-custom">
+          <button class="nav-link-custom" id="nav-barangays">
+            BARANGAYS <i class="fas fa-chevron-down"></i>
+          </button>
+          <div class="dropdown-panel" id="dropdown-barangays" role="menu">
+            <div class="dropdown-panel-header">
+              21 Barangays of Meycauayan City
+            </div>
+            <!-- Dynamically populated by script.js -->
+          </div>
+        </div>
+
+        <!-- POLICE STATIONS DROPDOWN -->
+        <div class="nav-item-custom dropdown-custom">
+          <button class="nav-link-custom" id="nav-police">
+            POLICE <i class="fas fa-chevron-down"></i>
+          </button>
+          <div class="dropdown-panel" id="dropdown-police" role="menu">
+            <div class="dropdown-panel-header">Police Stations</div>
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+
+        <!-- FIRE STATIONS DROPDOWN -->
+        <div class="nav-item-custom dropdown-custom">
+          <button class="nav-link-custom" id="nav-fire">
+            FIRE STATIONS <i class="fas fa-chevron-down"></i>
+          </button>
+          <div class="dropdown-panel" id="dropdown-fire" role="menu">
+            <div class="dropdown-panel-header">Fire Stations</div>
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+
+        <!-- HOSPITALS DROPDOWN -->
+        <div class="nav-item-custom dropdown-custom">
+          <button class="nav-link-custom" id="nav-hospitals">
+            HOSPITALS <i class="fas fa-chevron-down"></i>
+          </button>
+          <div class="dropdown-panel" id="dropdown-hospitals" role="menu">
+            <div class="dropdown-panel-header">Hospitals</div>
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+
+        <!-- HEALTH CENTERS DROPDOWN -->
+        <div class="nav-item-custom dropdown-custom">
+          <button class="nav-link-custom" id="nav-health">
+            HEALTH CENTERS <i class="fas fa-chevron-down"></i>
+          </button>
+          <div class="dropdown-panel" id="dropdown-health" role="menu">
+            <div class="dropdown-panel-header">Health Centers</div>
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+
+        <!-- ABOUT -->
+        <div class="nav-item-custom">
+          <button
+            class="nav-link-custom"
+            data-bs-toggle="modal"
+            data-bs-target="#about-modal"
+            id="nav-about"
+          >
+            ABOUT
+          </button>
+        </div>
+      </div>
+
+      <!-- Right side: Emergency Button -->
+      <div class="ms-auto d-flex align-items-center gap-3">
+        <button
+          class="btn-emergency-nav"
+          data-bs-toggle="modal"
+          data-bs-target="#hotlines-modal"
+          id="btn-emergency-nav"
+          aria-label="Emergency Hotlines"
+        >
+          <i class="fas fa-phone"></i>
+          EMERGENCY HOTLINES
+        </button>
+
+        <!-- Admin link -->
+        <a
+          href="admin.html"
+          class="nav-link-custom"
+          style="font-size: 10px; padding: 6px 10px"
+          id="nav-admin"
+        >
+          <i class="fas fa-lock"></i>
+          ADMIN
+        </a>
+      </div>
+    </nav>
+
+    <!-- ============================================================
+       MAIN APP CONTAINER (Map-first)
+       ============================================================ -->
+    <div id="app-container">
+      <!-- MAP CONTAINER -->
+      <div id="map-container" role="main" aria-label="Interactive map">
+        <!-- The Leaflet map -->
+        <div id="main-map" aria-label="Meycauayan City interactive map"></div>
+
+        <div id="map-controls" class="map-controls" aria-label="Map controls">
+          <div class="map-controls-card">
+            <div class="map-panel-title">Search the map</div>
+            <div class="search-wrap map-search-wrap">
+              <span class="search-icon"><i class="fas fa-magnifying-glass"></i></span>
+              <input
+                type="text"
+                id="search-input"
+                placeholder="Search barangay, hospital, station..."
+                autocomplete="off"
+                aria-label="Search facilities and barangays"
+              />
+              <div
+                id="search-results"
+                role="listbox"
+                aria-label="Search suggestions"
+                aria-live="polite"
+              ></div>
+            </div>
+
+            <div class="map-panel-title" style="margin-top: 18px;">Quick filters</div>
+            <div class="sidebar-stats map-stats">
+              <button
+                type="button"
+                class="stat-cell type-police"
+                onclick="filterFacilities('police')"
+                id="stat-police"
+                title="Show Police Stations"
+                aria-label="Show Police Stations"
+              >
+                <i class="fas fa-shield-halved"></i>
+                <div class="stat-count" id="count-police">5</div>
+                <div class="stat-label">Police</div>
+              </button>
+              <button
+                type="button"
+                class="stat-cell type-fire"
+                onclick="filterFacilities('fire')"
+                id="stat-fire"
+                title="Show Fire Stations"
+                aria-label="Show Fire Stations"
+              >
+                <i class="fas fa-fire"></i>
+                <div class="stat-count" id="count-fire">2</div>
+                <div class="stat-label">Fire</div>
+              </button>
+              <button
+                type="button"
+                class="stat-cell type-hosp"
+                onclick="filterFacilities('hospital')"
+                id="stat-hosp"
+                title="Show Hospitals"
+                aria-label="Show Hospitals"
+              >
+                <i class="fas fa-hospital"></i>
+                <div class="stat-count" id="count-hosp">3</div>
+                <div class="stat-label">Hospitals</div>
+              </button>
+              <button
+                type="button"
+                class="stat-cell type-health"
+                onclick="filterFacilities('healthCenter')"
+                id="stat-health"
+                title="Show Health Centers"
+                aria-label="Show Health Centers"
+              >
+                <i class="fas fa-kit-medical"></i>
+                <div class="stat-count" id="count-health">21</div>
+                <div class="stat-label">Health</div>
+              </button>
+            </div>
+
+            <button
+              class="btn-reset-view map-reset-btn"
+              onclick="filterFacilities('all')"
+              id="btn-show-all"
+              style="margin-top: 14px"
+            >
+              <i class="fas fa-layer-group"></i>
+              Show All Facilities
+            </button>
+          </div>
+        </div>
+
+        <!-- MAP LEGEND -->
+        <div id="map-legend" aria-label="Map legend">
+          <div class="legend-title">Map Legend</div>
+          <div class="legend-row">
+            <div class="legend-dot police"></div>
+            <span class="legend-label">Police Station</span>
+          </div>
+          <div class="legend-row">
+            <div class="legend-dot fire"></div>
+            <span class="legend-label">Fire Station</span>
+          </div>
+          <div class="legend-row">
+            <div class="legend-dot hospital"></div>
+            <span class="legend-label">Hospital</span>
+          </div>
+          <div class="legend-row">
+            <div class="legend-dot healthcenter"></div>
+            <span class="legend-label">Health Center</span>
+          </div>
+          <div class="legend-row">
+            <div class="legend-dot barangay"></div>
+            <span class="legend-label">Barangay Hall</span>
+          </div>
+          <div class="legend-row">
+            <div class="legend-dot boundary"></div>
+            <span class="legend-label">Barangay Boundary</span>
+          </div>
+        </div>
+
+        <!-- EMERGENCY FAB -->
+        <div id="emergency-fab">
+          <button
+            class="fab-btn"
+            data-bs-toggle="modal"
+            data-bs-target="#hotlines-modal"
+            aria-label="Emergency Hotlines"
+            id="btn-emergency-fab"
+          >
+            <span class="fab-dot"></span>
+            EMERGENCY HOTLINES
+          </button>
+        </div>
+
+        <!-- INFO PANEL (slides in from right over map) -->
+        <div
+          id="info-panel"
+          role="complementary"
+          aria-label="Information panel"
+        >
+          <div class="info-panel-header">
+            <div style="flex: 1">
+              <div id="info-type-badge" class="info-type-badge"></div>
+              <h2 class="info-panel-title" id="info-panel-title">—</h2>
+            </div>
+            <button
+              class="info-panel-close"
+              id="info-panel-close"
+              onclick="closeInfoPanel()"
+              aria-label="Close info panel"
+            >
+              <i class="fas fa-xmark"></i>
+            </button>
+          </div>
+          <div class="info-panel-main">
+            <div class="info-panel-body" id="info-panel-body">
+              <!-- Dynamically populated -->
+            </div>
+            <div class="info-panel-media">
+              <div class="info-panel-image-wrap">
+                <img id="info-panel-image" src="" alt="Barangay or facility photo" />
+                <div class="info-panel-image-label">Photo</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================
+       EMERGENCY HOTLINES MODAL
+       ============================================================ -->
+    <div
+      class="modal fade"
+      id="hotlines-modal"
+      tabindex="-1"
+      aria-labelledby="hotlines-modal-label"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title-custom" id="hotlines-modal-label">
+              <i
+                class="fas fa-phone-volume me-2"
+                style="color: var(--clr-red-400)"
+              ></i>
+              <span>EMERGENCY</span> HOTLINES
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <p
+              style="
+                font-size: 12px;
+                color: var(--clr-text-muted);
+                margin-bottom: 16px;
+                letter-spacing: 0.04em;
+              "
+            >
+              In case of emergency, contact the appropriate authority
+              immediately. All hotlines are available 24 hours a day, 7 days a
+              week.
+            </p>
+            <div id="hotlines-list">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================
+       ABOUT MODAL
+       ============================================================ -->
+    <div
+      class="modal fade"
+      id="about-modal"
+      tabindex="-1"
+      aria-labelledby="about-modal-label"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title-custom" id="about-modal-label">
+              <i
+                class="fas fa-info-circle me-2"
+                style="color: var(--clr-red-400)"
+              ></i>
+              ABOUT THIS <span>SYSTEM</span>
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div style="display: flex; flex-direction: column; gap: 14px">
+              <div
+                style="
+                  background: var(--clr-surface-1);
+                  border: 1px solid var(--clr-border-red);
+                  border-radius: 6px;
+                  padding: 16px;
+                "
+              >
+                <div
+                  style="
+                    font-family: var(--font-heading);
+                    font-size: 9px;
+                    letter-spacing: 0.2em;
+                    text-transform: uppercase;
+                    color: var(--clr-red-400);
+                    margin-bottom: 8px;
+                  "
+                >
+                  SYSTEM OVERVIEW
+                </div>
+                <p
+                  style="
+                    font-size: 12px;
+                    color: var(--clr-text-secondary);
+                    line-height: 1.7;
+                    margin: 0;
+                  "
+                >
+                  The Meycauayan City Emergency Facility Portal is an
+                  interactive Geographic Information System (GIS) platform
+                  designed to provide residents with quick access to emergency
+                  facility information across all 21 barangays of Meycauayan
+                  City, Bulacan.
+                </p>
+              </div>
+              <div
+                style="
+                  background: var(--clr-surface-1);
+                  border: 1px solid var(--clr-border);
+                  border-radius: 6px;
+                  padding: 16px;
+                "
+              >
+                <div
+                  style="
+                    font-family: var(--font-heading);
+                    font-size: 9px;
+                    letter-spacing: 0.2em;
+                    text-transform: uppercase;
+                    color: var(--clr-red-400);
+                    margin-bottom: 8px;
+                  "
+                >
+                  FEATURES
+                </div>
+                <ul
+                  style="
+                    font-size: 12px;
+                    color: var(--clr-text-secondary);
+                    line-height: 2;
+                    margin: 0;
+                    padding-left: 16px;
+                  "
+                >
+                  <li>Interactive GIS map with barangay boundaries</li>
+                  <li>Barangay Focus Mode with detailed information</li>
+                  <li>Directory of all emergency facilities</li>
+                  <li>Real-time search across all categories</li>
+                  <li>Emergency hotline quick reference</li>
+                  <li>Google Maps integration</li>
+                </ul>
+              </div>
+              <div
+                style="
+                  background: var(--clr-surface-1);
+                  border: 1px solid var(--clr-border);
+                  border-radius: 6px;
+                  padding: 16px;
+                "
+              >
+                <div
+                  style="
+                    font-family: var(--font-heading);
+                    font-size: 9px;
+                    letter-spacing: 0.2em;
+                    text-transform: uppercase;
+                    color: var(--clr-red-400);
+                    margin-bottom: 8px;
+                  "
+                >
+                  DISCLAIMER
+                </div>
+                <p
+                  style="
+                    font-size: 11px;
+                    color: var(--clr-text-muted);
+                    line-height: 1.7;
+                    margin: 0;
+                  "
+                >
+                  This system is developed as an academic capstone project for
+                  Grade 12. All data presented is for demonstration purposes.
+                  For actual emergencies, always contact official emergency
+                  services immediately.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================
+       SCRIPTS
+       ============================================================ -->
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Leaflet.js -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <!-- Data Files -->
+    <script src="data/barangays.js"></script>
+    <script src="data/facilities.js"></script>
+
+    <!-- Main Script -->
+    <script src="script.js"></script>
+  </body>
+</html>
