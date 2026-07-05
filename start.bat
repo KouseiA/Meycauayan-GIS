@@ -1,3 +1,5 @@
 @echo off
+setlocal
 cd /d "%~dp0"
-start "" http://localhost/kevin/
+for %%I in ("%~dp0.") do set "folder=%%~nxI"
+start "" http://localhost/%folder%/
