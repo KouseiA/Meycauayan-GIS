@@ -459,19 +459,32 @@ button {
 
 .map-controls {
   position: absolute;
-  top: 20px;
-  left: 20px;
+  top: 24px;
+  left: 24px;
   z-index: 450;
-  width: min(360px, calc(100% - 40px));
+  width: min(380px, calc(100% - 48px));
+  pointer-events: auto;
 }
 
 .map-controls-card {
-  background: rgba(12, 22, 35, 0.95);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 18px;
-  padding: 18px;
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
-  backdrop-filter: blur(12px);
+  position: relative;
+  background: rgba(7, 14, 26, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 28px;
+  padding: 20px;
+  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.32);
+  backdrop-filter: blur(16px);
+}
+
+.map-controls-card::before {
+  content: '';
+  position: absolute;
+  top: -12px;
+  left: 24px;
+  width: 64px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
 }
 
 .map-panel-title {
@@ -485,7 +498,46 @@ button {
 }
 
 .map-search-wrap {
-  margin-bottom: 16px;
+  margin-bottom: 18px;
+}
+
+.sidebar-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  padding: 10px 0 0;
+  background: transparent;
+}
+
+.stat-cell {
+  padding: 16px 12px;
+  text-align: center;
+  border: none;
+  cursor: pointer;
+  transition: transform var(--transition-fast), background var(--transition-fast), box-shadow var(--transition-fast);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 18px;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+}
+
+.stat-cell:hover {
+  background: rgba(255, 255, 255, 0.12);
+  transform: translateY(-2px);
+}
+
+.stat-cell.active {
+  background: rgba(255, 143, 122, 0.22);
+  box-shadow: inset 0 0 0 1px rgba(255, 143, 122, 0.25);
+}
+
+.map-reset-btn {
+  margin-top: 18px;
+  width: 100%;
+  border-radius: 16px;
 }
 
 .map-reset-btn {
