@@ -145,12 +145,16 @@ function openFacilityInfoPanel(facility) {
   badge.className = `info-type-badge ${badgeClasses[facility.type] || ''}`;
   badge.textContent = typeLabels[facility.type] || facility.type;
   title.textContent = facility.name;
-  if (image) {
-    image.src = facility.image || 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=800&q=80';
-    image.alt = `${title.textContent} photo`;
-    image.onerror = () => {
-      image.src = 'https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=800&q=80';
-    };
+
+  const mediaContainer = document.querySelector('.info-panel-media');
+  if (facility.image) {
+    if (mediaContainer) mediaContainer.style.display = 'flex';
+    if (image) {
+      image.src = facility.image;
+      image.alt = `${title.textContent} photo`;
+    }
+  } else {
+    if (mediaContainer) mediaContainer.style.display = 'none';
   }
 
   const rows = [];
@@ -222,12 +226,15 @@ function openBarangayInfoPanel(barangay) {
   badge.className   = 'info-type-badge badge-barangay';
   badge.textContent = 'Barangay';
   title.textContent = barangay.name;
-  if (image) {
-    image.src = barangay.image || 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=800&q=80';
-    image.alt = `${barangay.name} barangay hall`;
-    image.onerror = () => {
-      image.src = 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=800&q=80';
-    };
+  const mediaContainer = document.querySelector('.info-panel-media');
+  if (barangay.image) {
+    if (mediaContainer) mediaContainer.style.display = 'flex';
+    if (image) {
+      image.src = barangay.image;
+      image.alt = `${barangay.name} barangay hall`;
+    }
+  } else {
+    if (mediaContainer) mediaContainer.style.display = 'none';
   }
 
   const rows = [];
@@ -772,10 +779,7 @@ function injectTooltipStyles() {
    LOADING OVERLAY
    ============================================================ */
 function hideLoadingOverlay() {
-  setTimeout(() => {
-    const overlay = document.getElementById('loading-overlay');
-    if (overlay) overlay.classList.add('hidden');
-  }, 1000);
+  // Loading overlay removed for custom page fade-in
 }
 
 function fetchWithTimeout(url, timeout = 12000) {

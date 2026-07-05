@@ -1,69 +1,91 @@
-/* styles.css — Meycauayan Emergency GIS Portal */
-/* Design: Cinematic Emergency Theme — Dark, Red, Authoritative */
+/* styles.css — Meycauayan City Emergency GIS Portal */
+/* Identity: Meycauayan City — Bamboo Green & Jewelry Gold */
 
 /* ============================================================
    GOOGLE FONTS IMPORT
    ============================================================ */
-@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=Bebas+Neue&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap");
 
 /* ============================================================
    CSS CUSTOM PROPERTIES (DESIGN TOKENS)
    ============================================================ */
 :root {
-  /* Core Colors */
-  --clr-void: #091220;
-  --clr-surface-0: #111f34;
-  --clr-surface-1: #152a42;
-  --clr-surface-2: #1f3855;
-  --clr-surface-3: #263f61;
-  --clr-border: rgba(255, 255, 255, 0.08);
-  --clr-border-red: rgba(255, 119, 116, 0.22);
+  /* ── Meycauayan City Official Identity Colors ──────────────────
+     Green  = bamboo ("may kawayan") — city name & natural heritage
+     Gold   = fine jewelry industry  — Jewelry Capital of the Philippines
+  ────────────────────────────────────────────────────────────── */
 
-  /* Emergency Red Palette */
-  --clr-red-900: #4c111d;
-  --clr-red-700: #b33a47;
-  --clr-red-500: #ec6f78;
-  --clr-red-400: #ff8f7a;
-  --clr-red-300: #ffb7a8;
-  --clr-red-glow: rgba(236, 111, 120, 0.32);
-  --clr-red-glow-sm: rgba(236, 111, 120, 0.16);
+  /* Core Surfaces — deep ink, not generic "dark navy" */
+  --clr-void:      #0e1510;
+  --clr-surface-0: #141c16;
+  --clr-surface-1: #1b2620;
+  --clr-surface-2: #22302b;
+  --clr-surface-3: #2a3c35;
+  --clr-border:    rgba(255, 255, 255, 0.07);
+  --clr-border-accent: rgba(180, 145, 60, 0.25);
 
-  /* Accent — Amber Alert */
-  --clr-amber: #ffb455;
-  --clr-amber-bright: #ffd47f;
-  --clr-amber-glow: rgba(255, 180, 85, 0.24);
+  /* Meycauayan Green — bamboo, growth, resilience */
+  --clr-green-900: #0d2b1a;
+  --clr-green-700: #1a5c35;
+  --clr-green-500: #2d8c56;
+  --clr-green-400: #3aad6a;
+  --clr-green-300: #7ecfa0;
+  --clr-green-glow: rgba(45, 140, 86, 0.28);
 
-  /* Text Colors */
-  --clr-text-primary: #f7f9fc;
-  --clr-text-secondary: #c8d2e6;
-  --clr-text-muted: #9db2cc;
-  --clr-text-white: #ffffff;
+  /* Meycauayan Gold — fine jewelry, prosperity */
+  --clr-gold-900: #3a2a00;
+  --clr-gold-700: #8a6a10;
+  --clr-gold-500: #b49130;
+  --clr-gold-400: #c9a84c;
+  --clr-gold-300: #e2c97e;
+  --clr-gold-glow: rgba(180, 145, 48, 0.24);
 
-  /* Status Colors */
-  --clr-status-police: #62b6ff;
-  --clr-status-fire: #ffb26b;
-  --clr-status-hosp: #6fe3a5;
-  --clr-status-health: #c296ff;
+  /* Emergency Red — kept only for actual alerts/emergencies */
+  --clr-red-500: #c0392b;
+  --clr-red-400: #e05a4a;
+  --clr-red-glow: rgba(192, 57, 43, 0.25);
 
-  /* Typography */
-  --font-display: "Bebas Neue", "Oswald", sans-serif;
-  --font-heading: "Oswald", sans-serif;
-  --font-body: "Inter", sans-serif;
+  /* Backward-compatible aliases (used by existing components) */
+  --clr-amber:        var(--clr-gold-400);
+  --clr-amber-bright: var(--clr-gold-300);
+  --clr-amber-glow:   var(--clr-gold-glow);
+  --clr-red-300:      #f0a090;
+  --clr-red-700:      #8b2a1e;
+  --clr-red-900:      #4a120c;
+  --clr-red-glow-sm:  rgba(192, 57, 43, 0.14);
+  --clr-border-red:   rgba(192, 57, 43, 0.22);
+
+  /* Text */
+  --clr-text-primary:   #eef2ed;
+  --clr-text-secondary: #b8c9bc;
+  --clr-text-muted:     #7a9982;
+  --clr-text-white:     #ffffff;
+
+  /* Facility status colors — desaturated to feel less AI-generated */
+  --clr-status-police: #5b9bd5;
+  --clr-status-fire:   #d4804a;
+  --clr-status-hosp:   #4aaa7a;
+  --clr-status-health: #9a72cc;
+
+  /* Typography — single typeface, multiple weights */
+  --font-display: "Plus Jakarta Sans", sans-serif;
+  --font-heading: "Plus Jakarta Sans", sans-serif;
+  --font-body:    "Plus Jakarta Sans", sans-serif;
 
   /* Spacing */
-  --nav-height: 72px;
-  --panel-width: 340px;
+  --nav-height:   64px;
+  --panel-width:  340px;
 
   /* Transitions */
-  --transition-fast: 180ms ease;
-  --transition-normal: 340ms ease;
-  --transition-slow: 540ms ease;
+  --transition-fast:   160ms ease;
+  --transition-normal: 300ms ease;
+  --transition-slow:   480ms ease;
 
   /* Shadows */
-  --shadow-soft: 0 18px 48px rgba(0, 0, 0, 0.22);
-  --shadow-card: 0 20px 60px rgba(0, 0, 0, 0.24);
-  --shadow-panel: 0 16px 48px rgba(0, 0, 0, 0.2);
-  --shadow-red: 0 18px 42px rgba(255, 143, 122, 0.28);
+  --shadow-soft:  0 12px 36px rgba(0, 0, 0, 0.28);
+  --shadow-card:  0 16px 48px rgba(0, 0, 0, 0.3);
+  --shadow-panel: 0 12px 40px rgba(0, 0, 0, 0.24);
+  --shadow-red:   0 12px 32px rgba(192, 57, 43, 0.22);
 }
 
 /* ============================================================
@@ -248,9 +270,8 @@ body::before {
 .nav-link-custom {
   font-family: var(--font-heading);
   font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+  font-weight: 500;
+  letter-spacing: 0.04em;
   color: var(--clr-text-secondary);
   text-decoration: none;
   padding: 10px 14px;
@@ -294,7 +315,7 @@ body::before {
   left: 0;
   background: rgba(18, 18, 18, 0.98);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 16px;
+  border-radius: 4px;
   min-width: 240px;
   max-height: 360px;
   overflow-y: auto;
@@ -360,10 +381,9 @@ body::before {
 /* Emergency Hotline Nav Button */
 .btn-emergency-nav {
   font-family: var(--font-heading);
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
   color: #111;
   background: linear-gradient(135deg, #ffd47f, #ff8f7a);
   border: 1px solid rgba(255, 180, 85, 0.3);
@@ -445,6 +465,7 @@ button {
   display: flex;
   flex-direction: row;
   overflow: hidden;
+  animation: page-fade-in 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 #map-container {
@@ -475,7 +496,7 @@ button {
   position: relative;
   background: rgba(10, 19, 38, 0.96);
   border: 1px solid rgba(255, 255, 255, 0.14);
-  border-radius: 34px;
+  border-radius: 6px;
   padding: 24px;
   box-shadow: 0 42px 110px rgba(0, 0, 0, 0.32);
   backdrop-filter: blur(18px);
@@ -502,7 +523,7 @@ button {
   content: '';
   position: absolute;
   inset: 0;
-  border-radius: 34px;
+  border-radius: 6px;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
   pointer-events: none;
 }
@@ -595,7 +616,7 @@ button {
 .usage-panel {
   border: 1px solid rgba(255, 255, 255, 0.08);
   background: rgba(255, 255, 255, 0.04);
-  border-radius: 22px;
+  border-radius: 6px;
   padding: 18px;
   margin-top: 18px;
   font-size: 12px;
@@ -775,7 +796,7 @@ button {
   align-items: center;
   gap: 4px;
   background: rgba(255, 255, 255, 0.05);
-  border-radius: 16px;
+  border-radius: 4px;
 }
 
 .stat-cell:last-child {
@@ -1781,68 +1802,16 @@ body.popup-open #main-navbar {}
   letter-spacing: 0.15em !important;
 }
 
-/* Loading Overlay */
-#loading-overlay {
-  position: fixed;
-  inset: 0;
-  background: var(--clr-void);
-  z-index: 9000;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 20px;
-  transition: opacity 0.5s ease;
-}
-
-#loading-overlay.hidden {
-  opacity: 0;
-  pointer-events: none;
-  visibility: hidden;
-  display: none !important;
-}
-
-.loading-logo {
-  font-family: var(--font-display);
-  font-size: 48px;
-  letter-spacing: 0.15em;
-  color: var(--clr-text-white);
-  text-transform: uppercase;
-}
-
-.loading-logo span {
-  color: var(--clr-red-400);
-}
-
-.loading-bar-wrap {
-  width: 200px;
-  height: 2px;
-  background: var(--clr-surface-3);
-  border-radius: 2px;
-  overflow: hidden;
-}
-
-.loading-bar {
-  height: 100%;
-  background: linear-gradient(90deg, var(--clr-red-500), var(--clr-amber));
-  animation: load-progress 1.5s ease forwards;
-}
-
-@keyframes load-progress {
+/* Page Fade-In Animation */
+@keyframes page-fade-in {
   from {
-    width: 0;
+    opacity: 0;
+    transform: translateY(6px);
   }
   to {
-    width: 100%;
+    opacity: 1;
+    transform: translateY(0);
   }
-}
-
-.loading-text {
-  font-family: var(--font-heading);
-  font-size: 10px;
-  letter-spacing: 0.3em;
-  text-transform: uppercase;
-  color: var(--clr-text-muted);
 }
 
 /* ============================================================
