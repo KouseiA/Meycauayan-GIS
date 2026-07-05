@@ -291,9 +291,6 @@ function openBarangayInfoPanel(barangay) {
     PHILIPPINES <span class="hud-sep">/</span> BULACAN <span class="hud-sep">/</span> MEYCAUAYAN CITY <span class="hud-sep">/</span> <span style="color:#00ff66;font-weight:bold;">${barangay.name.toUpperCase()}</span>
   `;
 
-  // Play click sound
-  AudioSynth.playClick();
-
   panel.classList.add('open');
   document.body.classList.add('popup-open');
   document.getElementById('map-container')?.classList.add('panel-open');
@@ -414,9 +411,6 @@ function resetMapView() {
   document.getElementById('hud-breadcrumbs').innerHTML = `
     PHILIPPINES <span class="hud-sep">/</span> BULACAN <span class="hud-sep">/</span> MEYCAUAYAN CITY
   `;
-
-  // Play click sound
-  AudioSynth.playClick();
 
   // Reset all boundary styles
   Object.keys(State.geojsonLayers).forEach(id => {
@@ -937,68 +931,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }, 8000);
 });
-
-/* ============================================================
-   BYZENTERRA GIS EXTENSIONS (SOUNDS & EXPORTER)
-   ============================================================ */
-
-const AudioSynth = {
-  ctx: null,
-  muted: false,
-  init() {
-    if (this.ctx) return;
-    const AudioContext = window.AudioContext || window.webkitAudioContext;
-    if (AudioContext) {
-      this.ctx = new AudioContext();
-    }
-  },
-  playClick() {
-    if (this.muted) return;
-    try {
-      this.init();
-      if (!this.ctx) return;
-      
-      // Keep synthesized audio contexts active
-      if (this.ctx.state === 'suspended') {
-        this.ctx.resume();
-      }
-
-      const osc = this.ctx.createOscillator();
-      const gain = this.ctx.createGain();
-      
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(900, this.ctx.currentTime);
-      osc.frequency.exponentialRampToValueAtTime(1300, this.ctx.currentTime + 0.06);
-      
-      gain.gain.setValueAtTime(0.015, this.ctx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.0001, this.ctx.currentTime + 0.06);
-      
-      osc.connect(gain);
-      gain.connect(this.ctx.destination);
-      
-      osc.start();
-      osc.stop(this.ctx.currentTime + 0.06);
-    } catch (e) {
-      console.warn('Audio click synth failed:', e);
-    }
-  }
-};
-
-function toggleSound() {
-  AudioSynth.muted = !AudioSynth.muted;
-  const btn = document.getElementById('btn-sound-toggle');
-  if (btn) {
-    if (AudioSynth.muted) {
-      btn.classList.add('muted');
-      btn.innerHTML = '<i class="fas fa-volume-mute"></i>';
-    } else {
-      btn.classList.remove('muted');
-      btn.innerHTML = '<i class="fas fa-volume-up"></i>';
-      // Play a confirmation sound
-      AudioSynth.playClick();
-    }
-  }
-}
 
 function downloadBoundary(barangayName, format) {
   const barangay = BARANGAYS_DATA.find(b => b.name.toLowerCase() === barangayName.toLowerCase());
