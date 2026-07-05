@@ -1,39 +1,51 @@
 /* admin.css — Meycauayan City Emergency GIS Portal — Admin Dashboard */
 
-@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap');
 
 /* ============================================================
    CSS VARIABLES (inherits from design system)
    ============================================================ */
 :root {
-  --clr-void:         #080808;
-  --clr-surface-0:    #0d0d0d;
-  --clr-surface-1:    #121212;
-  --clr-surface-2:    #1a1a1a;
-  --clr-surface-3:    #222222;
+  /* Meycauayan City — green ink surfaces */
+  --clr-void:         #0a0f0b;
+  --clr-surface-0:    #101510;
+  --clr-surface-1:    #161e17;
+  --clr-surface-2:    #1e281f;
+  --clr-surface-3:    #263229;
   --clr-border:       rgba(255, 255, 255, 0.06);
-  --clr-border-red:   rgba(180, 0, 0, 0.4);
-  --clr-red-500:      #cc0000;
-  --clr-red-400:      #e60000;
-  --clr-red-700:      #8b0000;
-  --clr-red-glow:     rgba(204, 0, 0, 0.35);
-  --clr-red-glow-sm:  rgba(204, 0, 0, 0.18);
-  --clr-amber:        #e6a800;
-  --clr-amber-bright: #ffb800;
-  --clr-text-primary:   #f0f0f0;
-  --clr-text-secondary: #a0a0a0;
-  --clr-text-muted:     #5a5a5a;
+  --clr-border-red:   rgba(192, 57, 43, 0.35);
+
+  /* Emergency */
+  --clr-red-500:      #c0392b;
+  --clr-red-400:      #e05a4a;
+  --clr-red-700:      #8b2a1e;
+  --clr-red-glow:     rgba(192, 57, 43, 0.30);
+  --clr-red-glow-sm:  rgba(192, 57, 43, 0.15);
+
+  /* Gold accent */
+  --clr-amber:        #c9a84c;
+  --clr-amber-bright: #e2c97e;
+
+  /* Text */
+  --clr-text-primary:   #eef2ed;
+  --clr-text-secondary: #96ae9a;
+  --clr-text-muted:     #526056;
   --clr-text-white:     #ffffff;
-  --clr-status-police: #3b82f6;
-  --clr-status-fire:   #f97316;
-  --clr-status-hosp:   #22c55e;
-  --clr-status-health: #a855f7;
-  --font-heading:  'Oswald', sans-serif;
-  --font-body:     'Inter', sans-serif;
+
+  /* Facility status */
+  --clr-status-police: #5b9bd5;
+  --clr-status-fire:   #d4804a;
+  --clr-status-hosp:   #4aaa7a;
+  --clr-status-health: #9a72cc;
+
+  /* Single typeface */
+  --font-heading:  'Plus Jakarta Sans', sans-serif;
+  --font-body:     'Plus Jakarta Sans', sans-serif;
+
   --sidebar-width: 220px;
   --header-height: 56px;
-  --transition-fast:   150ms ease;
-  --transition-normal: 300ms ease;
+  --transition-fast:   140ms ease;
+  --transition-normal: 280ms ease;
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
