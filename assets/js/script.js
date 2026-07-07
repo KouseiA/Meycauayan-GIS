@@ -47,25 +47,29 @@ if (typeof BARANGAYS_DATA !== 'undefined' && Array.isArray(BARANGAYS_DATA)) {
    ICON FACTORY
    ============================================================ */
 function createMarkerIcon(type) {
-  const iconMap = {
-    barangay:    { icon: 'fas fa-building',     cls: 'barangay-pin', color: '#f59e0b' },
-    police:      { icon: 'fas fa-shield-halved', cls: 'police-pin',   color: '#1d4ed8' },
-    fire:        { icon: 'fas fa-fire',          cls: 'fire-pin',     color: '#c2410c' },
-    hospital:    { icon: 'fas fa-hospital',      cls: 'hospital-pin', color: '#15803d' },
-    healthCenter:{ icon: 'fas fa-kit-medical',   cls: 'health-pin',   color: '#7c3aed' },
+  const colorMap = {
+    barangay:    '#00c2e0',
+    police:      '#4fa3e0',
+    fire:        '#f07830',
+    hospital:    '#30c890',
+    healthCenter:'#9870e8',
   };
-  const cfg = iconMap[type] || iconMap.police;
+  const clsMap = {
+    barangay:    'barangay-pin',
+    police:      'police-pin',
+    fire:        'fire-pin',
+    hospital:    'hospital-pin',
+    healthCenter:'health-pin',
+  };
+  const color = colorMap[type] || '#4fa3e0';
+  const cls   = clsMap[type]   || 'police-pin';
 
   return L.divIcon({
-    className: 'custom-marker',
-    html: `
-      <div class="marker-pin ${cfg.cls}" style="box-shadow: 0 3px 12px ${cfg.color}55;">
-        <i class="${cfg.icon}"></i>
-      </div>
-    `,
-    iconSize: [32, 32],
-    iconAnchor: [16, 32],
-    popupAnchor: [0, -34]
+    className:    '',                         // blank — no Leaflet default white bg/border
+    html:         `<div class="marker-dot ${cls}"></div>`,
+    iconSize:     [16, 16],
+    iconAnchor:   [8, 8],                     // true center of the 16px dot
+    popupAnchor:  [0, -12]
   });
 }
 
@@ -112,7 +116,7 @@ function buildPopupHtml(facility) {
       ${hotline}
       ${pic}
       ${hours}
-      <a href="${facility.google_maps_url || '#'}" target="_blank" rel="noopener" class="popup-link">
+      <a href="${facility.google_maps_url || '#'}" target="_blank" rel="noopener" class="popup-maps-btn">
         <i class="fas fa-diamond-turn-right"></i> Open in Google Maps
       </a>
     </div>
@@ -332,27 +336,27 @@ function closeInfoPanel() {
    BARANGAY GeoJSON STYLES
    ============================================================ */
 const BOUNDARY_STYLE_NORMAL = {
-  fillColor:   '#b8860b',
-  fillOpacity: 0.06,
-  color:       '#b8860b',
+  fillColor:   '#00c2e0',
+  fillOpacity: 0.04,
+  color:       '#00c2e0',
   weight:      1.5,
-  opacity:     0.65
+  opacity:     0.45
 };
 
 const BOUNDARY_STYLE_SELECTED = {
-  fillColor:   '#cc0000',
-  fillOpacity: 0.12,
-  color:       '#cc0000',
-  weight:      2.5,
-  opacity:     1
+  fillColor:   '#00c2e0',
+  fillOpacity: 0.14,
+  color:       '#00c2e0',
+  weight:      2,
+  opacity:     0.9
 };
 
 const BOUNDARY_STYLE_DIMMED = {
-  fillColor:   '#bbbbbb',
-  fillOpacity: 0.03,
-  color:       '#cccccc',
-  weight:      1,
-  opacity:     0.35
+  fillColor:   '#ffffff',
+  fillOpacity: 0.02,
+  color:       '#ffffff',
+  weight:      0.8,
+  opacity:     0.18
 };
 
 /* ============================================================
@@ -620,8 +624,8 @@ function initMap() {
     maxZoom:    19
   });
 
-  // Light tile layer — CartoDB Positron (clean white government look)
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+  // Dark tile layer — CartoDB Dark Matter (clean dark tech look)
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
     subdomains:  'abcd',
     maxZoom:     19

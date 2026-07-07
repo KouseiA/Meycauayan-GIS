@@ -33,7 +33,7 @@
     />
 
     <!-- Custom Styles -->
-    <link rel="stylesheet" href="assets/css/styles.css" />
+    <link rel="stylesheet" href="assets/css/styles.css?v=3.0" />
 
     <!-- Favicon placeholder -->
     <link
@@ -66,6 +66,9 @@
           <span class="brand-subtitle">Emergency Facility Portal</span>
         </div>
       </a>
+
+      <!-- Visual divider separating brand from links -->
+      <div class="nav-divider"></div>
 
       <!-- Nav Links -->
       <div class="nav-links-wrap" id="nav-links-main">
@@ -168,8 +171,7 @@
         <!-- Admin link -->
         <a
           href="admin.html"
-          class="nav-link-custom"
-          style="font-size: 10px; padding: 6px 10px"
+          class="navbar-admin-link"
           id="nav-admin"
         >
           <i class="fas fa-lock"></i>
@@ -246,6 +248,7 @@
       <div
         id="info-panel"
         role="complementary"
+        data-theme="light"
         aria-label="Information panel"
       >
         <div class="info-panel-header">
@@ -304,14 +307,7 @@
             ></button>
           </div>
           <div class="modal-body">
-            <p
-              style="
-                font-size: 12px;
-                color: var(--clr-text-muted);
-                margin-bottom: 16px;
-                letter-spacing: 0.04em;
-              "
-            >
+            <p class="modal-description">
               In case of emergency, contact the appropriate authority
               immediately. All hotlines are available 24 hours a day, 7 days a
               week.
@@ -352,35 +348,10 @@
             ></button>
           </div>
           <div class="modal-body">
-            <div style="display: flex; flex-direction: column; gap: 14px">
-              <div
-                style="
-                  background: var(--clr-surface-1);
-                  border: 1px solid var(--clr-border-red);
-                  border-radius: 6px;
-                  padding: 16px;
-                "
-              >
-                <div
-                  style="
-                    font-family: var(--font-heading);
-                    font-size: 9px;
-                    letter-spacing: 0.2em;
-                    text-transform: uppercase;
-                    color: var(--clr-red-400);
-                    margin-bottom: 8px;
-                  "
-                >
-                  SYSTEM OVERVIEW
-                </div>
-                <p
-                  style="
-                    font-size: 12px;
-                    color: var(--clr-text-secondary);
-                    line-height: 1.7;
-                    margin: 0;
-                  "
-                >
+            <div style="display: flex; flex-direction: column; gap: 10px">
+              <div class="modal-info-box">
+                <div class="modal-info-box-title">SYSTEM OVERVIEW</div>
+                <p class="modal-info-box-text">
                   The Meycauayan City Emergency Facility Portal is an
                   interactive Geographic Information System (GIS) platform
                   designed to provide residents with quick access to emergency
@@ -388,35 +359,9 @@
                   City, Bulacan.
                 </p>
               </div>
-              <div
-                style="
-                  background: var(--clr-surface-1);
-                  border: 1px solid var(--clr-border);
-                  border-radius: 6px;
-                  padding: 16px;
-                "
-              >
-                <div
-                  style="
-                    font-family: var(--font-heading);
-                    font-size: 9px;
-                    letter-spacing: 0.2em;
-                    text-transform: uppercase;
-                    color: var(--clr-red-400);
-                    margin-bottom: 8px;
-                  "
-                >
-                  FEATURES
-                </div>
-                <ul
-                  style="
-                    font-size: 12px;
-                    color: var(--clr-text-secondary);
-                    line-height: 2;
-                    margin: 0;
-                    padding-left: 16px;
-                  "
-                >
+              <div class="modal-info-box">
+                <div class="modal-info-box-title">FEATURES</div>
+                <ul class="modal-info-box-list">
                   <li>Interactive GIS map with barangay boundaries</li>
                   <li>Barangay Focus Mode with detailed information</li>
                   <li>Directory of all emergency facilities</li>
@@ -425,34 +370,9 @@
                   <li>Google Maps integration</li>
                 </ul>
               </div>
-              <div
-                style="
-                  background: var(--clr-surface-1);
-                  border: 1px solid var(--clr-border);
-                  border-radius: 6px;
-                  padding: 16px;
-                "
-              >
-                <div
-                  style="
-                    font-family: var(--font-heading);
-                    font-size: 9px;
-                    letter-spacing: 0.2em;
-                    text-transform: uppercase;
-                    color: var(--clr-red-400);
-                    margin-bottom: 8px;
-                  "
-                >
-                  DISCLAIMER
-                </div>
-                <p
-                  style="
-                    font-size: 11px;
-                    color: var(--clr-text-muted);
-                    line-height: 1.7;
-                    margin: 0;
-                  "
-                >
+              <div class="modal-info-box danger-accent">
+                <div class="modal-info-box-title">DISCLAIMER</div>
+                <p class="modal-info-box-text" style="font-size: 11px;">
                   This system is developed as an academic capstone project for
                   Grade 12. All data presented is for demonstration purposes.
                   For actual emergencies, always contact official emergency
@@ -479,7 +399,7 @@
     <script src="data/facilities.js"></script>
 
     <!-- Main Script -->
-    <script src="assets/js/script.js"></script>
+    <script src="assets/js/script.js?v=2.1"></script>
     <script>
       setTimeout(() => {
         const overlay = document.getElementById('loading-overlay');
