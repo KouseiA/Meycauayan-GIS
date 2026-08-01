@@ -33,7 +33,7 @@
     />
 
     <!-- Custom Styles -->
-    <link rel="stylesheet" href="assets/css/styles.css" />
+    <link rel="stylesheet" href="assets/css/styles.css?v=3.0" />
 
     <!-- Favicon placeholder -->
     <link
@@ -58,14 +58,14 @@
           return false;
         "
       >
-        <div class="brand-shield">
-          <i class="fas fa-shield-halved"></i>
-        </div>
         <div class="brand-text-wrap">
           <span class="brand-city">Meycauayan City</span>
           <span class="brand-subtitle">Emergency Facility Portal</span>
         </div>
       </a>
+
+      <!-- Visual divider separating brand from links -->
+      <div class="nav-divider"></div>
 
       <!-- Nav Links -->
       <div class="nav-links-wrap" id="nav-links-main">
@@ -151,8 +151,8 @@
         </div>
       </div>
 
-      <!-- Right side: Emergency Button -->
-      <div class="ms-auto d-flex align-items-center gap-3">
+      <!-- Right side: Emergency Button & Mobile Toggle -->
+      <div class="ms-auto d-flex align-items-center gap-2">
         <button
           class="btn-emergency-nav"
           data-bs-toggle="modal"
@@ -161,22 +161,124 @@
           aria-label="Emergency Hotlines"
         >
           <i class="fas fa-phone"></i>
-          Emergency Hotlines
+          <span>Emergency Hotlines</span>
         </button>
-
 
         <!-- Admin link -->
         <a
           href="admin.html"
-          class="nav-link-custom"
-          style="font-size: 10px; padding: 6px 10px"
+          class="navbar-admin-link"
           id="nav-admin"
         >
           <i class="fas fa-lock"></i>
-          Admin
+          <span>Admin</span>
         </a>
+
+        <!-- Mobile Menu Hamburger Button -->
+        <button
+          class="navbar-toggler-custom"
+          id="mobile-menu-toggle"
+          aria-label="Toggle navigation menu"
+          aria-expanded="false"
+        >
+          <i class="fas fa-bars"></i>
+        </button>
       </div>
     </nav>
+
+    <!-- ============================================================
+       MOBILE NAVIGATION OVERLAY
+       ============================================================ -->
+    <div id="mobile-nav-overlay" aria-label="Mobile Navigation Menu">
+      <div class="mobile-nav-content">
+        <!-- Home Link -->
+        <button class="mobile-nav-item" onclick="resetMapView(); closeMobileMenu();">
+          <i class="fas fa-house me-2"></i> Home
+        </button>
+
+        <!-- Barangays Accordion -->
+        <div class="mobile-accordion-item">
+          <button class="mobile-accordion-header" onclick="toggleMobileAccordion('mobile-acc-barangays')">
+            <span><i class="fas fa-map me-2"></i> Barangays</span>
+            <i class="fas fa-chevron-down acc-icon"></i>
+          </button>
+          <div class="mobile-accordion-body" id="mobile-acc-barangays">
+            <!-- Populated dynamically or shared -->
+          </div>
+        </div>
+
+        <!-- Police Stations Accordion -->
+        <div class="mobile-accordion-item">
+          <button class="mobile-accordion-header" onclick="toggleMobileAccordion('mobile-acc-police')">
+            <span><i class="fas fa-shield-halved me-2"></i> Police Stations</span>
+            <i class="fas fa-chevron-down acc-icon"></i>
+          </button>
+          <div class="mobile-accordion-body" id="mobile-acc-police">
+            <!-- Populated dynamically -->
+          </div>
+        </div>
+
+        <!-- Fire Stations Accordion -->
+        <div class="mobile-accordion-item">
+          <button class="mobile-accordion-header" onclick="toggleMobileAccordion('mobile-acc-fire')">
+            <span><i class="fas fa-fire me-2"></i> Fire Stations</span>
+            <i class="fas fa-chevron-down acc-icon"></i>
+          </button>
+          <div class="mobile-accordion-body" id="mobile-acc-fire">
+            <!-- Populated dynamically -->
+          </div>
+        </div>
+
+        <!-- Hospitals Accordion -->
+        <div class="mobile-accordion-item">
+          <button class="mobile-accordion-header" onclick="toggleMobileAccordion('mobile-acc-hospitals')">
+            <span><i class="fas fa-hospital me-2"></i> Hospitals</span>
+            <i class="fas fa-chevron-down acc-icon"></i>
+          </button>
+          <div class="mobile-accordion-body" id="mobile-acc-hospitals">
+            <!-- Populated dynamically -->
+          </div>
+        </div>
+
+        <!-- Health Centers Accordion -->
+        <div class="mobile-accordion-item">
+          <button class="mobile-accordion-header" onclick="toggleMobileAccordion('mobile-acc-health')">
+            <span><i class="fas fa-kit-medical me-2"></i> Health Centers</span>
+            <i class="fas fa-chevron-down acc-icon"></i>
+          </button>
+          <div class="mobile-accordion-body" id="mobile-acc-health">
+            <!-- Populated dynamically -->
+          </div>
+        </div>
+
+        <!-- About Link -->
+        <button
+          class="mobile-nav-item"
+          data-bs-toggle="modal"
+          data-bs-target="#about-modal"
+          onclick="closeMobileMenu()"
+        >
+          <i class="fas fa-circle-info me-2"></i> About
+        </button>
+
+        <div class="mobile-nav-divider"></div>
+
+        <!-- Emergency Hotlines in Mobile Menu -->
+        <button
+          class="mobile-nav-item text-danger-custom"
+          data-bs-toggle="modal"
+          data-bs-target="#hotlines-modal"
+          onclick="closeMobileMenu()"
+        >
+          <i class="fas fa-phone-volume me-2"></i> Emergency Hotlines
+        </button>
+
+        <!-- Admin Portal in Mobile Menu -->
+        <a href="admin.html" class="mobile-nav-item" onclick="closeMobileMenu()">
+          <i class="fas fa-lock me-2"></i> Admin Portal
+        </a>
+      </div>
+    </div>
 
     <!-- ============================================================
        MAIN APP CONTAINER (Map-first)
@@ -242,21 +344,30 @@
         </div>
       </div>
 
-      <!-- INFO PANEL (slides in from right over map) -->
+      <!-- INFO PANEL (Side panel on desktop / Collapsible Bottom Sheet on mobile) -->
       <div
         id="info-panel"
         role="complementary"
         aria-label="Information panel"
       >
-        <div class="info-panel-header">
-          <div style="flex: 1">
+        <div class="sheet-drag-handle" onclick="toggleInfoPanelCollapse()" aria-label="Toggle panel height"></div>
+        <div class="info-panel-header" onclick="handleHeaderClick(event)">
+          <div style="flex: 1; cursor: pointer;">
             <div id="info-type-badge" class="info-type-badge"></div>
             <h2 class="info-panel-title" id="info-panel-title">—</h2>
           </div>
           <button
+            class="info-panel-toggle-btn"
+            id="info-panel-toggle-btn"
+            onclick="toggleInfoPanelCollapse(event)"
+            aria-label="Collapse or expand info panel"
+          >
+            <i class="fas fa-chevron-down"></i>
+          </button>
+          <button
             class="info-panel-close"
             id="info-panel-close"
-            onclick="resetMapView()"
+            onclick="resetMapView(); event.stopPropagation();"
             aria-label="Close info panel"
           >
             <i class="fas fa-xmark"></i>
@@ -304,14 +415,7 @@
             ></button>
           </div>
           <div class="modal-body">
-            <p
-              style="
-                font-size: 12px;
-                color: var(--clr-text-muted);
-                margin-bottom: 16px;
-                letter-spacing: 0.04em;
-              "
-            >
+            <p class="modal-description">
               In case of emergency, contact the appropriate authority
               immediately. All hotlines are available 24 hours a day, 7 days a
               week.
@@ -352,35 +456,10 @@
             ></button>
           </div>
           <div class="modal-body">
-            <div style="display: flex; flex-direction: column; gap: 14px">
-              <div
-                style="
-                  background: var(--clr-surface-1);
-                  border: 1px solid var(--clr-border-red);
-                  border-radius: 6px;
-                  padding: 16px;
-                "
-              >
-                <div
-                  style="
-                    font-family: var(--font-heading);
-                    font-size: 9px;
-                    letter-spacing: 0.2em;
-                    text-transform: uppercase;
-                    color: var(--clr-red-400);
-                    margin-bottom: 8px;
-                  "
-                >
-                  SYSTEM OVERVIEW
-                </div>
-                <p
-                  style="
-                    font-size: 12px;
-                    color: var(--clr-text-secondary);
-                    line-height: 1.7;
-                    margin: 0;
-                  "
-                >
+            <div style="display: flex; flex-direction: column; gap: 10px">
+              <div class="modal-info-box">
+                <div class="modal-info-box-title">SYSTEM OVERVIEW</div>
+                <p class="modal-info-box-text">
                   The Meycauayan City Emergency Facility Portal is an
                   interactive Geographic Information System (GIS) platform
                   designed to provide residents with quick access to emergency
@@ -388,35 +467,9 @@
                   City, Bulacan.
                 </p>
               </div>
-              <div
-                style="
-                  background: var(--clr-surface-1);
-                  border: 1px solid var(--clr-border);
-                  border-radius: 6px;
-                  padding: 16px;
-                "
-              >
-                <div
-                  style="
-                    font-family: var(--font-heading);
-                    font-size: 9px;
-                    letter-spacing: 0.2em;
-                    text-transform: uppercase;
-                    color: var(--clr-red-400);
-                    margin-bottom: 8px;
-                  "
-                >
-                  FEATURES
-                </div>
-                <ul
-                  style="
-                    font-size: 12px;
-                    color: var(--clr-text-secondary);
-                    line-height: 2;
-                    margin: 0;
-                    padding-left: 16px;
-                  "
-                >
+              <div class="modal-info-box">
+                <div class="modal-info-box-title">FEATURES</div>
+                <ul class="modal-info-box-list">
                   <li>Interactive GIS map with barangay boundaries</li>
                   <li>Barangay Focus Mode with detailed information</li>
                   <li>Directory of all emergency facilities</li>
@@ -425,34 +478,9 @@
                   <li>Google Maps integration</li>
                 </ul>
               </div>
-              <div
-                style="
-                  background: var(--clr-surface-1);
-                  border: 1px solid var(--clr-border);
-                  border-radius: 6px;
-                  padding: 16px;
-                "
-              >
-                <div
-                  style="
-                    font-family: var(--font-heading);
-                    font-size: 9px;
-                    letter-spacing: 0.2em;
-                    text-transform: uppercase;
-                    color: var(--clr-red-400);
-                    margin-bottom: 8px;
-                  "
-                >
-                  DISCLAIMER
-                </div>
-                <p
-                  style="
-                    font-size: 11px;
-                    color: var(--clr-text-muted);
-                    line-height: 1.7;
-                    margin: 0;
-                  "
-                >
+              <div class="modal-info-box danger-accent">
+                <div class="modal-info-box-title">DISCLAIMER</div>
+                <p class="modal-info-box-text" style="font-size: 11px;">
                   This system is developed as an academic capstone project for
                   Grade 12. All data presented is for demonstration purposes.
                   For actual emergencies, always contact official emergency
@@ -479,7 +507,7 @@
     <script src="data/facilities.js"></script>
 
     <!-- Main Script -->
-    <script src="assets/js/script.js"></script>
+    <script src="assets/js/script.js?v=2.1"></script>
     <script>
       setTimeout(() => {
         const overlay = document.getElementById('loading-overlay');
