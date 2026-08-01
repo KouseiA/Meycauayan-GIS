@@ -27,8 +27,10 @@ async function handleLogin(e) {
       sessionStorage.setItem('admin_username', data.username);
       document.getElementById('login-screen').style.display = 'none';
       document.getElementById('admin-app').style.display = 'block';
-      document.getElementById('admin-username-display').textContent = data.username;
-      document.getElementById('dash-last-updated').textContent = new Date().toLocaleString();
+      const userDisp = document.getElementById('admin-username-display');
+      if (userDisp) userDisp.textContent = data.username;
+      const lastUpd = document.getElementById('dash-last-updated');
+      if (lastUpd) lastUpd.textContent = new Date().toLocaleString();
       errEl.style.display = 'none';
       initAdminApp();
     } else {
@@ -64,19 +66,34 @@ function showSection(sectionId) {
 
   if (targetSection) targetSection.classList.add('active');
   if (targetNav)     targetNav.classList.add('active');
+  closeAdminSidebar();
 }
 
 /* ============================================================
    DASHBOARD STATS
    ============================================================ */
 function refreshDashboardStats() {
-  document.getElementById('dash-barangay-count').textContent = cachedBarangays.length;
-  document.getElementById('dash-police-count').textContent   = cachedFacilities.police.length;
-  document.getElementById('dash-fire-count').textContent     = cachedFacilities.fire.length;
-  document.getElementById('dash-hosp-count').textContent     = cachedFacilities.hospital.length;
-  document.getElementById('dash-health-count').textContent   = cachedFacilities.healthCenter.length;
+  const bCount = cachedBarangays.length;
+  const pCount = cachedFacilities.police.length;
+  const fCount = cachedFacilities.fire.length;
+  const hCount = cachedFacilities.hospital.length;
+  const cCount = cachedFacilities.healthCenter.length;
 
-  document.getElementById('dash-last-updated').textContent = new Date().toLocaleString();
+  const setTxt = (id, val) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = val;
+  };
+
+  setTxt('dash-barangay-count', bCount);
+  setTxt('dash-police-count', pCount);
+  setTxt('dash-fire-count', fCount);
+  setTxt('dash-hosp-count', hCount);
+  setTxt('dash-health-count', cCount);
+
+  setTxt('bento-police-count', pCount);
+  setTxt('bento-fire-count', fCount);
+  setTxt('bento-hosp-count', hCount);
+  setTxt('bento-health-count', cCount);
 }
 
 /* ============================================================
@@ -101,7 +118,6 @@ function renderBarangayTable() {
     <tr>
       <td style="font-weight:600; color: var(--clr-text-primary);">${b.name}</td>
       <td>${b.captain || '—'}</td>
-      <td>${b.population ? b.population.toLocaleString() : 0}</td>
       <td>${b.area || '—'}</td>
       <td>${b.contact || '—'}</td>
       <td>
@@ -127,14 +143,12 @@ function openBarangayModal(barangayId) {
     if (b) {
       document.getElementById('brgy-name').value        = b.name;
       document.getElementById('brgy-captain').value     = b.captain || '';
-      document.getElementById('brgy-population').value  = b.population || '';
       document.getElementById('brgy-contact').value     = b.contact || '';
       document.getElementById('brgy-description').value = b.description || '';
     }
   } else {
     document.getElementById('brgy-name').value        = '';
     document.getElementById('brgy-captain').value     = '';
-    document.getElementById('brgy-population').value  = '';
     document.getElementById('brgy-contact').value     = '';
     document.getElementById('brgy-description').value = '';
   }
@@ -147,13 +161,12 @@ async function saveBarangay() {
   const id   = parseInt(document.getElementById('brgy-id').value);
   const name = document.getElementById('brgy-name').value.trim();
   const cap  = document.getElementById('brgy-captain').value.trim();
-  const pop  = parseInt(document.getElementById('brgy-population').value) || 0;
   const con  = document.getElementById('brgy-contact').value.trim();
   const desc = document.getElementById('brgy-description').value.trim();
 
   if (!name) { showToast('Barangay name is required.', 'error'); return; }
 
-  const payload = { id, name, captain: cap, population: pop, contact: con, description: desc };
+  const payload = { id, name, captain: cap, contact: con, description: desc };
   try {
     const res = await fetch('api/barangays.php', {
       method: 'PUT',
@@ -492,10 +505,36 @@ document.addEventListener('DOMContentLoaded', () => {
   if (token && username) {
     document.getElementById('login-screen').style.display = 'none';
     document.getElementById('admin-app').style.display = 'block';
-    document.getElementById('admin-username-display').textContent = username;
-    document.getElementById('dash-last-updated').textContent = new Date().toLocaleString();
+    const userDisp = document.getElementById('admin-username-display');
+    if (userDisp) userDisp.textContent = username;
+    const lastUpd = document.getElementById('dash-last-updated');
+    if (lastUpd) lastUpd.textContent = new Date().toLocaleString();
     initAdminApp();
   } else {
     document.getElementById('admin-app').style.display = 'none';
   }
 });
+
+/* ============================================================
+   MOBILE SIDEBAR TOGGLE LOGIC
+   ============================================================ */
+function toggleAdminSidebar() {
+  const sidebar = document.getElementById('admin-sidebar');
+  const backdrop = document.getElementById('admin-sidebar-backdrop');
+  if (!sidebar) return;
+
+  const isOpen = sidebar.classList.contains('open');
+  if (isOpen) {
+    closeAdminSidebar();
+  } else {
+    sidebar.classList.add('open');
+    if (backdrop) backdrop.classList.add('active');
+  }
+}
+
+function closeAdminSidebar() {
+  const sidebar = document.getElementById('admin-sidebar');
+  const backdrop = document.getElementById('admin-sidebar-backdrop');
+  if (sidebar) sidebar.classList.remove('open');
+  if (backdrop) backdrop.classList.remove('active');
+}

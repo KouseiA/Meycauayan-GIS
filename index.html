@@ -58,9 +58,6 @@
           return false;
         "
       >
-        <div class="brand-shield">
-          <i class="fas fa-shield-halved"></i>
-        </div>
         <div class="brand-text-wrap">
           <span class="brand-city">Meycauayan City</span>
           <span class="brand-subtitle">Emergency Facility Portal</span>
@@ -154,8 +151,8 @@
         </div>
       </div>
 
-      <!-- Right side: Emergency Button -->
-      <div class="ms-auto d-flex align-items-center gap-3">
+      <!-- Right side: Emergency Button & Mobile Toggle -->
+      <div class="ms-auto d-flex align-items-center gap-2">
         <button
           class="btn-emergency-nav"
           data-bs-toggle="modal"
@@ -164,9 +161,8 @@
           aria-label="Emergency Hotlines"
         >
           <i class="fas fa-phone"></i>
-          Emergency Hotlines
+          <span>Emergency Hotlines</span>
         </button>
-
 
         <!-- Admin link -->
         <a
@@ -175,10 +171,114 @@
           id="nav-admin"
         >
           <i class="fas fa-lock"></i>
-          Admin
+          <span>Admin</span>
         </a>
+
+        <!-- Mobile Menu Hamburger Button -->
+        <button
+          class="navbar-toggler-custom"
+          id="mobile-menu-toggle"
+          aria-label="Toggle navigation menu"
+          aria-expanded="false"
+        >
+          <i class="fas fa-bars"></i>
+        </button>
       </div>
     </nav>
+
+    <!-- ============================================================
+       MOBILE NAVIGATION OVERLAY
+       ============================================================ -->
+    <div id="mobile-nav-overlay" aria-label="Mobile Navigation Menu">
+      <div class="mobile-nav-content">
+        <!-- Home Link -->
+        <button class="mobile-nav-item" onclick="resetMapView(); closeMobileMenu();">
+          <i class="fas fa-house me-2"></i> Home
+        </button>
+
+        <!-- Barangays Accordion -->
+        <div class="mobile-accordion-item">
+          <button class="mobile-accordion-header" onclick="toggleMobileAccordion('mobile-acc-barangays')">
+            <span><i class="fas fa-map me-2"></i> Barangays</span>
+            <i class="fas fa-chevron-down acc-icon"></i>
+          </button>
+          <div class="mobile-accordion-body" id="mobile-acc-barangays">
+            <!-- Populated dynamically or shared -->
+          </div>
+        </div>
+
+        <!-- Police Stations Accordion -->
+        <div class="mobile-accordion-item">
+          <button class="mobile-accordion-header" onclick="toggleMobileAccordion('mobile-acc-police')">
+            <span><i class="fas fa-shield-halved me-2"></i> Police Stations</span>
+            <i class="fas fa-chevron-down acc-icon"></i>
+          </button>
+          <div class="mobile-accordion-body" id="mobile-acc-police">
+            <!-- Populated dynamically -->
+          </div>
+        </div>
+
+        <!-- Fire Stations Accordion -->
+        <div class="mobile-accordion-item">
+          <button class="mobile-accordion-header" onclick="toggleMobileAccordion('mobile-acc-fire')">
+            <span><i class="fas fa-fire me-2"></i> Fire Stations</span>
+            <i class="fas fa-chevron-down acc-icon"></i>
+          </button>
+          <div class="mobile-accordion-body" id="mobile-acc-fire">
+            <!-- Populated dynamically -->
+          </div>
+        </div>
+
+        <!-- Hospitals Accordion -->
+        <div class="mobile-accordion-item">
+          <button class="mobile-accordion-header" onclick="toggleMobileAccordion('mobile-acc-hospitals')">
+            <span><i class="fas fa-hospital me-2"></i> Hospitals</span>
+            <i class="fas fa-chevron-down acc-icon"></i>
+          </button>
+          <div class="mobile-accordion-body" id="mobile-acc-hospitals">
+            <!-- Populated dynamically -->
+          </div>
+        </div>
+
+        <!-- Health Centers Accordion -->
+        <div class="mobile-accordion-item">
+          <button class="mobile-accordion-header" onclick="toggleMobileAccordion('mobile-acc-health')">
+            <span><i class="fas fa-kit-medical me-2"></i> Health Centers</span>
+            <i class="fas fa-chevron-down acc-icon"></i>
+          </button>
+          <div class="mobile-accordion-body" id="mobile-acc-health">
+            <!-- Populated dynamically -->
+          </div>
+        </div>
+
+        <!-- About Link -->
+        <button
+          class="mobile-nav-item"
+          data-bs-toggle="modal"
+          data-bs-target="#about-modal"
+          onclick="closeMobileMenu()"
+        >
+          <i class="fas fa-circle-info me-2"></i> About
+        </button>
+
+        <div class="mobile-nav-divider"></div>
+
+        <!-- Emergency Hotlines in Mobile Menu -->
+        <button
+          class="mobile-nav-item text-danger-custom"
+          data-bs-toggle="modal"
+          data-bs-target="#hotlines-modal"
+          onclick="closeMobileMenu()"
+        >
+          <i class="fas fa-phone-volume me-2"></i> Emergency Hotlines
+        </button>
+
+        <!-- Admin Portal in Mobile Menu -->
+        <a href="admin.html" class="mobile-nav-item" onclick="closeMobileMenu()">
+          <i class="fas fa-lock me-2"></i> Admin Portal
+        </a>
+      </div>
+    </div>
 
     <!-- ============================================================
        MAIN APP CONTAINER (Map-first)
@@ -244,22 +344,30 @@
         </div>
       </div>
 
-      <!-- INFO PANEL (slides in from right over map) -->
+      <!-- INFO PANEL (Side panel on desktop / Collapsible Bottom Sheet on mobile) -->
       <div
         id="info-panel"
         role="complementary"
-        data-theme="light"
         aria-label="Information panel"
       >
-        <div class="info-panel-header">
-          <div style="flex: 1">
+        <div class="sheet-drag-handle" onclick="toggleInfoPanelCollapse()" aria-label="Toggle panel height"></div>
+        <div class="info-panel-header" onclick="handleHeaderClick(event)">
+          <div style="flex: 1; cursor: pointer;">
             <div id="info-type-badge" class="info-type-badge"></div>
             <h2 class="info-panel-title" id="info-panel-title">—</h2>
           </div>
           <button
+            class="info-panel-toggle-btn"
+            id="info-panel-toggle-btn"
+            onclick="toggleInfoPanelCollapse(event)"
+            aria-label="Collapse or expand info panel"
+          >
+            <i class="fas fa-chevron-down"></i>
+          </button>
+          <button
             class="info-panel-close"
             id="info-panel-close"
-            onclick="resetMapView()"
+            onclick="resetMapView(); event.stopPropagation();"
             aria-label="Close info panel"
           >
             <i class="fas fa-xmark"></i>

@@ -214,6 +214,7 @@ function openFacilityInfoPanel(facility) {
     </button>
   `;
 
+  panel.classList.remove('collapsed');
   panel.classList.add('open');
 }
 
@@ -243,7 +244,6 @@ function openBarangayInfoPanel(barangay) {
 
   const rows = [];
   rows.push(buildInfoRow('fas fa-user-tie', 'Barangay Captain', barangay.captain || '—'));
-  rows.push(buildInfoRow('fas fa-users', 'Estimated Population', barangay.population ? barangay.population.toLocaleString() : '—'));
   rows.push(buildInfoRow('fas fa-chart-area', 'Land Area', barangay.area || '—'));
   rows.push(buildInfoRow('fas fa-location-dot', 'Hall Address', barangay.address || '—'));
   rows.push(buildInfoRow('fas fa-phone', 'Contact Number', barangay.contact || '—'));
@@ -299,9 +299,10 @@ function openBarangayInfoPanel(barangay) {
 
   // Update HUD breadcrumbs
   document.getElementById('hud-breadcrumbs').innerHTML = `
-    PHILIPPINES <span class="hud-sep">/</span> BULACAN <span class="hud-sep">/</span> MEYCAUAYAN CITY <span class="hud-sep">/</span> <span style="color:#00ff66;font-weight:bold;">${barangay.name.toUpperCase()}</span>
+    PHILIPPINES <span class="hud-sep">/</span> BULACAN <span class="hud-sep">/</span> MEYCAUAYAN CITY <span class="hud-sep">/</span> <span style="color:var(--clr-cyan-400);font-weight:600;">${barangay.name.toUpperCase()}</span>
   `;
 
+  panel.classList.remove('collapsed');
   panel.classList.add('open');
   document.body.classList.add('popup-open');
   document.getElementById('map-container')?.classList.add('panel-open');
@@ -322,8 +323,32 @@ function buildInfoRow(icon, label, value) {
   `;
 }
 
+/* ============================================================
+   COLLAPSIBLE BOTTOM SHEET HELPERS
+   ============================================================ */
+function toggleInfoPanelCollapse(e) {
+  if (e) e.stopPropagation();
+  const panel = document.getElementById('info-panel');
+  if (!panel) return;
+  
+  if (window.innerWidth <= 860) {
+    panel.classList.toggle('collapsed');
+  }
+}
+
+function handleHeaderClick(e) {
+  // Toggle collapse on mobile when header is tapped (unless close button clicked)
+  if (window.innerWidth <= 860 && !e.target.closest('#info-panel-close')) {
+    toggleInfoPanelCollapse(e);
+  }
+}
+
 function closeInfoPanel() {
-  document.getElementById('info-panel').classList.remove('open');
+  const panel = document.getElementById('info-panel');
+  if (panel) {
+    panel.classList.remove('open');
+    panel.classList.remove('collapsed');
+  }
   document.body.classList.remove('popup-open');
   document.getElementById('map-container')?.classList.remove('panel-open');
   // Wait for CSS width transition then re-measure map
@@ -394,19 +419,19 @@ function focusBarangay(barangayId) {
 
   // Open info panel first, then wait for CSS transition before fitting bounds
   openBarangayInfoPanel(barangay);
+  closeMobileMenu();
 
   const selectedLayer = State.geojsonLayers[barangayId];
   if (selectedLayer) {
-    // Wait for panel width transition (400ms) then re-measure and flyToBounds
+    const isMobile = window.innerWidth <= 860;
+    const flyOptions = isMobile
+      ? { paddingTopLeft: [20, 20], paddingBottomRight: [20, 240], maxZoom: 16, duration: 1.0, easeLinearity: 0.4 }
+      : { padding: [60, 60], maxZoom: 16, duration: 1.0, easeLinearity: 0.4 };
+
     setTimeout(() => {
       State.map.invalidateSize({ animate: false });
       const bounds = selectedLayer.getBounds();
-      State.map.flyToBounds(bounds, {
-        padding: [60, 60],
-        maxZoom: 16,
-        duration: 1.0,
-        easeLinearity: 0.4
-      });
+      State.map.flyToBounds(bounds, flyOptions);
     }, 420);
   }
 }
@@ -491,7 +516,10 @@ function zoomToFacility(facilityId) {
   const facility = ALL_FACILITIES.find(f => f.id === facilityId);
   if (!facility) return;
 
-  State.map.flyTo([facility.lat, facility.lng], 17, { duration: 1.0 });
+  closeMobileMenu();
+  const isMobile = window.innerWidth <= 860;
+  const targetLat = isMobile ? facility.lat - 0.0015 : facility.lat;
+  State.map.flyTo([targetLat, facility.lng], 17, { duration: 1.0 });
 
   // Find the marker and open its popup
   const entry = State.allFacilityMarkers.find(m => m.id === facilityId);
@@ -507,63 +535,73 @@ function zoomToFacility(facilityId) {
    POPULATE NAVIGATION DROPDOWNS
    ============================================================ */
 function populateDropdowns() {
+  const isMobile = window.innerWidth <= 992;
+
   // Barangays
   const bDropdown = document.getElementById('dropdown-barangays');
-  bDropdown.innerHTML = '';
+  const mobBAcc = document.getElementById('mobile-acc-barangays');
+  if (bDropdown) bDropdown.innerHTML = '';
+  if (mobBAcc) mobBAcc.innerHTML = '';
+
   BARANGAYS_DATA.forEach((b, idx) => {
-    const btn = document.createElement('button');
-    btn.className = 'dropdown-item-custom';
-    btn.setAttribute('data-index', String(idx + 1).padStart(2, '0'));
-    btn.textContent = b.name;
-    btn.addEventListener('click', () => {
-      focusBarangay(b.id);
+    // Desktop Dropdown Item
+    if (bDropdown) {
+      const btn = document.createElement('button');
+      btn.className = 'dropdown-item-custom';
+      btn.setAttribute('data-index', String(idx + 1).padStart(2, '0'));
+      btn.textContent = b.name;
+      btn.addEventListener('click', () => {
+        focusBarangay(b.id);
+      });
+      bDropdown.appendChild(btn);
+    }
+
+    // Mobile Accordion Item
+    if (mobBAcc) {
+      const mobBtn = document.createElement('button');
+      mobBtn.className = 'mobile-accordion-link';
+      mobBtn.innerHTML = `<span class="acc-idx">${String(idx + 1).padStart(2, '0')}</span> ${b.name}`;
+      mobBtn.addEventListener('click', () => {
+        focusBarangay(b.id);
+        closeMobileMenu();
+      });
+      mobBAcc.appendChild(mobBtn);
+    }
+  });
+
+  // Helper for populating facility dropdowns
+  const populateFacilityCategory = (desktopId, mobileId, list, iconClass) => {
+    const desktopEl = document.getElementById(desktopId);
+    const mobileEl = document.getElementById(mobileId);
+    if (desktopEl) desktopEl.innerHTML = '';
+    if (mobileEl) mobileEl.innerHTML = '';
+
+    list.forEach(f => {
+      if (desktopEl) {
+        const btn = document.createElement('button');
+        btn.className = 'dropdown-item-custom';
+        btn.textContent = f.name;
+        btn.addEventListener('click', () => zoomToFacility(f.id));
+        desktopEl.appendChild(btn);
+      }
+
+      if (mobileEl) {
+        const mobBtn = document.createElement('button');
+        mobBtn.className = 'mobile-accordion-link';
+        mobBtn.innerHTML = `<i class="${iconClass} me-2"></i> ${f.name}`;
+        mobBtn.addEventListener('click', () => {
+          zoomToFacility(f.id);
+          closeMobileMenu();
+        });
+        mobileEl.appendChild(mobBtn);
+      }
     });
-    bDropdown.appendChild(btn);
-  });
+  };
 
-  // Police
-  const pDropdown = document.getElementById('dropdown-police');
-  pDropdown.innerHTML = '';
-  FACILITIES_DATA.police.forEach(f => {
-    const btn = document.createElement('button');
-    btn.className = 'dropdown-item-custom';
-    btn.textContent = f.name;
-    btn.addEventListener('click', () => zoomToFacility(f.id));
-    pDropdown.appendChild(btn);
-  });
-
-  // Fire
-  const fireDropdown = document.getElementById('dropdown-fire');
-  fireDropdown.innerHTML = '';
-  FACILITIES_DATA.fire.forEach(f => {
-    const btn = document.createElement('button');
-    btn.className = 'dropdown-item-custom';
-    btn.textContent = f.name;
-    btn.addEventListener('click', () => zoomToFacility(f.id));
-    fireDropdown.appendChild(btn);
-  });
-
-  // Hospitals
-  const hospDropdown = document.getElementById('dropdown-hospitals');
-  hospDropdown.innerHTML = '';
-  FACILITIES_DATA.hospitals.forEach(f => {
-    const btn = document.createElement('button');
-    btn.className = 'dropdown-item-custom';
-    btn.textContent = f.name;
-    btn.addEventListener('click', () => zoomToFacility(f.id));
-    hospDropdown.appendChild(btn);
-  });
-
-  // Health Centers
-  const hcDropdown = document.getElementById('dropdown-health');
-  hcDropdown.innerHTML = '';
-  FACILITIES_DATA.healthCenters.forEach(f => {
-    const btn = document.createElement('button');
-    btn.className = 'dropdown-item-custom';
-    btn.textContent = f.name;
-    btn.addEventListener('click', () => zoomToFacility(f.id));
-    hcDropdown.appendChild(btn);
-  });
+  populateFacilityCategory('dropdown-police', 'mobile-acc-police', FACILITIES_DATA.police, 'fas fa-shield-halved');
+  populateFacilityCategory('dropdown-fire', 'mobile-acc-fire', FACILITIES_DATA.fire, 'fas fa-fire');
+  populateFacilityCategory('dropdown-hospitals', 'mobile-acc-hospitals', FACILITIES_DATA.hospitals, 'fas fa-hospital');
+  populateFacilityCategory('dropdown-health', 'mobile-acc-health', FACILITIES_DATA.healthCenters, 'fas fa-kit-medical');
 }
 
 /* ============================================================
@@ -1007,4 +1045,62 @@ function downloadBoundary(barangayName, format) {
   document.body.removeChild(link);
   URL.revokeObjectURL(url);
 }
+
+/* ============================================================
+   MOBILE MENU & ACCORDION HELPERS
+   ============================================================ */
+function toggleMobileMenu() {
+  const overlay = document.getElementById('mobile-nav-overlay');
+  const btn = document.getElementById('mobile-menu-toggle');
+  if (!overlay) return;
+
+  const isOpen = overlay.classList.contains('open');
+  if (isOpen) {
+    closeMobileMenu();
+  } else {
+    overlay.classList.add('open');
+    if (btn) {
+      btn.setAttribute('aria-expanded', 'true');
+      btn.innerHTML = '<i class="fas fa-xmark"></i>';
+    }
+    document.body.style.overflow = 'hidden';
+  }
+}
+
+function closeMobileMenu() {
+  const overlay = document.getElementById('mobile-nav-overlay');
+  const btn = document.getElementById('mobile-menu-toggle');
+  if (overlay) overlay.classList.remove('open');
+  if (btn) {
+    btn.setAttribute('aria-expanded', 'false');
+    btn.innerHTML = '<i class="fas fa-bars"></i>';
+  }
+  document.body.style.overflow = '';
+}
+
+function toggleMobileAccordion(accId) {
+  const accBody = document.getElementById(accId);
+  if (!accBody) return;
+  const header = accBody.previousElementSibling;
+
+  const isExpanded = accBody.classList.contains('show');
+
+  // Close all accordions first for clean interaction
+  document.querySelectorAll('.mobile-accordion-body').forEach(el => el.classList.remove('show'));
+  document.querySelectorAll('.mobile-accordion-header').forEach(el => el.classList.remove('active'));
+
+  if (!isExpanded) {
+    accBody.classList.add('show');
+    if (header) header.classList.add('active');
+  }
+}
+
+// Bind mobile menu toggle button on load
+document.addEventListener('DOMContentLoaded', () => {
+  const toggleBtn = document.getElementById('mobile-menu-toggle');
+  if (toggleBtn) {
+    toggleBtn.addEventListener('click', toggleMobileMenu);
+  }
+});
+
 
