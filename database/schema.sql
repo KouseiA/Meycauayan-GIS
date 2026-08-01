@@ -93,7 +93,7 @@ CREATE TABLE IF NOT EXISTS admin_users (
 
 -- Default admin account: username=admin  password=admin123
 INSERT IGNORE INTO admin_users (username, password_hash)
-VALUES ('admin', '$2y$12$YtXlRVFa8cALPKSmHdmw0uhf0.Sby0ATGwWKIuJFpJQyTOlbfr5S.');
+VALUES ('admin', '$2y$12$3uBIgHYpNsJ9WXYX/Jc2ye5pfmOG.ZPWi6CFb8B/2jl/iKrwVVQUO');
 
 -- Default hotlines
 INSERT IGNORE INTO hotlines (name, category, local_number, national_number, icon_class, sort_order) VALUES
