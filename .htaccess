@@ -1,0 +1,109 @@
+# =============================================================
+# Meycauayan Emergency GIS Portal — Production .htaccess
+# =============================================================
+
+# ---------------------------------------------------------------
+# 1. Disable directory listing
+# ---------------------------------------------------------------
+Options -Indexes
+
+# ---------------------------------------------------------------
+# 2. Block access to sensitive files
+# ---------------------------------------------------------------
+<FilesMatch "\.(sql|py|bat|md|gitignore|json|sh)$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order Allow,Deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# Block specific dev files
+<Files "hash.php">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+</Files>
+
+# ---------------------------------------------------------------
+# 3. Block access to hidden files/dirs (.git, .agents, etc.)
+# ---------------------------------------------------------------
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule (^|/)\.(?!well-known/) - [F,L]
+</IfModule>
+
+# ---------------------------------------------------------------
+# 4. Block access to database/ and tools/ directories
+# ---------------------------------------------------------------
+<IfModule mod_rewrite.c>
+    RewriteRule ^database/ - [F,L]
+    RewriteRule ^tools/ - [F,L]
+</IfModule>
+
+# ---------------------------------------------------------------
+# 5. Security headers
+# ---------------------------------------------------------------
+<IfModule mod_headers.c>
+    # Prevent MIME type sniffing
+    Header set X-Content-Type-Options "nosniff"
+
+    # Clickjacking protection
+    Header set X-Frame-Options "SAMEORIGIN"
+
+    # XSS Protection (legacy browsers)
+    Header set X-XSS-Protection "1; mode=block"
+
+    # Referrer policy
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+
+    # Permissions policy — disable unnecessary browser features
+    Header set Permissions-Policy "camera=(), microphone=(), geolocation=(self)"
+</IfModule>
+
+# ---------------------------------------------------------------
+# 6. Caching for static assets (performance)
+# ---------------------------------------------------------------
+<IfModule mod_expires.c>
+    ExpiresActive On
+
+    # CSS & JS — cache 1 week (versioned via ?v= query strings)
+    ExpiresByType text/css                 "access plus 1 week"
+    ExpiresByType application/javascript   "access plus 1 week"
+    ExpiresByType text/javascript           "access plus 1 week"
+
+    # GeoJSON data — cache 1 day
+    ExpiresByType application/json         "access plus 1 day"
+    ExpiresByType application/geo+json     "access plus 1 day"
+
+    # Images — cache 1 month
+    ExpiresByType image/png                "access plus 1 month"
+    ExpiresByType image/jpeg               "access plus 1 month"
+    ExpiresByType image/svg+xml            "access plus 1 month"
+    ExpiresByType image/x-icon             "access plus 1 month"
+
+    # Fonts — cache 1 month
+    ExpiresByType font/woff2               "access plus 1 month"
+    ExpiresByType font/woff                "access plus 1 month"
+</IfModule>
+
+# ---------------------------------------------------------------
+# 7. Gzip compression (performance)
+# ---------------------------------------------------------------
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html
+    AddOutputFilterByType DEFLATE text/css
+    AddOutputFilterByType DEFLATE application/javascript
+    AddOutputFilterByType DEFLATE text/javascript
+    AddOutputFilterByType DEFLATE application/json
+    AddOutputFilterByType DEFLATE application/geo+json
+    AddOutputFilterByType DEFLATE image/svg+xml
+</IfModule>
+
+# ---------------------------------------------------------------
+# 8. Custom error pages (optional — clean error experience)
+# ---------------------------------------------------------------
+ErrorDocument 403 "Access Denied"
+ErrorDocument 404 "Page Not Found"

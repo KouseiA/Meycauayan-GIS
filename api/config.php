@@ -1,11 +1,22 @@
 <?php
 // api/config.php — Database configuration
+// -----------------------------------------------------------------
+// Environment-aware: reads from env vars in production,
+// falls back to XAMPP defaults for local development.
+// -----------------------------------------------------------------
 
-define('DB_HOST', 'localhost');
-define('DB_USER', 'root');       // XAMPP default
-define('DB_PASS', '');           // XAMPP default (empty)
-define('DB_NAME', 'meycauayan_gis');
+// Detect environment: set GIS_ENV=production on your hosting
+define('APP_ENV', getenv('GIS_ENV') ?: 'development');
+
+// Database credentials — override via env vars on production
+define('DB_HOST',    getenv('GIS_DB_HOST')    ?: 'localhost');
+define('DB_USER',    getenv('GIS_DB_USER')    ?: 'root');
+define('DB_PASS',    getenv('GIS_DB_PASS')    ?: '');
+define('DB_NAME',    getenv('GIS_DB_NAME')    ?: 'meycauayan_gis');
 define('DB_CHARSET', 'utf8mb4');
+
+// CORS origin — set GIS_CORS_ORIGIN to your domain in production
+define('CORS_ORIGIN', getenv('GIS_CORS_ORIGIN') ?: '*');
 
 /**
  * Returns a PDO connection to the MySQL database.
@@ -24,7 +35,11 @@ function getDB(): PDO {
         } catch (PDOException $e) {
             http_response_code(500);
             header('Content-Type: application/json');
-            echo json_encode(['error' => 'Database connection failed: ' . $e->getMessage()]);
+            // Hide detailed error in production
+            $msg = (APP_ENV === 'development')
+                ? 'Database connection failed: ' . $e->getMessage()
+                : 'Database connection failed. Please try again later.';
+            echo json_encode(['error' => $msg]);
             exit;
         }
     }
@@ -37,7 +52,7 @@ function getDB(): PDO {
 function jsonResponse(mixed $data, int $status = 200): void {
     http_response_code($status);
     header('Content-Type: application/json; charset=utf-8');
-    header('Access-Control-Allow-Origin: *');
+    header('Access-Control-Allow-Origin: ' . CORS_ORIGIN);
     header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
     header('Access-Control-Allow-Headers: Content-Type, Authorization');
     echo json_encode($data, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
@@ -54,7 +69,7 @@ function getRequestBody(): array {
 
 // Handle CORS preflight
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-    header('Access-Control-Allow-Origin: *');
+    header('Access-Control-Allow-Origin: ' . CORS_ORIGIN);
     header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
     header('Access-Control-Allow-Headers: Content-Type, Authorization');
     http_response_code(204);

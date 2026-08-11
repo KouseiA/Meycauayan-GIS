@@ -4,3 +4,17 @@
 Thumbs.db
 .vscode/
 node_modules/
+
+# Production config override (if using file-based config)
+api/config.production.php
+
+# Dev & temp files
+hash.php
+temp_*.py
+temp_*.js
+tools/
+
+# OS & IDE
+.idea/
+*.swp
+*.swo
