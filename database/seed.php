@@ -16,8 +16,18 @@ try {
          2. Imported <code>database/meycauayan_gis.sql</code> first</p>");
 }
 
-$pdo->exec("SET FOREIGN_KEY_CHECKS = 0; TRUNCATE TABLE facilities; TRUNCATE TABLE barangays; SET FOREIGN_KEY_CHECKS = 1;");
-$log = ["Database tables truncated (fresh seed)"];
+$log = [];
+$sqlFile = __DIR__ . '/meycauayan_gis.sql';
+$tables = $pdo->query("SHOW TABLES")->fetchAll(PDO::FETCH_COLUMN);
+
+if (empty($tables) && file_exists($sqlFile)) {
+    $sql = file_get_contents($sqlFile);
+    $pdo->exec($sql);
+    $log[] = "Initialized database from database/meycauayan_gis.sql (all tables and data created)";
+} else {
+    $pdo->exec("SET FOREIGN_KEY_CHECKS = 0; TRUNCATE TABLE facilities; TRUNCATE TABLE barangays; SET FOREIGN_KEY_CHECKS = 1;");
+    $log[] = "Database tables truncated (fresh seed)";
+}
 
 // ---------------------------------------------------------------
 // FACILITIES
