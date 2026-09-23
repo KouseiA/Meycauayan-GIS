@@ -9,7 +9,7 @@
 define('APP_ENV', getenv('GIS_ENV') ?: (getenv('RAILWAY_ENVIRONMENT') ? 'production' : 'development'));
 
 // Database credentials — support standard, Railway URL, and Railway MYSQL* env variables
-$dbUrl = getenv('DATABASE_URL');
+$dbUrl = getenv('DATABASE_URL') ?: getenv('MYSQL_URL');
 $dbHost = 'localhost';
 $dbPort = '3306';
 $dbUser = 'root';
