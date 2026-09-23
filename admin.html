@@ -12,8 +12,11 @@
   <!-- Font Awesome 6 -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+
   <!-- Admin CSS -->
-  <link rel="stylesheet" href="assets/css/admin.css?v=3.0">
+  <link rel="stylesheet" href="assets/css/admin.css?v=4.7">
 </head>
 <body>
 
@@ -135,10 +138,13 @@
         <i class="fas fa-fire"></i> Fire Stations
       </button>
       <button class="sidebar-nav-item" onclick="showSection('hospitals')" id="nav-hospitals">
-        <i class="fas fa-hospital"></i> Hospitals
+        <i class="fas fa-hospital"></i> Public Hospitals
       </button>
       <button class="sidebar-nav-item" onclick="showSection('health')" id="nav-health">
         <i class="fas fa-kit-medical"></i> Health Centers
+      </button>
+      <button class="sidebar-nav-item" onclick="showSection('cdrrmo')" id="nav-cdrrmo">
+        <i class="fas fa-triangle-exclamation"></i> CDRRMO / Rescue
       </button>
 
       <div class="sidebar-divider"></div>
@@ -371,7 +377,7 @@
 
         <div class="admin-table-wrap">
           <div class="admin-table-header">
-            <div class="admin-table-title">All Barangays (21)</div>
+            <div class="admin-table-title" id="barangay-table-title">All Barangays (26)</div>
             <input type="text" class="admin-search" id="search-barangays" placeholder="Search barangays..." oninput="filterTable('barangay-table', this.value)">
           </div>
           <div style="overflow-x:auto;">
@@ -380,6 +386,7 @@
                 <tr>
                   <th>Barangay Name</th>
                   <th>Captain</th>
+                  <th>Population</th>
                   <th>Area</th>
                   <th>Contact</th>
                   <th>Actions</th>
@@ -510,6 +517,35 @@
       </div>
 
       <!-- ======================================================
+           CDRRMO SECTION
+           ====================================================== -->
+      <div id="section-cdrrmo" class="admin-section">
+        <div class="page-header">
+          <div>
+            <div class="page-title"><i class="fas fa-triangle-exclamation"></i> CDRRMO / Rescue</div>
+            <div class="page-subtitle">Manage disaster risk reduction & rescue facilities</div>
+          </div>
+          <button class="btn-admin-add" onclick="openFacilityModal('cdrrmo')" id="btn-add-cdrrmo">
+            <i class="fas fa-plus"></i> ADD CDRRMO UNIT
+          </button>
+        </div>
+        <div class="admin-table-wrap">
+          <div class="admin-table-header">
+            <div class="admin-table-title">CDRRMO / Rescue Operations</div>
+            <input type="text" class="admin-search" placeholder="Search..." oninput="filterTable('cdrrmo-table', this.value)">
+          </div>
+          <div style="overflow-x:auto;">
+            <table class="table-admin" id="cdrrmo-table">
+              <thead><tr>
+                <th>Name</th><th>Sub-type</th><th>Barangay</th><th>Contact</th><th>Commander / Lead</th><th>Actions</th>
+              </tr></thead>
+              <tbody id="cdrrmo-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ======================================================
            HOTLINES SECTION
            ====================================================== -->
       <div id="section-hotlines" class="admin-section">
@@ -538,34 +574,108 @@
       <div id="section-announcements" class="admin-section">
         <div class="page-header">
           <div>
-            <div class="page-title"><i class="fas fa-bullhorn"></i> Announcements</div>
-            <div class="page-subtitle">Manage ticker announcements on the public portal</div>
+            <div class="page-title"><i class="fas fa-bullhorn" style="color:var(--accent-cyan);"></i> City Announcements & Advisories</div>
+            <div class="page-subtitle">Broadcast official advisories, disaster alerts, and community notices to the citizen portal</div>
           </div>
-          <button class="btn-admin-add" onclick="document.getElementById('announcement-text').focus()" id="btn-add-announce">
-            <i class="fas fa-plus"></i> ADD MESSAGE
-          </button>
+          <div class="d-flex align-items-center gap-2">
+            <span class="live-broadcast-pill"><span class="beacon-live"></span> LIVE PORTAL FEED</span>
+          </div>
         </div>
 
-        <div class="admin-table-wrap" style="padding:20px;">
-          <div class="admin-table-title" style="margin-bottom:16px;">Ticker Messages</div>
-          <label class="form-label-admin" for="announcement-text">New Announcement Message</label>
-          <textarea
-            class="form-control-admin"
-            id="announcement-text"
-            placeholder="Type your announcement message here..."
-            rows="3"
-          ></textarea>
-          <button class="btn-save" onclick="saveAnnouncement()" id="btn-save-announcement">
-            <i class="fas fa-check"></i> SAVE ANNOUNCEMENT
-          </button>
+        <!-- ANNOUNCEMENT COMPOSER -->
+        <div class="admin-table-wrap" style="padding:22px 24px; margin-bottom:20px;">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="admin-table-title" id="announcement-form-title">
+              <i class="fas fa-pen-to-square me-2" style="color:var(--accent-cyan);"></i>Create New Broadcast
+            </div>
+            <span class="text-muted" style="font-size:11px; font-family:var(--font-mono);" id="announcement-char-count">0 characters</span>
+          </div>
+
+          <!-- Quick Template Presets -->
+          <div class="announcement-templates-bar">
+            <span class="template-label"><i class="fas fa-bolt"></i> Quick Templates:</span>
+            <button type="button" class="btn-template danger" onclick="insertAnnouncementTemplate('fire')">
+              <i class="fas fa-fire"></i> Fire Alert
+            </button>
+            <button type="button" class="btn-template warning" onclick="insertAnnouncementTemplate('typhoon')">
+              <i class="fas fa-cloud-bolt"></i> Weather / Typhoon
+            </button>
+            <button type="button" class="btn-template health" onclick="insertAnnouncementTemplate('medical')">
+              <i class="fas fa-hospital"></i> Medical Notice
+            </button>
+            <button type="button" class="btn-template info" onclick="insertAnnouncementTemplate('portal')">
+              <i class="fas fa-map"></i> GIS Portal Info
+            </button>
+          </div>
+
+          <input type="hidden" id="announcement-id" value="">
+
+          <div class="row g-3">
+            <div class="col-lg-7">
+              <div class="mb-2">
+                <label class="form-label-admin" for="announcement-category">Advisory Category / Department</label>
+                <select class="form-control-admin" id="announcement-category" onchange="updateAnnouncementPreview()" style="margin-bottom:12px;">
+                  <option value="auto">⚡ Auto-Detect Category</option>
+                  <option value="danger">🚨 Fire & Disaster Emergency (BFP / 911)</option>
+                  <option value="warning">⛈️ Weather & Typhoon Advisory (CDRRMO / PAGASA)</option>
+                  <option value="health">🏥 Health & Medical Notice (City Health Office)</option>
+                  <option value="info">📢 Public Notice & GIS Portal (City Government)</option>
+                </select>
+              </div>
+
+              <label class="form-label-admin" for="announcement-text">Announcement Message</label>
+              <textarea
+                class="form-control-admin announcement-textarea"
+                id="announcement-text"
+                placeholder="Type your official announcement or advisory message here..."
+                rows="4"
+                oninput="updateAnnouncementPreview()"
+              ></textarea>
+
+              <div class="d-flex align-items-center gap-2">
+                <button class="btn-save" onclick="saveAnnouncement()" id="btn-save-announcement">
+                  <i class="fas fa-paper-plane"></i> PUBLISH BROADCAST
+                </button>
+                <button class="btn-cancel" onclick="cancelAnnouncementEdit()" id="btn-cancel-announcement" style="display:none;">
+                  <i class="fas fa-times"></i> Cancel Edit
+                </button>
+              </div>
+            </div>
+
+            <!-- LIVE PREVIEW BOX -->
+            <div class="col-lg-5">
+              <label class="form-label-admin">Citizen Portal Preview</label>
+              <div class="announcement-live-preview" id="announcement-live-preview">
+                <div class="preview-tag" id="preview-tag">
+                  <i class="fas fa-bullhorn" id="preview-icon"></i>
+                  <span id="preview-tag-text">PUBLIC INFORMATION</span>
+                </div>
+                <p class="preview-text" id="preview-text">Your announcement preview will appear here as you type...</p>
+                <div class="preview-footer">
+                  <span id="preview-source"><i class="fas fa-shield-halved text-cyan me-1"></i> City Government of Meycauayan</span>
+                  <span class="text-success"><i class="fas fa-circle-check me-1"></i> VERIFIED</span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div style="margin-top:16px;" class="admin-table-wrap">
+        <!-- SAVED ANNOUNCEMENTS TABLE -->
+        <div class="admin-table-wrap">
           <div class="admin-table-header">
-            <div class="admin-table-title">Saved Announcements</div>
+            <div class="admin-table-title"><i class="fas fa-list-check me-2" style="color:var(--accent-cyan);"></i>Published Bulletins & Advisories</div>
+            <span class="badge-count-admin" id="announcements-total-badge">0 Active</span>
           </div>
           <table class="table-admin" id="announcements-table">
-            <thead><tr><th>#</th><th>Message</th><th>Actions</th></tr></thead>
+            <thead>
+              <tr>
+                <th style="width:50px;">#</th>
+                <th style="width:160px;">Category</th>
+                <th>Advisory Message</th>
+                <th style="width:100px;">Status</th>
+                <th style="width:140px; text-align:right;">Actions</th>
+              </tr>
+            </thead>
             <tbody id="announcements-tbody"></tbody>
           </table>
         </div>
@@ -597,15 +707,37 @@
               <input type="text" class="form-control-admin" id="fac-subtype" placeholder="e.g. Main Station" style="margin-bottom:0;">
             </div>
             <div class="col-md-6">
-              <label class="form-label-admin">Barangay</label>
+              <label class="form-label-admin">Barangay <span style="font-size:10px; color:var(--cyan-400);">(Auto-detected from map)</span></label>
               <select class="form-select-admin" id="fac-barangay" style="margin-bottom:0;">
                 <option value="">Select Barangay</option>
               </select>
             </div>
             <div class="col-12">
               <label class="form-label-admin">Address *</label>
-              <input type="text" class="form-control-admin" id="fac-address" placeholder="Full address" style="margin-bottom:0;">
+              <div class="address-autocomplete-wrapper">
+                <div class="input-with-btn">
+                  <input type="text" class="form-control-admin" id="fac-address" placeholder="Type street, landmark, or barangay..." autocomplete="off" oninput="handleAddressInput('facility')" onkeydown="handleAddressKeydown(event, 'facility')" style="margin-bottom:0;">
+                  <button type="button" class="btn-locate-map" onclick="searchAddressOnMap('facility')">
+                    <i class="fas fa-location-crosshairs"></i> Locate on Map
+                  </button>
+                </div>
+                <div class="address-suggestions-dropdown" id="fac-address-suggestions" style="display:none;"></div>
+              </div>
             </div>
+
+            <!-- Interactive Map Picker for Facility -->
+            <div class="col-12">
+              <div class="map-picker-header">
+                <label class="form-label-admin mb-0"><i class="fas fa-map-location-dot"></i> Interactive Map Location Picker</label>
+                <span class="map-picker-hint"><i class="fas fa-hand-pointer"></i> Click anywhere on the map to set location</span>
+              </div>
+              <div id="fac-map-picker" class="modal-map-picker"></div>
+              <div class="map-picker-status">
+                <span class="badge-status" id="fac-map-status"><i class="fas fa-crosshairs"></i> Click map to place pin</span>
+                <span class="badge-status" id="fac-detected-status" style="display:none;"><i class="fas fa-draw-polygon"></i> Inside: <strong id="fac-detected-name"></strong></span>
+              </div>
+            </div>
+
             <div class="col-md-6">
               <label class="form-label-admin">Contact Number</label>
               <input type="text" class="form-control-admin" id="fac-contact" placeholder="(044) 000-0000" style="margin-bottom:0;">
@@ -624,11 +756,11 @@
             </div>
             <div class="col-md-6">
               <label class="form-label-admin">Latitude *</label>
-              <input type="number" step="0.0001" class="form-control-admin" id="fac-lat" placeholder="14.7240" style="margin-bottom:0;">
+              <input type="number" step="0.000001" class="form-control-admin" id="fac-lat" placeholder="14.7240" style="margin-bottom:0;">
             </div>
             <div class="col-md-6">
               <label class="form-label-admin">Longitude *</label>
-              <input type="number" step="0.0001" class="form-control-admin" id="fac-lng" placeholder="120.9639" style="margin-bottom:0;">
+              <input type="number" step="0.000001" class="form-control-admin" id="fac-lng" placeholder="120.9639" style="margin-bottom:0;">
             </div>
           </div>
         </div>
@@ -648,7 +780,7 @@
        BARANGAY FORM MODAL
        ============================================================ -->
   <div class="modal fade" id="barangay-modal" tabindex="-1" aria-labelledby="barangay-modal-label" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="barangay-modal-label">Edit Barangay</h5>
@@ -656,21 +788,65 @@
         </div>
         <div class="modal-body">
           <input type="hidden" id="brgy-id">
-          <label class="form-label-admin" for="brgy-name">Barangay Name</label>
-          <input type="text" class="form-control-admin" id="brgy-name" placeholder="Barangay name">
-          <label class="form-label-admin" for="brgy-captain">Barangay Captain</label>
-          <input type="text" class="form-control-admin" id="brgy-captain" placeholder="Hon. Full Name">
-          <label class="form-label-admin" for="brgy-contact">Contact Number</label>
-          <input type="text" class="form-control-admin" id="brgy-contact" placeholder="(044) 000-0000">
-          <label class="form-label-admin" for="brgy-description">Description</label>
-          <textarea class="form-control-admin" id="brgy-description" rows="3" placeholder="Short description..."></textarea>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label-admin" for="brgy-name">Barangay Name *</label>
+              <input type="text" class="form-control-admin" id="brgy-name" placeholder="Barangay name" style="margin-bottom:0;">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label-admin" for="brgy-captain">Barangay Captain</label>
+              <input type="text" class="form-control-admin" id="brgy-captain" placeholder="Hon. Full Name" style="margin-bottom:0;">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label-admin" for="brgy-population">Population</label>
+              <input type="number" class="form-control-admin" id="brgy-population" placeholder="e.g. 15000" style="margin-bottom:0;">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label-admin" for="brgy-area">Land Area</label>
+              <input type="text" class="form-control-admin" id="brgy-area" placeholder="e.g. 2.1 km²" style="margin-bottom:0;">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label-admin" for="brgy-contact">Contact Number</label>
+              <input type="text" class="form-control-admin" id="brgy-contact" placeholder="(044) 000-0000" style="margin-bottom:0;">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label-admin" for="brgy-address">Address</label>
+              <div class="address-autocomplete-wrapper">
+                <div class="input-with-btn">
+                  <input type="text" class="form-control-admin" id="brgy-address" placeholder="Barangay Hall Address" autocomplete="off" oninput="handleAddressInput('barangay')" onkeydown="handleAddressKeydown(event, 'barangay')" style="margin-bottom:0;">
+                  <button type="button" class="btn-locate-map" onclick="searchAddressOnMap('barangay')">
+                    <i class="fas fa-location-crosshairs"></i> Locate
+                  </button>
+                </div>
+                <div class="address-suggestions-dropdown" id="brgy-address-suggestions" style="display:none;"></div>
+              </div>
+            </div>
+
+            <!-- Interactive Map Picker for Barangay -->
+            <div class="col-12">
+              <div class="map-picker-header">
+                <label class="form-label-admin mb-0"><i class="fas fa-map-location-dot"></i> Interactive Map & Boundary Checker</label>
+                <span class="map-picker-hint"><i class="fas fa-hand-pointer"></i> Click on map to preview & place location pin</span>
+              </div>
+              <div id="brgy-map-picker" class="modal-map-picker"></div>
+              <div class="map-picker-status">
+                <span class="badge-status" id="brgy-map-status"><i class="fas fa-crosshairs"></i> Click map to place Hall / Center pin</span>
+                <span class="badge-status" id="brgy-detected-status" style="display:none;"><i class="fas fa-draw-polygon"></i> Zone: <strong id="brgy-detected-name"></strong></span>
+              </div>
+            </div>
+
+            <div class="col-12">
+              <label class="form-label-admin" for="brgy-description">Description</label>
+              <textarea class="form-control-admin" id="brgy-description" rows="2" placeholder="Short description..." style="margin-bottom:0;"></textarea>
+            </div>
+          </div>
         </div>
         <div class="modal-footer">
           <button class="btn-cancel-admin" data-bs-dismiss="modal" id="btn-brgy-cancel">
             <i class="fas fa-xmark"></i> CANCEL
           </button>
           <button class="btn-save" onclick="saveBarangay()" id="btn-brgy-save">
-            <i class="fas fa-check"></i> SAVE CHANGES
+            <i class="fas fa-check"></i> SAVE BARANGAY
           </button>
         </div>
       </div>
@@ -689,12 +865,15 @@
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
   <!-- Data Files -->
-  <script src="data/barangays.js"></script>
-  <script src="data/facilities.js"></script>
+  <script src="data/barangays.js?v=2.3"></script>
+  <script src="data/facilities.js?v=3.0"></script>
 
   <!-- Admin Script -->
-  <script src="assets/js/admin.js?v=2.0"></script>
+  <script src="assets/js/admin.js?v=5.1"></script>
 
   <script>
     /* ── Portal transition ─────────────────────────────────── */

@@ -1,0 +1,506 @@
+[
+    {
+        "name": "Meycauayan City Police Station (Main Station)",
+        "category": "Police Station",
+        "street": "Hulo-Banga Road",
+        "barangay": "Poblacion",
+        "lat": 14.73464,
+        "lng": 120.95816
+    },
+    {
+        "name": "Police Station (Malhacan Substation)",
+        "category": "Police Station",
+        "street": "Malhacan Road",
+        "barangay": "Malhacan",
+        "lat": 14.74395,
+        "lng": 120.97164
+    },
+    {
+        "name": "Police Community Precinct 1",
+        "category": "Police Station",
+        "street": "Brgy. Calvario",
+        "barangay": "Calvario",
+        "lat": 14.7351,
+        "lng": 120.95962
+    },
+    {
+        "name": "Police Community Precinct 2",
+        "category": "Police Station",
+        "street": "Brgy. Bagbaguin",
+        "barangay": "Bagbaguin",
+        "lat": 14.75985,
+        "lng": 121.00391
+    },
+    {
+        "name": "Police Community Precinct 3",
+        "category": "Police Station",
+        "street": "MacArthur Hwy",
+        "barangay": "Pandayan",
+        "lat": 14.75765,
+        "lng": 120.97729
+    },
+    {
+        "name": "Police Community Precinct 4",
+        "category": "Police Station",
+        "street": "Brgy. Poblacion",
+        "barangay": "Poblacion",
+        "lat": 14.73722,
+        "lng": 120.95717
+    },
+    {
+        "name": "Meycauayan City Fire Station (BFP Main)",
+        "category": "Fire Station",
+        "street": "Meycauayan-Iba Road",
+        "barangay": "Iba",
+        "lat": 14.74923,
+        "lng": 120.97378
+    },
+    {
+        "name": "BFP Sub-Station (Northern District)",
+        "category": "Fire Station",
+        "street": "Provincial Road",
+        "barangay": "Saluysoy",
+        "lat": 14.749,
+        "lng": 120.954
+    },
+    {
+        "name": "Ospital ng Meycauayan",
+        "category": "Public Hospital",
+        "street": "Bulac St.",
+        "barangay": "Malhacan",
+        "lat": 14.7343,
+        "lng": 120.9686
+    },
+    {
+        "name": "Meycauayan District Hospital",
+        "category": "Public Hospital",
+        "street": "Perez Road",
+        "barangay": "Perez",
+        "lat": 14.76292,
+        "lng": 120.99897
+    },
+    {
+        "name": "Meycauayan City Disaster Risk Reduction & Management Office (CDRRMO \/ Rescue Operations Center)",
+        "category": "CDRRMO",
+        "street": "Meycauayan DRRMO Operations Center",
+        "barangay": "Poblacion",
+        "lat": 14.72858,
+        "lng": 120.95894
+    },
+    {
+        "name": "CDRRMO Rescue Base (Convention Center)",
+        "category": "CDRRMO",
+        "street": "Hulo-Banga Road",
+        "barangay": "Poblacion",
+        "lat": 14.73471,
+        "lng": 120.95772
+    },
+    {
+        "name": "Bagbaguin Barangay Health Center",
+        "category": "Health Center",
+        "street": "Brgy. Bagbaguin",
+        "barangay": "Bagbaguin",
+        "lat": 14.75985,
+        "lng": 121.00391
+    },
+    {
+        "name": "Bahay Pare Barangay Health Center",
+        "category": "Health Center",
+        "street": "Brgy. Bahay Pare",
+        "barangay": "Bahay Pare",
+        "lat": 14.76953,
+        "lng": 121.0138
+    },
+    {
+        "name": "Bancal Barangay Health Center",
+        "category": "Health Center",
+        "street": "Brgy. Bancal",
+        "barangay": "Bancal",
+        "lat": 14.72586,
+        "lng": 120.95825
+    },
+    {
+        "name": "Banga Barangay Health Center",
+        "category": "Health Center",
+        "street": "Brgy. Banga",
+        "barangay": "Banga",
+        "lat": 14.72788,
+        "lng": 120.96128
+    },
+    {
+        "name": "Bayugo Barangay Health Center",
+        "category": "Health Center",
+        "street": "Brgy. Bayugo",
+        "barangay": "Bayugo",
+        "lat": 14.73394,
+        "lng": 120.9527
+    },
+    {
+        "name": "Caingin Barangay Health Center",
+        "category": "Health Center",
+        "street": "Brgy. Caingin",
+        "barangay": "Caingin",
+        "lat": 14.72371,
+        "lng": 120.97145
+    },
+    {
+        "name": "Calvario Barangay Health Center",
+        "category": "Health Center",
+        "street": "Brgy. Calvario",
+        "barangay": "Calvario",
+        "lat": 14.7351,
+        "lng": 120.95962
+    },
+    {
+        "name": "Camalig Barangay Health Center",
+        "category": "Health Center",
+        "street": "Brgy. Camalig",
+        "barangay": "Camalig",
+        "lat": 14.77175,
+        "lng": 120.99321
+    },
+    {
+        "name": "Gasak Barangay Health Center",
+        "category": "Health Center",
+        "street": "Brgy. Gasak",
+        "barangay": "Gasak",
+        "lat": 14.73398,
+        "lng": 120.95667
+    },
+    {
+        "name": "Hulo Barangay Health Center",
+        "category": "Health Center",
+        "street": "Brgy. Hulo",
+        "barangay": "Hulo",
+        "lat": 14.73124,
+        "lng": 120.9579
+    },
+    {
+        "name": "Iba Barangay Health Center",
+        "category": "Health Center",
+        "street": "Brgy. Iba",
+        "barangay": "Iba",
+        "lat": 14.75647,
+        "lng": 120.98076
+    },
+    {
+        "name": "Langka Barangay Health Center",
+        "category": "Health Center",
+        "street": "Brgy. Langka",
+        "barangay": "Langka",
+        "lat": 14.73837,
+        "lng": 120.97923
+    },
+    {
+        "name": "Lawa Barangay Health Center",
+        "category": "Health Center",
+        "street": "Brgy. Lawa",
+        "barangay": "Lawa",
+        "lat": 14.72879,
+        "lng": 120.97449
+    },
+    {
+        "name": "Libtong Barangay Health Center",
+        "category": "Health Center",
+        "street": "Libtong Barangay Hall Compound",
+        "barangay": "Libtong",
+        "lat": 14.746088,
+        "lng": 120.980953
+    },
+    {
+        "name": "Liputan Barangay Health Center",
+        "category": "Health Center",
+        "street": "Brgy. Liputan",
+        "barangay": "Liputan",
+        "lat": 14.74273,
+        "lng": 120.93117
+    },
+    {
+        "name": "Longos Barangay Health Center",
+        "category": "Health Center",
+        "street": "Brgy. Longos",
+        "barangay": "Longos",
+        "lat": 14.73674,
+        "lng": 120.94809
+    },
+    {
+        "name": "Malhacan Barangay Health Center",
+        "category": "Health Center",
+        "street": "Brgy. Malhacan",
+        "barangay": "Malhacan",
+        "lat": 14.74107,
+        "lng": 120.96979
+    },
+    {
+        "name": "Pajo Barangay Health Center",
+        "category": "Health Center",
+        "street": "Brgy. Pajo",
+        "barangay": "Pajo",
+        "lat": 14.77743,
+        "lng": 121.00946
+    },
+    {
+        "name": "Pandayan Barangay Health Center",
+        "category": "Health Center",
+        "street": "Brgy. Pandayan",
+        "barangay": "Pandayan",
+        "lat": 14.75765,
+        "lng": 120.97729
+    },
+    {
+        "name": "Perez Barangay Health Center",
+        "category": "Health Center",
+        "street": "Brgy. Perez",
+        "barangay": "Perez",
+        "lat": 14.76292,
+        "lng": 120.99897
+    },
+    {
+        "name": "Poblacion Barangay Health Center",
+        "category": "Health Center",
+        "street": "Brgy. Poblacion",
+        "barangay": "Poblacion",
+        "lat": 14.73722,
+        "lng": 120.95717
+    },
+    {
+        "name": "Saluysoy Barangay Health Center",
+        "category": "Health Center",
+        "street": "Brgy. Saluysoy",
+        "barangay": "Saluysoy",
+        "lat": 14.74319,
+        "lng": 120.95231
+    },
+    {
+        "name": "Tugatog Barangay Health Center",
+        "category": "Health Center",
+        "street": "Brgy. Tugatog",
+        "barangay": "Tugatog",
+        "lat": 14.72624,
+        "lng": 120.96477
+    },
+    {
+        "name": "Ubihan Barangay Health Center",
+        "category": "Health Center",
+        "street": "Brgy. Ubihan",
+        "barangay": "Ubihan",
+        "lat": 14.75642,
+        "lng": 120.91907
+    },
+    {
+        "name": "Zamora Barangay Health Center",
+        "category": "Health Center",
+        "street": "Brgy. Zamora",
+        "barangay": "Zamora",
+        "lat": 14.7367,
+        "lng": 120.95512
+    },
+    {
+        "name": "Bagbaguin Barangay Hall",
+        "category": "Barangay Hall",
+        "street": "Perez Street",
+        "barangay": "Bagbaguin",
+        "lat": 14.75812,
+        "lng": 121.006146
+    },
+    {
+        "name": "Bahay Pare Barangay Hall",
+        "category": "Barangay Hall",
+        "street": "Bahay Pare Road",
+        "barangay": "Bahay Pare",
+        "lat": 14.768076,
+        "lng": 121.013093
+    },
+    {
+        "name": "Bancal Barangay Hall",
+        "category": "Barangay Hall",
+        "street": "San Diego Street",
+        "barangay": "Bancal",
+        "lat": 14.724689,
+        "lng": 120.95815
+    },
+    {
+        "name": "Banga Barangay Hall",
+        "category": "Barangay Hall",
+        "street": "MacArthur Highway",
+        "barangay": "Banga",
+        "lat": 14.727845,
+        "lng": 120.961122
+    },
+    {
+        "name": "Bayugo Barangay Hall",
+        "category": "Barangay Hall",
+        "street": "Bayugo Provincial Road",
+        "barangay": "Bayugo",
+        "lat": 14.733673,
+        "lng": 120.955224
+    },
+    {
+        "name": "Caingin Barangay Hall",
+        "category": "Barangay Hall",
+        "street": "Caingin Road, Villa Feliza",
+        "barangay": "Caingin",
+        "lat": 14.727376,
+        "lng": 120.97082
+    },
+    {
+        "name": "Calvario Barangay Hall",
+        "category": "Barangay Hall",
+        "street": "162 Abacan Street",
+        "barangay": "Calvario",
+        "lat": 14.7341,
+        "lng": 120.9594
+    },
+    {
+        "name": "Camalig Barangay Hall",
+        "category": "Barangay Hall",
+        "street": "Camalig Road",
+        "barangay": "Camalig",
+        "lat": 14.769637,
+        "lng": 120.993324
+    },
+    {
+        "name": "Gasak Barangay Hall",
+        "category": "Barangay Hall",
+        "street": "Saint Francis Street",
+        "barangay": "Gasak",
+        "lat": 14.733741,
+        "lng": 120.956904
+    },
+    {
+        "name": "Hulo Barangay Hall",
+        "category": "Barangay Hall",
+        "street": "Hulo-Banga Road",
+        "barangay": "Hulo",
+        "lat": 14.732167,
+        "lng": 120.958798
+    },
+    {
+        "name": "Iba Barangay Hall",
+        "category": "Barangay Hall",
+        "street": "Meycauayan-Iba Road",
+        "barangay": "Iba",
+        "lat": 14.755508,
+        "lng": 120.979627
+    },
+    {
+        "name": "Langka Barangay Hall",
+        "category": "Barangay Hall",
+        "street": "Langka Barangay Hall Road",
+        "barangay": "Langka",
+        "lat": 14.739524,
+        "lng": 120.980944
+    },
+    {
+        "name": "Lawa Barangay Hall",
+        "category": "Barangay Hall",
+        "street": "Lawa Road, Meywoods Phase I",
+        "barangay": "Lawa",
+        "lat": 14.734103,
+        "lng": 120.977922
+    },
+    {
+        "name": "Libtong Barangay Hall",
+        "category": "Barangay Hall",
+        "street": "Libtong Barangay Hall",
+        "barangay": "Libtong",
+        "lat": 14.746088,
+        "lng": 120.980953
+    },
+    {
+        "name": "Liputan Barangay Hall",
+        "category": "Barangay Hall",
+        "street": "Liputan Road",
+        "barangay": "Liputan",
+        "lat": 14.738625,
+        "lng": 120.927326
+    },
+    {
+        "name": "Longos Barangay Hall",
+        "category": "Barangay Hall",
+        "street": "Estranio Street",
+        "barangay": "Longos",
+        "lat": 14.734811,
+        "lng": 120.949439
+    },
+    {
+        "name": "Malhacan Barangay Hall",
+        "category": "Barangay Hall",
+        "street": "Malhacan Road, Zigzag Hills",
+        "barangay": "Malhacan",
+        "lat": 14.743946,
+        "lng": 120.97178
+    },
+    {
+        "name": "Pajo Barangay Hall",
+        "category": "Barangay Hall",
+        "street": "Pajo Road",
+        "barangay": "Pajo",
+        "lat": 14.777429,
+        "lng": 121.009459
+    },
+    {
+        "name": "Pandayan Barangay Hall",
+        "category": "Barangay Hall",
+        "street": "Kingfisher St, St. Francis Village 2",
+        "barangay": "Pandayan",
+        "lat": 14.749703,
+        "lng": 120.965573
+    },
+    {
+        "name": "Pantoc Barangay Hall",
+        "category": "Barangay Hall",
+        "street": "Pantoc Road",
+        "barangay": "Pantoc",
+        "lat": 14.76247,
+        "lng": 120.97784
+    },
+    {
+        "name": "Perez Barangay Hall",
+        "category": "Barangay Hall",
+        "street": "Saint Peter St, Santo Niño Village Phase 3-A",
+        "barangay": "Perez",
+        "lat": 14.764828,
+        "lng": 120.997039
+    },
+    {
+        "name": "Poblacion Barangay Hall",
+        "category": "Barangay Hall",
+        "street": "Gov. Licaros Avenue",
+        "barangay": "Poblacion",
+        "lat": 14.7349,
+        "lng": 120.9578
+    },
+    {
+        "name": "Saluysoy Barangay Hall",
+        "category": "Barangay Hall",
+        "street": "Everlasting St, Rosas Centro",
+        "barangay": "Saluysoy",
+        "lat": 14.742546,
+        "lng": 120.957401
+    },
+    {
+        "name": "Tugatog Barangay Hall",
+        "category": "Barangay Hall",
+        "street": "Tugatog Road",
+        "barangay": "Tugatog",
+        "lat": 14.724945,
+        "lng": 120.965467
+    },
+    {
+        "name": "Ubihan Barangay Hall",
+        "category": "Barangay Hall",
+        "street": "Ubihan Road",
+        "barangay": "Ubihan",
+        "lat": 14.752089,
+        "lng": 120.910332
+    },
+    {
+        "name": "Zamora Barangay Hall",
+        "category": "Barangay Hall",
+        "street": "Zamora Street",
+        "barangay": "Zamora",
+        "lat": 14.7367,
+        "lng": 120.955121
+    }
+]

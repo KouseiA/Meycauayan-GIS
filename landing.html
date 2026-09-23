@@ -1,0 +1,564 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Meycauayan City Emergency Facility GIS Portal — An interactive geospatial emergency command center mapping 26 barangays, hospitals, fire stations, and police headquarters in Bulacan."
+    />
+    <meta
+      name="keywords"
+      content="Meycauayan, Emergency GIS, Bulacan, Barangay map, Police Station, Fire Station, Hospital, CDRRMO"
+    />
+    <title>Meycauayan City | Emergency Facility GIS Portal</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Font Awesome 6 -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+
+    <!-- Custom Landing Page Styles (Fey, Felt, Mapbox, Index, CARTO inspired) -->
+    <link rel="stylesheet" href="assets/css/landing.css?v=1.0" />
+
+    <!-- Favicon -->
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#128737;</text></svg>"
+    />
+  </head>
+  <body>
+    <!-- Ambient Background Lighting Orbs -->
+    <div class="ambient-glow" aria-hidden="true">
+      <div class="glow-orb orb-1"></div>
+      <div class="glow-orb orb-2"></div>
+      <div class="glow-orb orb-3"></div>
+    </div>
+
+    <!-- ============================================================
+       1. NAVBAR (Fey-Inspired Floating Glass)
+       ============================================================ -->
+    <header class="landing-header">
+      <nav class="nav-glass" aria-label="Main Navigation">
+        <a href="landing.html" class="nav-brand">
+          <div class="brand-icon-box">
+            <i class="fas fa-shield-halved"></i>
+          </div>
+          <div class="brand-titles">
+            <span class="brand-name">Meycauayan GIS</span>
+            <span class="brand-tag">Emergency Command Portal</span>
+          </div>
+        </a>
+
+        <!-- Desktop Menu -->
+        <ul class="nav-menu">
+          <li><a href="#overview" class="nav-link">Overview</a></li>
+          <li><a href="#features" class="nav-link">GIS Features</a></li>
+          <li><a href="#how-it-works" class="nav-link">How It Works</a></li>
+          <li><a href="#directory" class="nav-link">Hotlines</a></li>
+          <li><a href="#tech" class="nav-link">Technology</a></li>
+        </ul>
+
+        <!-- Right Action Button & Mobile Toggle -->
+        <div class="nav-right">
+          <span class="badge-pill d-none d-md-inline-flex">
+            <span class="pulse-dot"></span>
+            24/7 Live Portal
+          </span>
+          <a href="index.html" class="btn btn-primary btn-sm">
+            <span>Launch Map</span>
+            <i class="fas fa-arrow-right"></i>
+          </a>
+          <button class="mobile-toggle" aria-label="Toggle mobile menu">
+            <i class="fas fa-bars"></i>
+          </button>
+        </div>
+      </nav>
+    </header>
+
+    <!-- ============================================================
+       2. HERO SECTION (Felt + Mapbox Inspired)
+       ============================================================ -->
+    <section class="hero-section" id="overview">
+      <div class="container">
+        <div class="hero-content">
+          <div class="hero-badge-wrap">
+            <span class="badge-pill">
+              <i class="fas fa-map-location-dot"></i>
+              City of Meycauayan • Province of Bulacan
+            </span>
+          </div>
+          <h1 class="hero-title">
+            Seconds Count in an Emergency.<br />
+            <span class="gradient-text">Locate Safety in Real Time.</span>
+          </h1>
+          <p class="hero-subtitle">
+            An intelligent geospatial GIS command portal mapping all 26 administrative barangays, hospitals, fire departments, police stations, and evacuation shelters across Meycauayan City.
+          </p>
+          <div class="hero-actions">
+            <a href="index.html" class="btn btn-primary" id="hero-cta-launch">
+              <i class="fas fa-map"></i>
+              <span>Launch Interactive GIS Map</span>
+            </a>
+            <a href="#directory" class="btn btn-danger-glow" id="hero-cta-hotlines">
+              <i class="fas fa-phone-volume"></i>
+              <span>Emergency Hotlines</span>
+            </a>
+            <a href="#features" class="btn btn-secondary">
+              <i class="fas fa-compass"></i>
+              <span>Explore Features</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Simulated Radar & Interactive Map Preview Card -->
+        <div class="hero-map-preview-wrap">
+          <div class="hero-map-card">
+            <!-- Window Topbar -->
+            <div class="map-card-topbar">
+              <div class="topbar-dots">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+              <div class="topbar-title">
+                <i class="fas fa-satellite-dish text-primary"></i>
+                Meycauayan Telemetry & Spatial Grid
+              </div>
+              <!-- Interactive Category Toggles -->
+              <div class="topbar-pills">
+                <button class="pill-btn active" data-filter="all">All</button>
+                <button class="pill-btn" data-filter="hospital">Medical</button>
+                <button class="pill-btn" data-filter="fire">Fire</button>
+                <button class="pill-btn" data-filter="police">Police</button>
+                <button class="pill-btn" data-filter="evac">Evacuation</button>
+              </div>
+            </div>
+
+            <!-- Simulated Dark Map Canvas -->
+            <div class="simulated-map-viewport">
+              <div class="radar-ring-1"></div>
+              <div class="radar-sweep"></div>
+
+              <!-- Center City Reference -->
+              <div class="sim-pin pin-center">
+                <i class="fas fa-building-columns text-primary"></i>
+                <span>Meycauayan City Hall</span>
+              </div>
+
+              <!-- Interactive Pins -->
+              <div class="sim-pin hospital pin-1" data-id="meycauayan-doctors">
+                <i class="fas fa-hospital"></i>
+                <span>Meycauayan Doctors Hospital</span>
+              </div>
+
+              <div class="sim-pin fire pin-2" data-id="bfp-station">
+                <i class="fas fa-fire-extinguisher"></i>
+                <span>BFP Central Station</span>
+              </div>
+
+              <div class="sim-pin police pin-3" data-id="city-police">
+                <i class="fas fa-shield"></i>
+                <span>PNP City Station</span>
+              </div>
+
+              <div class="sim-pin evac pin-4" data-id="city-hall-evac">
+                <i class="fas fa-person-shelter"></i>
+                <span>Barangay Evac Center</span>
+              </div>
+
+              <!-- Live Proximity Overlay Feedback Card -->
+              <div class="proximity-chip-overlay" id="hero-proximity-chip">
+                <div class="chip-sub">Nearest Facility Detected</div>
+                <div class="chip-main" id="hero-proximity-text">
+                  <i class="fas fa-location-dot" style="color: var(--accent-cyan);"></i>
+                  BFP Meycauayan Central Fire Station
+                </div>
+                <div style="font-size: 0.8rem; color: var(--accent-emerald); font-weight: 600; margin-top: 0.2rem;" id="hero-proximity-dist">
+                  850 m away • 2 min response
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+       3. METRIC TICKER STRIP (CARTO Inspired)
+       ============================================================ -->
+    <section class="metric-strip-section">
+      <div class="container">
+        <div class="metric-grid">
+          <div class="metric-card">
+            <div class="metric-number" data-target="26">0</div>
+            <div class="metric-label">Administrative Barangays Mapped</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-number" data-target="36" data-suffix="+">0</div>
+            <div class="metric-label">Emergency Facilities Geocoded</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-number" data-target="3" data-prefix="< " data-suffix="s">0</div>
+            <div class="metric-label">Live Proximity Calculation Time</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-number" data-target="6" data-suffix=" Lines">0</div>
+            <div class="metric-label">24/7 Dedicated Response Hotlines</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+       4. BENTO GRID SHOWCASE (Index App Inspired)
+       ============================================================ -->
+    <section class="container" id="features">
+      <div class="section-header">
+        <span class="section-tag">Core Capabilities</span>
+        <h2 class="section-title">Engineered for Rapid Response</h2>
+        <p class="section-desc">
+          State-of-the-art GIS mapping features built specifically for the residents and disaster response teams of Meycauayan City.
+        </p>
+      </div>
+
+      <div class="bento-grid">
+        <!-- Bento 1: Large GIS Map Multi-Layer (8 cols) -->
+        <div class="bento-card bento-col-8">
+          <div class="bento-icon-badge" style="background: rgba(59, 130, 246, 0.15); color: var(--accent-blue);">
+            <i class="fas fa-layer-group"></i>
+          </div>
+          <h3>Multi-Layered GeoJSON Boundary Mapping</h3>
+          <p>
+            Explore accurate municipal borders, barangay jurisdictions, and custom markers with smooth Leaflet vector rendering. Toggle layers independently to analyze medical clinics, police sub-stations, and flood-prone zones.
+          </p>
+          <div class="bento-visual">
+            <div class="layer-tags">
+              <span class="layer-tag"><i class="fas fa-hospital text-emerald"></i> 14+ Health Centers</span>
+              <span class="layer-tag"><i class="fas fa-shield text-blue"></i> 8 Police Stations</span>
+              <span class="layer-tag"><i class="fas fa-fire-extinguisher text-danger"></i> 4 Fire Stations</span>
+              <span class="layer-tag"><i class="fas fa-person-shelter text-amber"></i> 10 Evacuation Shelters</span>
+              <span class="layer-tag"><i class="fas fa-moon text-cyan"></i> Dark / Light Basemaps</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bento 2: GPS Proximity Radar (4 cols) -->
+        <div class="bento-card bento-col-4">
+          <div class="bento-icon-badge" style="background: rgba(16, 185, 129, 0.15); color: var(--accent-emerald);">
+            <i class="fas fa-crosshairs"></i>
+          </div>
+          <h3>Haversine Proximity Radar</h3>
+          <p>
+            Uses device GPS and mathematical Haversine calculations to identify the absolute closest emergency facility from your exact coordinates in seconds.
+          </p>
+          <div class="bento-visual">
+            <div class="proximity-radar-visual">
+              <div>
+                <div class="status"><i class="fas fa-circle-dot me-1"></i> Live Distance</div>
+                <small style="color: var(--text-dim);">Nearest Medical Center</small>
+              </div>
+              <div class="dist">1.2 km</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bento 3: 1-Tap Emergency Speed-Dial (4 cols) -->
+        <div class="bento-card bento-col-4">
+          <div class="bento-icon-badge" style="background: rgba(239, 68, 68, 0.15); color: var(--accent-red);">
+            <i class="fas fa-phone-volume"></i>
+          </div>
+          <h3>1-Tap Speed-Dial Sheet</h3>
+          <p>
+            Every second counts. Trigger direct phone calls to CDRRMO Rescue, BFP Firefighters, and PNP Police directly from your mobile screen with zero friction.
+          </p>
+          <div class="bento-visual">
+            <div class="mini-speed-dial-list">
+              <div class="mini-dial-item">
+                <span class="name">CDRRMO Rescue</span>
+                <span class="tel">(044) 305-7281</span>
+              </div>
+              <div class="mini-dial-item">
+                <span class="name">BFP Fire Rescue</span>
+                <span class="tel">(044) 320-2222</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bento 4: Evacuation Shelters & Flood Readiness (4 cols) -->
+        <div class="bento-card bento-col-4">
+          <div class="bento-icon-badge" style="background: rgba(245, 158, 11, 0.15); color: var(--accent-amber);">
+            <i class="fas fa-person-shelter"></i>
+          </div>
+          <h3>Disaster Evacuation Network</h3>
+          <p>
+            Detailed capacity ratings, primary contact officers, and safe elevation routing for designated evacuation centers across all flood-susceptible barangays.
+          </p>
+          <div class="bento-visual">
+            <div style="display: flex; align-items: center; justify-content: space-between; font-size: 0.85rem;">
+              <span style="color: var(--text-light);"><i class="fas fa-users me-1 text-amber"></i> Multi-purpose Shelters</span>
+              <span style="color: var(--accent-amber); font-weight: 700;">10,000+ Capacity</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bento 5: Touch-First Mobile UI (4 cols) -->
+        <div class="bento-card bento-col-4">
+          <div class="bento-icon-badge" style="background: rgba(139, 92, 246, 0.15); color: var(--accent-purple);">
+            <i class="fas fa-mobile-screen-button"></i>
+          </div>
+          <h3>Touch-Optimized Mobile UX</h3>
+          <p>
+            Engineered with bottom navigation sheets, ergonomic floating action buttons, and fluid gestures so anyone can navigate effortlessly during an emergency.
+          </p>
+          <div class="bento-visual">
+            <div style="display: flex; align-items: center; justify-content: space-between; font-size: 0.85rem;">
+              <span style="color: var(--text-light);"><i class="fas fa-hand-pointer me-1 text-purple"></i> Thumb-zone Navigation</span>
+              <span style="color: #c084fc; font-weight: 700;">100% Mobile Ready</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+       5. 3-STEP USER JOURNEY (CARTO Inspired)
+       ============================================================ -->
+    <section class="how-it-works-section" id="how-it-works">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">Civilian Emergency Flow</span>
+          <h2 class="section-title">How It Works in 3 Simple Steps</h2>
+          <p class="section-desc">
+            Designed for intuitive clarity when panic and crisis strike.
+          </p>
+        </div>
+
+        <div class="steps-grid">
+          <!-- Step 1 -->
+          <div class="step-card">
+            <div class="step-number-badge">01</div>
+            <h3>Pin or Detect Location</h3>
+            <p>
+              Tap the GPS locator button to detect your current position, or select your barangay from the comprehensive 26-barangay directory to focus the map.
+            </p>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="step-card">
+            <div class="step-number-badge">02</div>
+            <h3>Filter Emergency Type</h3>
+            <p>
+              Choose your emergency category: Medical Emergency, Fire Hazard, Police Assistance, or Disaster Evacuation Shelter. Only relevant facilities are highlighted.
+            </p>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="step-card">
+            <div class="step-number-badge">03</div>
+            <h3>Dispatch & Speed-Dial</h3>
+            <p>
+              Instantly review the distance in meters, turn-by-turn navigation directions, and press the direct Speed-Dial button to connect with emergency responders.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+       6. EMERGENCY HOTLINES SPEED-DIAL DIRECTORY
+       ============================================================ -->
+    <section class="directory-section" id="directory">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag" style="color: var(--accent-red);">Direct 24/7 Dispatch</span>
+          <h2 class="section-title">Emergency Hotline Directory</h2>
+          <p class="section-desc">
+            Direct telephone dispatch numbers for government and medical responders in Meycauayan City, Bulacan.
+          </p>
+        </div>
+
+        <div class="hotline-grid">
+          <!-- CDRRMO Rescue -->
+          <a href="tel:0443057281" class="hotline-card">
+            <div>
+              <div class="hotline-card-header">
+                <div class="hotline-icon" style="background: rgba(239, 68, 68, 0.15); color: var(--accent-red);">
+                  <i class="fas fa-truck-medical"></i>
+                </div>
+                <div>
+                  <div class="hotline-agency">CDRRMO Rescue</div>
+                  <div class="hotline-desc">Disaster Risk Reduction Office</div>
+                </div>
+              </div>
+            </div>
+            <div class="hotline-number-box">
+              <span class="hotline-number">(044) 305-7281</span>
+              <span class="hotline-call-btn"><i class="fas fa-phone"></i> Call</span>
+            </div>
+          </a>
+
+          <!-- BFP Fire Protection -->
+          <a href="tel:0443202222" class="hotline-card">
+            <div>
+              <div class="hotline-card-header">
+                <div class="hotline-icon" style="background: rgba(245, 158, 11, 0.15); color: var(--accent-amber);">
+                  <i class="fas fa-fire-extinguisher"></i>
+                </div>
+                <div>
+                  <div class="hotline-agency">BFP Meycauayan</div>
+                  <div class="hotline-desc">Bureau of Fire Protection</div>
+                </div>
+              </div>
+            </div>
+            <div class="hotline-number-box">
+              <span class="hotline-number">(044) 320-2222</span>
+              <span class="hotline-call-btn" style="background: var(--accent-amber);"><i class="fas fa-phone"></i> Call</span>
+            </div>
+          </a>
+
+          <!-- PNP City Police -->
+          <a href="tel:0447693393" class="hotline-card">
+            <div>
+              <div class="hotline-card-header">
+                <div class="hotline-icon" style="background: rgba(59, 130, 246, 0.15); color: var(--accent-blue);">
+                  <i class="fas fa-handcuffs"></i>
+                </div>
+                <div>
+                  <div class="hotline-agency">PNP Meycauayan</div>
+                  <div class="hotline-desc">City Police Headquarters</div>
+                </div>
+              </div>
+            </div>
+            <div class="hotline-number-box">
+              <span class="hotline-number">(044) 769-3393</span>
+              <span class="hotline-call-btn" style="background: var(--accent-blue);"><i class="fas fa-phone"></i> Call</span>
+            </div>
+          </a>
+
+          <!-- Meycauayan Doctors Hospital -->
+          <a href="tel:0448152500" class="hotline-card">
+            <div>
+              <div class="hotline-card-header">
+                <div class="hotline-icon" style="background: rgba(16, 185, 129, 0.15); color: var(--accent-emerald);">
+                  <i class="fas fa-hospital"></i>
+                </div>
+                <div>
+                  <div class="hotline-agency">Meycauayan Doctors</div>
+                  <div class="hotline-desc">Emergency Room & Trauma</div>
+                </div>
+              </div>
+            </div>
+            <div class="hotline-number-box">
+              <span class="hotline-number">(044) 815-2500</span>
+              <span class="hotline-call-btn" style="background: var(--accent-emerald);"><i class="fas fa-phone"></i> Call</span>
+            </div>
+          </a>
+
+          <!-- Mary Mount Hospital -->
+          <a href="tel:0447696279" class="hotline-card">
+            <div>
+              <div class="hotline-card-header">
+                <div class="hotline-icon" style="background: rgba(16, 185, 129, 0.15); color: var(--accent-emerald);">
+                  <i class="fas fa-staff-snake"></i>
+                </div>
+                <div>
+                  <div class="hotline-agency">Mary Mount Hospital</div>
+                  <div class="hotline-desc">Emergency Medical Service</div>
+                </div>
+              </div>
+            </div>
+            <div class="hotline-number-box">
+              <span class="hotline-number">(044) 769-6279</span>
+              <span class="hotline-call-btn" style="background: var(--accent-emerald);"><i class="fas fa-phone"></i> Call</span>
+            </div>
+          </a>
+
+          <!-- Red Cross Bulacan -->
+          <a href="tel:0447910563" class="hotline-card">
+            <div>
+              <div class="hotline-card-header">
+                <div class="hotline-icon" style="background: rgba(239, 68, 68, 0.15); color: var(--accent-red);">
+                  <i class="fas fa-square-plus"></i>
+                </div>
+                <div>
+                  <div class="hotline-agency">Philippine Red Cross</div>
+                  <div class="hotline-desc">Bulacan Chapter Hotline</div>
+                </div>
+              </div>
+            </div>
+            <div class="hotline-number-box">
+              <span class="hotline-number">(044) 791-0563</span>
+              <span class="hotline-call-btn"><i class="fas fa-phone"></i> Call</span>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+       7. TECH STACK & CAPSTONE ACCREDITATION
+       ============================================================ -->
+    <section class="tech-section" id="tech">
+      <div class="container">
+        <span class="section-tag">System Architecture</span>
+        <h2 class="section-title">Built with Open & Robust Geospatial Tech</h2>
+        <p class="section-desc">
+          Designed as an academic capstone research project serving the municipal emergency infrastructure of Meycauayan City.
+        </p>
+
+        <div class="tech-badges-wrap">
+          <span class="tech-chip"><i class="fas fa-map-pin"></i> Leaflet.js Mapping Engine</span>
+          <span class="tech-chip"><i class="fas fa-globe"></i> OpenStreetMap Tile Server</span>
+          <span class="tech-chip"><i class="fas fa-draw-polygon"></i> GeoJSON Spatial Boundaries</span>
+          <span class="tech-chip"><i class="fas fa-compass"></i> Haversine Proximity Math</span>
+          <span class="tech-chip"><i class="fab fa-bootstrap"></i> Bootstrap 5 & Flexbox</span>
+          <span class="tech-chip"><i class="fab fa-js"></i> Vanilla ES6+ Logic</span>
+          <span class="tech-chip"><i class="fab fa-php"></i> PHP 8 REST API</span>
+          <span class="tech-chip"><i class="fas fa-database"></i> MySQL Relational Schema</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+       8. FOOTER
+       ============================================================ -->
+    <footer class="landing-footer">
+      <div class="container">
+        <div class="footer-top">
+          <div class="nav-brand">
+            <div class="brand-icon-box">
+              <i class="fas fa-shield-halved"></i>
+            </div>
+            <div class="brand-titles">
+              <span class="brand-name">Meycauayan City GIS</span>
+              <span class="brand-tag">Emergency Facility Information Portal</span>
+            </div>
+          </div>
+          <ul class="footer-links">
+            <li><a href="index.html">Interactive Map</a></li>
+            <li><a href="admin.html">Admin Portal</a></li>
+            <li><a href="#overview">Back to Top</a></li>
+          </ul>
+        </div>
+        <div class="footer-bottom">
+          <p>© 2026 City Government of Meycauayan, Bulacan • Senior High School Capstone GIS Project</p>
+          <p style="color: var(--text-dim);">Public Safety • Open Data • Fast Response</p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Landing Page Scripts -->
+    <script src="assets/js/landing.js?v=1.0"></script>
+  </body>
+</html>

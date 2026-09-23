@@ -1,0 +1,158 @@
+{
+    "Bagbaguin": {
+        "lat": 14.75812,
+        "lng": 121.0061457,
+        "src": "OSM",
+        "name": "Bagbaguin Barangay Hall, Perez Street, Bagbaguin, Meycauayan, Bulacan, Central Luzon, 3020, Philippines"
+    },
+    "Bahay Pare": {
+        "lat": 14.7680757,
+        "lng": 121.0130927,
+        "src": "Photon",
+        "name": "Bahay Pare Barangay Hall"
+    },
+    "Bancal": {
+        "lat": 14.7246894,
+        "lng": 120.9581495,
+        "src": "OSM",
+        "name": "Bancal Barangay Hall, San Diego Street, Bancal, Meycauayan, Bulacan, Central Luzon, 3020, Philippines"
+    },
+    "Banga": {
+        "lat": 14.727845,
+        "lng": 120.961122,
+        "src": "OSM",
+        "name": "Banga Barangay Hall, MacArthur Highway, Banga, Meycauayan, Bulacan, Central Luzon, 3020, Philippines"
+    },
+    "Bayugo": {
+        "lat": 14.7336734,
+        "lng": 120.955224,
+        "src": "Photon",
+        "name": "Bayugo Barangay Health Center 2"
+    },
+    "Caingin": {
+        "lat": 14.7273757,
+        "lng": 120.9708201,
+        "src": "OSM",
+        "name": "Caingin Barangay Hall, Caingin Road, Villa Feliza, Caingin, Meycauayan, Bulacan, Central Luzon, 3020, Philippines"
+    },
+    "Calvario": {
+        "lat": 14.7555081,
+        "lng": 120.9796268,
+        "src": "Photon",
+        "name": "Iba Barangay Hall"
+    },
+    "Camalig": {
+        "lat": 14.7696371,
+        "lng": 120.9933242,
+        "src": "OSM",
+        "name": "Camalig Barangay Hall, Camalig Road, Camalig, Meycauayan, Bulacan, Central Luzon, 3020, Philippines"
+    },
+    "Gasak": {
+        "lat": 14.7337408,
+        "lng": 120.9569044,
+        "src": "OSM",
+        "name": "Saint Francis Barangay Hall, Saint Francis, Meycauayan, Bulacan, Central Luzon, 3060, Philippines"
+    },
+    "Hulo": {
+        "lat": 14.7321669,
+        "lng": 120.9587979,
+        "src": "OSM",
+        "name": "Hulo Barangay Hall, Hulo - Banga Road, Hulo, Meycauayan, Bulacan, Central Luzon, 3020, Philippines"
+    },
+    "Iba": {
+        "lat": 14.7555081,
+        "lng": 120.9796268,
+        "src": "OSM",
+        "name": "Iba Barangay Hall, Meycauayan-Iba Road, Sterling Industrial Park, Iba, Meycauayan, Bulacan, Central Luzon, 3020, Philippines"
+    },
+    "Langka": {
+        "lat": 14.739524,
+        "lng": 120.980944,
+        "src": "Photon",
+        "name": "Sangguniang Pambarangay ng Langka"
+    },
+    "Lawa": {
+        "lat": 14.7341034,
+        "lng": 120.9779221,
+        "src": "OSM",
+        "name": "Lawa Barangay Hall, Lawa Road, Meywoods Phase I, Lawa, Meycauayan, Bulacan, Central Luzon, 3020, Philippines"
+    },
+    "Libtong": {
+        "lat": 14.7462027,
+        "lng": 120.972867,
+        "src": "Photon",
+        "name": "Malhacan Barangay Hall"
+    },
+    "Liputan": {
+        "lat": 14.7386254,
+        "lng": 120.9273257,
+        "src": "Photon",
+        "name": "Liputan Barangay Health Center"
+    },
+    "Longos": {
+        "lat": 14.7348113,
+        "lng": 120.9494386,
+        "src": "OSM",
+        "name": "Longos Barangay Hall, Estranio Street, Longos, Meycauayan, Bulacan, Central Luzon, 3020, Philippines"
+    },
+    "Malhacan": {
+        "lat": 14.7439459,
+        "lng": 120.97178,
+        "src": "OSM",
+        "name": "Malhacan Barangay Hall, Malhacan Road, Zigzag Hills, Malhacan, Meycauayan, Bulacan, Central Luzon, 3020, Philippines"
+    },
+    "Pajo": {
+        "lat": 14.7555081,
+        "lng": 120.9796268,
+        "src": "Photon",
+        "name": "Iba Barangay Hall"
+    },
+    "Pandayan": {
+        "lat": 14.749703,
+        "lng": 120.9655734,
+        "src": "OSM",
+        "name": "Pandayan Barangay Hall, Kingfisher Street, Saint Francis Village 2, Pandayan, Meycauayan, Bulacan, Central Luzon, 3020, Philippines"
+    },
+    "Pantoc": {
+        "lat": 14.7555081,
+        "lng": 120.9796268,
+        "src": "Photon",
+        "name": "Iba Barangay Hall"
+    },
+    "Perez": {
+        "lat": 14.7648275,
+        "lng": 120.9970389,
+        "src": "OSM",
+        "name": "Perez Barangay Hall, Saint Peter Street, Santo Ni\u00f1o Village Phase 3-A, Perez, Meycauayan, Bulacan, Central Luzon, 3020, Philippines"
+    },
+    "Poblacion": {
+        "lat": 14.7555081,
+        "lng": 120.9796268,
+        "src": "Photon",
+        "name": "Iba Barangay Hall"
+    },
+    "Saluysoy": {
+        "lat": 14.7425458,
+        "lng": 120.9574014,
+        "src": "OSM",
+        "name": "Saluysoy Barangay Hall, Everlasting Street, Rosas Centro, Saluysoy, Meycauayan, Bulacan, Central Luzon, 3020, Philippines"
+    },
+    "Tugatog": {
+        "lat": 14.7249453,
+        "lng": 120.9654674,
+        "src": "OSM",
+        "name": "Barangay Tugatog Multipurpose Hall, Tugatog Road, Tugatog, Meycauayan, Bulacan, Central Luzon, 3020, Philippines"
+    },
+    "Ubihan": {
+        "lat": 14.752089,
+        "lng": 120.910332,
+        "src": "OSM",
+        "name": "Ubihan Barangay Hall, Ubihan Road, Ubihan, Meycauayan, Bulacan, Central Luzon, 3020, Philippines"
+    },
+    "Zamora": {
+        "lat": 14.7555081,
+        "lng": 120.9796268,
+        "src": "Photon",
+        "name": "Iba Barangay Hall"
+    }
+}

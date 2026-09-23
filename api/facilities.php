@@ -48,9 +48,9 @@ if ($method === 'POST') {
         if (empty($body[$f])) jsonResponse(['error' => "Field '$f' is required."], 400);
     }
 
-    $types = ['police','fire','hospital','healthCenter'];
+    $types = ['police','fire','hospital','healthCenter','cdrrmo','barangayHall'];
     if (!in_array($body['type'], $types)) {
-        jsonResponse(['error' => 'Invalid type. Must be: police, fire, hospital, or healthCenter.'], 400);
+        jsonResponse(['error' => 'Invalid type. Must be: police, fire, hospital, healthCenter, cdrrmo, or barangayHall.'], 400);
     }
 
     $stmt = $pdo->prepare("

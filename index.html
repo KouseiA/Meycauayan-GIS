@@ -32,8 +32,8 @@
       href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
     />
 
-    <!-- Custom Styles -->
-    <link rel="stylesheet" href="assets/css/styles.css?v=3.0" />
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="assets/css/styles.css?v=10.0" />
 
     <!-- Favicon placeholder -->
     <link
@@ -45,239 +45,750 @@
 
 
     <!-- ============================================================
-       NAVIGATION BAR
+       VENGEANCE-UI MEGA MENU NAVBAR
        ============================================================ -->
-    <nav id="main-navbar" role="navigation" aria-label="Main navigation">
-      <!-- Brand / Logo -->
-      <a
-        href="#"
-        class="navbar-brand-custom me-4"
-        id="nav-brand"
-        onclick="
-          resetMapView();
-          return false;
-        "
-      >
-        <div class="brand-text-wrap">
-          <span class="brand-city">Meycauayan City</span>
-          <span class="brand-subtitle">Emergency Facility Portal</span>
-        </div>
-      </a>
-
-      <!-- Visual divider separating brand from links -->
-      <div class="nav-divider"></div>
-
-      <!-- Nav Links -->
-      <div class="nav-links-wrap" id="nav-links-main">
-        <!-- HOME -->
-        <div class="nav-item-custom">
-          <button
-            class="nav-link-custom"
-            onclick="resetMapView()"
-            id="nav-home"
+    <header id="main-navbar" class="v-mega-navbar" role="banner" aria-label="Main Navigation">
+      <div class="v-navbar-inner">
+        <div class="v-navbar-left">
+          <!-- Brand / Logo -->
+          <a
+            href="#"
+            class="v-brand"
+            id="nav-brand"
+            onclick="resetMapView(); return false;"
+            aria-label="Meycauayan City Emergency Facility Portal"
           >
-            <i class="fas fa-circle-dot"></i>
-            Home
-          </button>
-        </div>
-
-        <!-- BARANGAYS DROPDOWN -->
-        <div class="nav-item-custom dropdown-custom">
-          <button class="nav-link-custom" id="nav-barangays">
-            Barangays <i class="fas fa-chevron-down"></i>
-          </button>
-          <div class="dropdown-panel" id="dropdown-barangays" role="menu">
-            <div class="dropdown-panel-header">
-              26 Barangays of Meycauayan City
+            <div class="v-brand-icon">
+              <i class="fas fa-shield-halved"></i>
             </div>
-            <!-- Dynamically populated by script.js -->
-          </div>
+            <div class="v-brand-text">
+              <span class="v-brand-title">Meycauayan City</span>
+              <span class="v-brand-sub">Emergency Facility Portal</span>
+            </div>
+          </a>
+
+          <!-- Primary Desktop Nav with Mega Menus -->
+          <nav aria-label="Primary navigation" class="v-desktop-nav" id="v-desktop-nav">
+            <ul class="v-nav-list">
+              <!-- Landing Page / Overview -->
+              <li class="v-nav-item">
+                <a
+                  href="landing.html"
+                  class="v-nav-link text-decoration-none"
+                  id="nav-landing-page"
+                  title="View Landing Page & Project Overview"
+                >
+                  <i class="fas fa-arrow-left me-1 text-cyan"></i>
+                  Landing
+                </a>
+              </li>
+
+              <!-- Home -->
+              <li class="v-nav-item">
+                <button
+                  class="v-nav-link"
+                  onclick="resetMapView()"
+                  id="nav-home"
+                >
+                  <span class="v-pulse-dot"></span>
+                  Home
+                </button>
+              </li>
+
+              <!-- Barangays Mega Menu Trigger -->
+              <li class="v-nav-item v-mega-trigger-item" data-menu="barangays">
+                <button
+                  type="button"
+                  class="v-menu-trigger"
+                  id="trigger-barangays"
+                  aria-expanded="false"
+                  aria-controls="mega-menu-barangays"
+                >
+                  <span>Barangays</span>
+                  <span class="v-badge-pill">26</span>
+                  <i class="fas fa-chevron-down v-chevron"></i>
+                </button>
+
+                <!-- Barangays Mega Dropdown Panel -->
+                <div
+                  id="mega-menu-barangays"
+                  class="v-desktop-dropdown v-dropdown-wide"
+                  aria-hidden="true"
+                  role="menu"
+                >
+                  <div class="v-dropdown-card">
+                    <div class="v-mega-header">
+                      <div>
+                        <h3 class="v-mega-title"><i class="fas fa-map me-2 text-cyan"></i>Administrative Barangays</h3>
+                        <p class="v-mega-desc">Explore all 26 official barangays across Meycauayan City. Click any to zoom & highlight boundaries.</p>
+                      </div>
+                      <div class="v-mega-search-wrap">
+                        <i class="fas fa-magnifying-glass"></i>
+                        <input
+                          type="text"
+                          id="v-barangay-filter"
+                          class="v-mega-input"
+                          placeholder="Search barangays..."
+                          autocomplete="off"
+                        />
+                      </div>
+                    </div>
+
+                    <!-- 3-Column Barangays Grid -->
+                    <div class="v-barangays-grid" id="v-barangays-grid">
+                      <!-- Populated dynamically by script.js -->
+                    </div>
+
+                    <div class="v-mega-footer">
+                      <span class="v-mega-footer-text">
+                        <i class="fas fa-circle-info text-cyan me-1"></i> Selecting a barangay fits its administrative polygon boundary and lists local facilities.
+                      </span>
+                      <button type="button" class="v-link-action" onclick="resetMapView(); closeAllMegaMenus();">
+                        <span>Reset City Bounds</span>
+                        <i class="fas fa-arrow-right"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </li>
+
+              <!-- Emergency Facilities Mega Menu Trigger -->
+              <li class="v-nav-item v-mega-trigger-item" data-menu="facilities">
+                <button
+                  type="button"
+                  class="v-menu-trigger"
+                  id="trigger-facilities"
+                  aria-expanded="false"
+                  aria-controls="mega-menu-facilities"
+                >
+                  <span>Emergency Facilities</span>
+                  <i class="fas fa-chevron-down v-chevron"></i>
+                </button>
+
+                <!-- Facilities Feature Grid Mega Dropdown Panel -->
+                <div
+                  id="mega-menu-facilities"
+                  class="v-desktop-dropdown v-dropdown-facilities"
+                  aria-hidden="true"
+                  role="menu"
+                >
+                  <div class="v-dropdown-card">
+                    <div class="v-facilities-layout">
+                      <!-- Left Column: Category Feature Cards -->
+                      <div class="v-facilities-col">
+                        <div class="v-feature-grid" id="v-feature-categories">
+                          <!-- Feature Card: Police -->
+                          <div class="v-feature-card active" data-cat="police" onclick="openFacilitySubmenu('police')">
+                            <span class="v-feature-icon icon-police">
+                              <i class="fas fa-shield-halved"></i>
+                            </span>
+                            <div class="v-feature-body">
+                              <div class="v-feature-head">
+                                <span class="v-feature-title">Police Stations</span>
+                                <span class="v-badge badge-police">6 Units</span>
+                              </div>
+                              <p class="v-feature-desc">Meycauayan PNP HQ, Sub-stations & Community Precincts 1–4.</p>
+                            </div>
+                            <i class="fas fa-chevron-right v-feature-arrow"></i>
+                          </div>
+
+                          <!-- Feature Card: Fire -->
+                          <div class="v-feature-card" data-cat="fire" onclick="openFacilitySubmenu('fire')">
+                            <span class="v-feature-icon icon-fire">
+                              <i class="fas fa-fire"></i>
+                            </span>
+                            <div class="v-feature-body">
+                              <div class="v-feature-head">
+                                <span class="v-feature-title">Fire Stations</span>
+                                <span class="v-badge badge-fire">2 Units</span>
+                              </div>
+                              <p class="v-feature-desc">Meycauayan City Central BFP & Saluysoy Northern Sub-station.</p>
+                            </div>
+                            <i class="fas fa-chevron-right v-feature-arrow"></i>
+                          </div>
+
+                          <!-- Feature Card: Hospitals -->
+                          <div class="v-feature-card" data-cat="hospitals" onclick="openFacilitySubmenu('hospitals')">
+                            <span class="v-feature-icon icon-hospital">
+                              <i class="fas fa-hospital"></i>
+                            </span>
+                            <div class="v-feature-body">
+                              <div class="v-feature-head">
+                                <span class="v-feature-title">Public Hospitals</span>
+                                <span class="v-badge badge-hospital">2 Units</span>
+                              </div>
+                              <p class="v-feature-desc">Ospital ng Meycauayan (Malhacan) & Meycauayan District Hospital.</p>
+                            </div>
+                            <i class="fas fa-chevron-right v-feature-arrow"></i>
+                          </div>
+
+                          <!-- Feature Card: Health Centers -->
+                          <div class="v-feature-card" data-cat="health" onclick="openFacilitySubmenu('health')">
+                            <span class="v-feature-icon icon-health">
+                              <i class="fas fa-kit-medical"></i>
+                            </span>
+                            <div class="v-feature-body">
+                              <div class="v-feature-head">
+                                <span class="v-feature-title">Health Centers</span>
+                                <span class="v-badge badge-health">25 Units</span>
+                              </div>
+                              <p class="v-feature-desc">Primary community healthcare clinics across barangay centers.</p>
+                            </div>
+                            <i class="fas fa-chevron-right v-feature-arrow"></i>
+                          </div>
+
+                          <!-- Feature Card: CDRRMO -->
+                          <div class="v-feature-card" data-cat="cdrrmo" onclick="openFacilitySubmenu('cdrrmo')">
+                            <span class="v-feature-icon icon-cdrrmo">
+                              <i class="fas fa-triangle-exclamation"></i>
+                            </span>
+                            <div class="v-feature-body">
+                              <div class="v-feature-head">
+                                <span class="v-feature-title">CDRRMO / Rescue</span>
+                                <span class="v-badge badge-cdrrmo">1 Unit</span>
+                              </div>
+                              <p class="v-feature-desc">City Disaster Risk Reduction Management & 24/7 Rescue Operations.</p>
+                            </div>
+                            <i class="fas fa-chevron-right v-feature-arrow"></i>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Right Column: Interactive Facility List / Quick Station Picker -->
+                      <div class="v-facilities-subcol">
+                        <div class="v-subcol-header">
+                          <span class="v-subcol-title" id="v-subcol-title">Police Stations (6)</span>
+                          <span class="v-subcol-hint" id="v-subcol-hint">Click station to pinpoint</span>
+                        </div>
+                        <div class="v-subcol-list" id="v-facilities-station-list">
+                          <!-- Populated dynamically based on selected category -->
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="v-mega-footer">
+                      <span class="v-mega-footer-text">
+                        <i class="fas fa-phone-volume text-red me-1"></i> Immediate emergency response needed?
+                      </span>
+                      <button
+                        type="button"
+                        class="v-link-action text-danger"
+                        data-bs-toggle="modal"
+                        data-bs-target="#hotlines-modal"
+                        onclick="closeAllMegaMenus()"
+                      >
+                        <span>Emergency Hotlines Directory</span>
+                        <i class="fas fa-arrow-right"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </li>
+
+              <!-- Resources & Tools Mega Menu Trigger -->
+              <li class="v-nav-item v-mega-trigger-item" data-menu="resources">
+                <button
+                  type="button"
+                  class="v-menu-trigger"
+                  id="trigger-resources"
+                  aria-expanded="false"
+                  aria-controls="mega-menu-resources"
+                >
+                  <span>Resources</span>
+                  <span class="v-badge-pill v-badge-danger" id="nav-announcement-count" style="display:none;"></span>
+                  <i class="fas fa-chevron-down v-chevron"></i>
+                </button>
+
+                <!-- Resources Mega Dropdown Panel -->
+                <div
+                  id="mega-menu-resources"
+                  class="v-desktop-dropdown v-dropdown-resources"
+                  aria-hidden="true"
+                  role="menu"
+                >
+                  <div class="v-dropdown-card">
+                    <div class="v-resources-grid">
+                      <!-- Promo / Highlight Card -->
+                      <div class="v-resource-promo">
+                        <div>
+                          <div class="v-promo-badge">
+                            <i class="fas fa-bullhorn me-1"></i> Live Bulletin
+                            <span class="ms-1 fw-bold" id="promo-announcement-count"></span>
+                          </div>
+                          <h4 class="v-promo-title">City Announcements & Advisories</h4>
+                          <p class="v-promo-desc">
+                            Real-time emergency bulletins, weather advisories, flood warnings, and official notices from the City Government.
+                          </p>
+                        </div>
+                        <button
+                          type="button"
+                          class="v-promo-cta"
+                          data-bs-toggle="modal"
+                          data-bs-target="#announcements-modal"
+                          onclick="closeAllMegaMenus()"
+                        >
+                          <span>Open City Bulletin</span>
+                          <i class="fas fa-arrow-right"></i>
+                        </button>
+                      </div>
+
+                      <!-- Links Column 1: Map Tools -->
+                      <div class="v-resource-links-col">
+                        <h4 class="v-col-heading">Map Tools & Views</h4>
+                        <div class="v-resource-links">
+                          <button type="button" class="v-resource-link" onclick="resetMapView(); closeAllMegaMenus();">
+                            <i class="fas fa-earth-asia"></i>
+                            <div>
+                              <span class="v-link-title">Reset City Extent</span>
+                              <span class="v-link-sub">Recenter map view on Meycauayan</span>
+                            </div>
+                          </button>
+                          <button
+                            type="button"
+                            class="v-resource-link"
+                            data-bs-toggle="modal"
+                            data-bs-target="#hotlines-modal"
+                            onclick="closeAllMegaMenus()"
+                          >
+                            <i class="fas fa-phone"></i>
+                            <div>
+                              <span class="v-link-title">Emergency Hotlines</span>
+                              <span class="v-link-sub">PNP, BFP, Rescue & Hospitals</span>
+                            </div>
+                          </button>
+                        </div>
+                      </div>
+
+                      <!-- Links Column 2: System & Info -->
+                      <div class="v-resource-links-col">
+                        <h4 class="v-col-heading">System & Portal</h4>
+                        <div class="v-resource-links">
+                          <button
+                            type="button"
+                            class="v-resource-link"
+                            data-bs-toggle="modal"
+                            data-bs-target="#about-modal"
+                            onclick="closeAllMegaMenus()"
+                            id="nav-about"
+                          >
+                            <i class="fas fa-circle-info"></i>
+                            <div>
+                              <span class="v-link-title">About This GIS Portal</span>
+                              <span class="v-link-sub">Project background & methodology</span>
+                            </div>
+                          </button>
+                          <a href="admin.html" class="v-resource-link">
+                            <i class="fas fa-lock"></i>
+                            <div>
+                              <span class="v-link-title">Admin Management Portal</span>
+                              <span class="v-link-sub">Authorized staff login gateway</span>
+                            </div>
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </nav>
         </div>
 
-        <!-- POLICE STATIONS DROPDOWN -->
-        <div class="nav-item-custom dropdown-custom">
-          <button class="nav-link-custom" id="nav-police">
-            Police <i class="fas fa-chevron-down"></i>
-          </button>
-          <div class="dropdown-panel" id="dropdown-police" role="menu">
-            <div class="dropdown-panel-header">Police Stations</div>
-            <!-- Dynamically populated -->
-          </div>
-        </div>
-
-        <!-- FIRE STATIONS DROPDOWN -->
-        <div class="nav-item-custom dropdown-custom">
-          <button class="nav-link-custom" id="nav-fire">
-            Fire Stations <i class="fas fa-chevron-down"></i>
-          </button>
-          <div class="dropdown-panel" id="dropdown-fire" role="menu">
-            <div class="dropdown-panel-header">Fire Stations</div>
-            <!-- Dynamically populated -->
-          </div>
-        </div>
-
-        <!-- HOSPITALS DROPDOWN -->
-        <div class="nav-item-custom dropdown-custom">
-          <button class="nav-link-custom" id="nav-hospitals">
-            Hospitals <i class="fas fa-chevron-down"></i>
-          </button>
-          <div class="dropdown-panel" id="dropdown-hospitals" role="menu">
-            <div class="dropdown-panel-header">Hospitals</div>
-            <!-- Dynamically populated -->
-          </div>
-        </div>
-
-        <!-- HEALTH CENTERS DROPDOWN -->
-        <div class="nav-item-custom dropdown-custom">
-          <button class="nav-link-custom" id="nav-health">
-            Health Centers <i class="fas fa-chevron-down"></i>
-          </button>
-          <div class="dropdown-panel" id="dropdown-health" role="menu">
-            <div class="dropdown-panel-header">Health Centers</div>
-            <!-- Dynamically populated -->
-          </div>
-        </div>
-
-        <!-- ABOUT -->
-        <div class="nav-item-custom">
+        <!-- Right Side: Emergency Action & Admin Buttons -->
+        <div class="v-navbar-right">
+          <!-- Find Nearest Facility Button -->
           <button
-            class="nav-link-custom"
-            data-bs-toggle="modal"
-            data-bs-target="#about-modal"
-            id="nav-about"
+            class="btn-nearest-nav"
+            id="btn-nearest-nav"
+            onclick="openNearestFacilityModal()"
+            aria-label="Find Nearest Emergency Facility"
+            title="Locate nearest hospital, police, fire station, or health center"
           >
-            About
+            <span class="nearest-radar-dot"></span>
+            <i class="fas fa-location-crosshairs"></i>
+            <span>Find Nearest</span>
+          </button>
+
+          <!-- Style 4 Animated Emergency Hotline Button -->
+          <button
+            class="btn-emergency-nav"
+            data-bs-toggle="modal"
+            data-bs-target="#emergency-speed-dial-modal"
+            id="btn-emergency-nav"
+            aria-label="Emergency Speed-Dial Hotlines"
+            onclick="triggerHapticFeedback()"
+          >
+            <i class="fas fa-phone-volume"></i>
+            <span>Emergency Hotlines</span>
+          </button>
+
+          <!-- Mobile Menu Hamburger Button -->
+          <button
+            type="button"
+            class="v-mobile-toggle"
+            id="mobile-menu-toggle"
+            aria-label="Toggle navigation menu"
+            aria-expanded="false"
+          >
+            <i class="fas fa-bars"></i>
           </button>
         </div>
       </div>
-
-      <!-- Right side: Emergency Button & Mobile Toggle -->
-      <div class="ms-auto d-flex align-items-center gap-2">
-        <button
-          class="btn-emergency-nav"
-          data-bs-toggle="modal"
-          data-bs-target="#hotlines-modal"
-          id="btn-emergency-nav"
-          aria-label="Emergency Hotlines"
-        >
-          <i class="fas fa-phone"></i>
-          <span>Emergency Hotlines</span>
-        </button>
-
-        <!-- Admin link -->
-        <a
-          href="admin.html"
-          class="navbar-admin-link"
-          id="nav-admin"
-        >
-          <i class="fas fa-lock"></i>
-          <span>Admin</span>
-        </a>
-
-        <!-- Mobile Menu Hamburger Button -->
-        <button
-          class="navbar-toggler-custom"
-          id="mobile-menu-toggle"
-          aria-label="Toggle navigation menu"
-          aria-expanded="false"
-        >
-          <i class="fas fa-bars"></i>
-        </button>
-      </div>
-    </nav>
+    </header>
 
     <!-- ============================================================
-       MOBILE NAVIGATION OVERLAY
+       VENGEANCE-UI MOBILE SLIDE-OUT DRAWER & BACKDROP
        ============================================================ -->
-    <div id="mobile-nav-overlay" aria-label="Mobile Navigation Menu">
-      <div class="mobile-nav-content">
-        <!-- Home Link -->
-        <button class="mobile-nav-item" onclick="resetMapView(); closeMobileMenu();">
-          <i class="fas fa-house me-2"></i> Home
+    <div
+      id="mobile-nav-backdrop"
+      class="v-mobile-backdrop"
+      onclick="closeMobileMenu()"
+      aria-hidden="true"
+    ></div>
+
+    <aside
+      id="mobile-nav-overlay"
+      class="v-mobile-drawer"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Mobile Navigation"
+      aria-hidden="true"
+    >
+      <!-- Drawer Header -->
+      <div class="v-drawer-header">
+        <div class="v-brand">
+          <div class="v-brand-icon">
+            <i class="fas fa-shield-halved"></i>
+          </div>
+          <div class="v-brand-text">
+            <span class="v-brand-title">Meycauayan City</span>
+            <span class="v-brand-sub">Emergency GIS</span>
+          </div>
+        </div>
+        <button
+          type="button"
+          class="v-drawer-close"
+          id="mobile-drawer-close"
+          onclick="closeMobileMenu()"
+          aria-label="Close navigation menu"
+        >
+          <i class="fas fa-xmark"></i>
+        </button>
+      </div>
+
+      <!-- Drawer Content with Accordions -->
+      <div class="v-drawer-body">
+        <!-- Home Button -->
+        <button class="v-drawer-item" onclick="resetMapView(); closeMobileMenu();">
+          <i class="fas fa-house me-2 text-cyan"></i> Home Overview
+        </button>
+
+        <!-- Find Nearest Facility Button -->
+        <button class="v-drawer-item text-cyan fw-bold" onclick="openNearestFacilityModal(); closeMobileMenu();">
+          <i class="fas fa-location-crosshairs me-2 text-cyan"></i> Find Nearest Facility
         </button>
 
         <!-- Barangays Accordion -->
-        <div class="mobile-accordion-item">
-          <button class="mobile-accordion-header" onclick="toggleMobileAccordion('mobile-acc-barangays')">
-            <span><i class="fas fa-map me-2"></i> Barangays</span>
-            <i class="fas fa-chevron-down acc-icon"></i>
+        <div class="v-accordion-item">
+          <button
+            type="button"
+            class="v-accordion-header"
+            onclick="toggleMobileAccordion('mobile-acc-barangays')"
+            aria-expanded="false"
+          >
+            <span><i class="fas fa-map me-2 text-cyan"></i> 26 Barangays</span>
+            <i class="fas fa-chevron-down v-acc-icon"></i>
           </button>
-          <div class="mobile-accordion-body" id="mobile-acc-barangays">
-            <!-- Populated dynamically or shared -->
+          <div class="v-accordion-body" id="mobile-acc-barangays">
+            <!-- Populated dynamically by script.js -->
           </div>
         </div>
 
-        <!-- Police Stations Accordion -->
-        <div class="mobile-accordion-item">
-          <button class="mobile-accordion-header" onclick="toggleMobileAccordion('mobile-acc-police')">
-            <span><i class="fas fa-shield-halved me-2"></i> Police Stations</span>
-            <i class="fas fa-chevron-down acc-icon"></i>
+        <!-- Police Accordion -->
+        <div class="v-accordion-item">
+          <button
+            type="button"
+            class="v-accordion-header"
+            onclick="toggleMobileAccordion('mobile-acc-police')"
+            aria-expanded="false"
+          >
+            <span><i class="fas fa-shield-halved me-2 text-blue"></i> Police Stations (6)</span>
+            <i class="fas fa-chevron-down v-acc-icon"></i>
           </button>
-          <div class="mobile-accordion-body" id="mobile-acc-police">
-            <!-- Populated dynamically -->
-          </div>
+          <div class="v-accordion-body" id="mobile-acc-police"></div>
         </div>
 
-        <!-- Fire Stations Accordion -->
-        <div class="mobile-accordion-item">
-          <button class="mobile-accordion-header" onclick="toggleMobileAccordion('mobile-acc-fire')">
-            <span><i class="fas fa-fire me-2"></i> Fire Stations</span>
-            <i class="fas fa-chevron-down acc-icon"></i>
+        <!-- Fire Accordion -->
+        <div class="v-accordion-item">
+          <button
+            type="button"
+            class="v-accordion-header"
+            onclick="toggleMobileAccordion('mobile-acc-fire')"
+            aria-expanded="false"
+          >
+            <span><i class="fas fa-fire me-2 text-amber"></i> Fire Stations (2)</span>
+            <i class="fas fa-chevron-down v-acc-icon"></i>
           </button>
-          <div class="mobile-accordion-body" id="mobile-acc-fire">
-            <!-- Populated dynamically -->
-          </div>
+          <div class="v-accordion-body" id="mobile-acc-fire"></div>
         </div>
 
         <!-- Hospitals Accordion -->
-        <div class="mobile-accordion-item">
-          <button class="mobile-accordion-header" onclick="toggleMobileAccordion('mobile-acc-hospitals')">
-            <span><i class="fas fa-hospital me-2"></i> Hospitals</span>
-            <i class="fas fa-chevron-down acc-icon"></i>
+        <div class="v-accordion-item">
+          <button
+            type="button"
+            class="v-accordion-header"
+            onclick="toggleMobileAccordion('mobile-acc-hospitals')"
+            aria-expanded="false"
+          >
+            <span><i class="fas fa-hospital me-2 text-red"></i> Public Hospitals (2)</span>
+            <i class="fas fa-chevron-down v-acc-icon"></i>
           </button>
-          <div class="mobile-accordion-body" id="mobile-acc-hospitals">
-            <!-- Populated dynamically -->
-          </div>
+          <div class="v-accordion-body" id="mobile-acc-hospitals"></div>
         </div>
 
         <!-- Health Centers Accordion -->
-        <div class="mobile-accordion-item">
-          <button class="mobile-accordion-header" onclick="toggleMobileAccordion('mobile-acc-health')">
-            <span><i class="fas fa-kit-medical me-2"></i> Health Centers</span>
-            <i class="fas fa-chevron-down acc-icon"></i>
+        <div class="v-accordion-item">
+          <button
+            type="button"
+            class="v-accordion-header"
+            onclick="toggleMobileAccordion('mobile-acc-health')"
+            aria-expanded="false"
+          >
+            <span><i class="fas fa-kit-medical me-2 text-emerald"></i> Health Centers (25)</span>
+            <i class="fas fa-chevron-down v-acc-icon"></i>
           </button>
-          <div class="mobile-accordion-body" id="mobile-acc-health">
-            <!-- Populated dynamically -->
-          </div>
+          <div class="v-accordion-body" id="mobile-acc-health"></div>
         </div>
 
-        <!-- About Link -->
+        <!-- CDRRMO Accordion -->
+        <div class="v-accordion-item">
+          <button
+            type="button"
+            class="v-accordion-header"
+            onclick="toggleMobileAccordion('mobile-acc-cdrrmo')"
+            aria-expanded="false"
+          >
+            <span><i class="fas fa-triangle-exclamation me-2 text-yellow"></i> CDRRMO / Rescue (1)</span>
+            <i class="fas fa-chevron-down v-acc-icon"></i>
+          </button>
+          <div class="v-accordion-body" id="mobile-acc-cdrrmo"></div>
+        </div>
+
+        <!-- Announcements Modal Trigger -->
         <button
-          class="mobile-nav-item"
+          class="v-drawer-item"
+          data-bs-toggle="modal"
+          data-bs-target="#announcements-modal"
+          onclick="closeMobileMenu()"
+        >
+          <i class="fas fa-bullhorn me-2 text-cyan"></i>
+          <span>City Bulletin Board</span>
+          <span class="v-badge-pill v-badge-danger ms-auto" id="drawer-announcement-count" style="display:none;"></span>
+        </button>
+
+        <!-- About Modal Trigger -->
+        <button
+          class="v-drawer-item"
           data-bs-toggle="modal"
           data-bs-target="#about-modal"
           onclick="closeMobileMenu()"
         >
-          <i class="fas fa-circle-info me-2"></i> About
+          <i class="fas fa-circle-info me-2 text-cyan"></i> About GIS Portal
         </button>
+      </div>
 
-        <div class="mobile-nav-divider"></div>
-
-        <!-- Emergency Hotlines in Mobile Menu -->
+      <!-- Drawer Footer Actions -->
+      <div class="v-drawer-footer">
         <button
-          class="mobile-nav-item text-danger-custom"
+          class="v-drawer-hotline-btn"
           data-bs-toggle="modal"
-          data-bs-target="#hotlines-modal"
-          onclick="closeMobileMenu()"
+          data-bs-target="#emergency-speed-dial-modal"
+          onclick="triggerHapticFeedback(); closeMobileMenu();"
         >
           <i class="fas fa-phone-volume me-2"></i> Emergency Hotlines
         </button>
-
-        <!-- Admin Portal in Mobile Menu -->
-        <a href="admin.html" class="mobile-nav-item" onclick="closeMobileMenu()">
-          <i class="fas fa-lock me-2"></i> Admin Portal
+        <a href="admin.html" class="v-drawer-admin-btn" onclick="closeMobileMenu()">
+          <i class="fas fa-lock me-2"></i> Admin Gateway
         </a>
       </div>
+    </aside>
+
+    <!-- ============================================================
+       MOBILE BOTTOM TAB BAR (≤768px only)
+       ============================================================ -->
+    <nav id="mob-tab-bar" class="mob-tab-bar" aria-label="Mobile navigation tabs" role="navigation">
+      <button class="mob-tab-btn active" id="mob-tab-map" onclick="mobTabSwitch('map')" aria-label="Map view">
+        <i class="fas fa-map"></i>
+        <span>Map</span>
+      </button>
+      <button class="mob-tab-btn" id="mob-tab-barangays" onclick="mobTabSwitch('barangays')" aria-label="Barangays">
+        <i class="fas fa-city"></i>
+        <span>Barangays</span>
+      </button>
+      <button class="mob-tab-btn mob-tab-emergency" id="mob-tab-emergency" onclick="openMobileSheet('facilities')" aria-label="Emergency facilities">
+        <div class="mob-tab-emergency-ring"></div>
+        <i class="fas fa-shield-halved"></i>
+        <span>Facilities</span>
+      </button>
+      <button class="mob-tab-btn" id="mob-tab-bulletin" onclick="mobTabSwitch('bulletin')" aria-label="City bulletin">
+        <i class="fas fa-bullhorn"></i>
+        <span>Bulletin</span>
+        <span class="mob-tab-badge" id="mob-tab-bulletin-count" style="display:none;"></span>
+      </button>
+      <button class="mob-tab-btn" id="mob-tab-menu" onclick="mobTabSwitch('menu')" aria-label="More options">
+        <i class="fas fa-bars"></i>
+        <span>More</span>
+      </button>
+    </nav>
+
+    <!-- ============================================================
+       MOBILE BOTTOM SHEET (drag-up panel, ≤768px only)
+       ============================================================ -->
+    <div id="mob-sheet-backdrop" class="mob-sheet-backdrop" onclick="closeMobileSheet()" aria-hidden="true"></div>
+
+    <div id="mob-bottom-sheet" class="mob-bottom-sheet" role="dialog" aria-modal="true" aria-label="Mobile navigation sheet" aria-hidden="true">
+      <!-- Drag handle -->
+      <div class="mob-sheet-handle-wrap" id="mob-sheet-handle-wrap">
+        <div class="mob-sheet-handle"></div>
+      </div>
+
+      <!-- Sheet Header -->
+      <div class="mob-sheet-header" id="mob-sheet-header-title">
+        <span class="mob-sheet-title" id="mob-sheet-title">Facilities</span>
+        <button type="button" class="mob-sheet-close" onclick="closeMobileSheet()" aria-label="Close sheet">
+          <i class="fas fa-xmark"></i>
+        </button>
+      </div>
+
+      <!-- Sheet Content Tabs -->
+      <div class="mob-sheet-content" id="mob-sheet-content">
+
+        <!-- ── FACILITIES PANEL (Category Grid) ── -->
+        <div class="mob-sheet-panel" id="mob-panel-facilities">
+          <p class="mob-sheet-hint">Tap a category to view facilities & filter map</p>
+          <div class="mob-cat-grid" id="mob-cat-grid">
+            <button type="button" class="mob-cat-card mob-cat-police" onclick="mobFilterCategory('police')">
+              <span class="mob-cat-icon"><i class="fas fa-shield-halved"></i></span>
+              <span class="mob-cat-label">Police</span>
+              <span class="mob-cat-count" id="mob-count-police">6</span>
+            </button>
+            <button type="button" class="mob-cat-card mob-cat-fire" onclick="mobFilterCategory('fire')">
+              <span class="mob-cat-icon"><i class="fas fa-fire"></i></span>
+              <span class="mob-cat-label">Fire</span>
+              <span class="mob-cat-count" id="mob-count-fire">2</span>
+            </button>
+            <button type="button" class="mob-cat-card mob-cat-hospital" onclick="mobFilterCategory('hospital')">
+              <span class="mob-cat-icon"><i class="fas fa-hospital"></i></span>
+              <span class="mob-cat-label">Hospitals</span>
+              <span class="mob-cat-count" id="mob-count-hospital">2</span>
+            </button>
+            <button type="button" class="mob-cat-card mob-cat-health" onclick="mobFilterCategory('healthCenter')">
+              <span class="mob-cat-icon"><i class="fas fa-kit-medical"></i></span>
+              <span class="mob-cat-label">Health</span>
+              <span class="mob-cat-count" id="mob-count-health">25</span>
+            </button>
+            <button type="button" class="mob-cat-card mob-cat-cdrrmo" onclick="mobFilterCategory('cdrrmo')">
+              <span class="mob-cat-icon"><i class="fas fa-triangle-exclamation"></i></span>
+              <span class="mob-cat-label">CDRRMO</span>
+              <span class="mob-cat-count" id="mob-count-cdrrmo">1</span>
+            </button>
+            <button type="button" class="mob-cat-card mob-cat-all" onclick="mobFilterCategory('all')">
+              <span class="mob-cat-icon"><i class="fas fa-layer-group"></i></span>
+              <span class="mob-cat-label">Show All</span>
+              <span class="mob-cat-count">All</span>
+            </button>
+          </div>
+          <!-- Quick hotline CTA -->
+          <button type="button" class="mob-hotline-cta" data-bs-toggle="modal" data-bs-target="#emergency-speed-dial-modal" onclick="openEmergencySpeedDial(); closeMobileSheet();">
+            <i class="fas fa-phone-volume me-2"></i> 1-Tap Emergency Speed-Dial
+          </button>
+        </div>
+
+        <!-- ── FACILITY DETAIL LIST (shown when a category is selected) ── -->
+        <div class="mob-sheet-panel" id="mob-panel-facility-list" style="display:none;">
+          <div class="mob-fac-list-header">
+            <button type="button" class="mob-back-btn" onclick="showMobileCategoryGrid()" aria-label="Back to categories">
+              <i class="fas fa-arrow-left"></i> Categories
+            </button>
+            <button type="button" class="mob-view-map-btn" onclick="closeMobileSheet()" aria-label="View on map">
+              <i class="fas fa-map-location-dot"></i> View Map
+            </button>
+          </div>
+          <div class="mob-fac-list-title-wrap">
+            <h4 class="mob-fac-list-title" id="mob-fac-list-title">Facilities</h4>
+            <span class="mob-fac-list-badge" id="mob-fac-list-badge">0 Found</span>
+          </div>
+          <div class="mob-fac-items-list" id="mob-fac-items-list">
+            <!-- Dynamically populated by JS -->
+          </div>
+        </div>
+
+        <!-- ── BARANGAYS PANEL ── -->
+        <div class="mob-sheet-panel" id="mob-panel-barangays" style="display:none;">
+          <div class="mob-brgy-search-wrap">
+            <i class="fas fa-magnifying-glass"></i>
+            <input type="text" id="mob-brgy-search" class="mob-brgy-search" placeholder="Search barangay..." autocomplete="off" oninput="mobFilterBrgy(this.value)">
+          </div>
+          <div class="mob-brgy-grid" id="mob-brgy-grid">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+
+        <!-- ── MORE / MENU PANEL ── -->
+        <div class="mob-sheet-panel" id="mob-panel-menu" style="display:none;">
+          <div class="mob-menu-grid">
+            <button class="mob-menu-tile" onclick="openNearestFacilityModal(); closeMobileSheet();">
+              <i class="fas fa-location-crosshairs text-cyan"></i>
+              <span>Find Nearest</span>
+            </button>
+            <button class="mob-menu-tile" onclick="resetMapView(); closeMobileSheet();">
+              <i class="fas fa-earth-asia"></i>
+              <span>Reset Map</span>
+            </button>
+            <button class="mob-menu-tile" data-bs-toggle="modal" data-bs-target="#announcements-modal" onclick="closeMobileSheet()">
+              <i class="fas fa-bullhorn"></i>
+              <span>City Bulletin</span>
+            </button>
+            <button class="mob-menu-tile" data-bs-toggle="modal" data-bs-target="#emergency-speed-dial-modal" onclick="openEmergencySpeedDial(); closeMobileSheet();">
+              <i class="fas fa-phone-volume text-danger"></i>
+              <span>Speed-Dial</span>
+            </button>
+            <button class="mob-menu-tile" data-bs-toggle="modal" data-bs-target="#about-modal" onclick="closeMobileSheet()">
+              <i class="fas fa-circle-info"></i>
+              <span>About GIS</span>
+            </button>
+            <a href="admin.html" class="mob-menu-tile">
+              <i class="fas fa-lock"></i>
+              <span>Admin</span>
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ============================================================
+       MOBILE FAB CLUSTER (≤768px only) — always-on emergency + reset
+       ============================================================ -->
+    <div class="mob-fab-cluster" id="mob-fab-cluster">
+      <button
+        class="mob-fab mob-fab-reset"
+        onclick="resetMapView()"
+        aria-label="Reset map view"
+        title="Reset map to Meycauayan"
+      >
+        <i class="fas fa-expand"></i>
+      </button>
+      <button
+        class="mob-fab mob-fab-call"
+        data-bs-toggle="modal"
+        data-bs-target="#emergency-speed-dial-modal"
+        onclick="openEmergencySpeedDial()"
+        aria-label="Emergency Speed-Dial Hotlines"
+        title="1-Tap Emergency Speed-Dial"
+      >
+        <i class="fas fa-phone"></i>
+      </button>
     </div>
 
     <!-- ============================================================
@@ -287,33 +798,57 @@
       <!-- MAP CONTAINER -->
       <div id="map-container" role="main" aria-label="Interactive map">
         <!-- The Leaflet map -->
+
         <div id="main-map" aria-label="Meycauayan City interactive map"></div>
+
+        <!-- FLOATING MAP QUICK CONTROLS -->
+        <div class="map-floating-controls" id="map-floating-controls">
+          <button
+            type="button"
+            class="map-floating-btn btn-locate-nearest"
+            id="btn-map-locate-nearest"
+            onclick="openNearestFacilityModal()"
+            title="Locate Me & Find Nearest Facilities"
+            aria-label="Find Nearest Emergency Facility"
+          >
+            <i class="fas fa-location-crosshairs"></i>
+            <span class="map-floating-tooltip">Find Nearest</span>
+          </button>
+        </div>
 
         <!-- MAP LEGEND -->
         <div id="map-legend" aria-label="Map legend">
-          <div class="legend-row">
-            <div class="legend-dot police"></div>
-            <span class="legend-label">Police Station</span>
-          </div>
-          <div class="legend-row">
-            <div class="legend-dot fire"></div>
-            <span class="legend-label">Fire Station</span>
-          </div>
-          <div class="legend-row">
-            <div class="legend-dot hospital"></div>
-            <span class="legend-label">Hospital</span>
-          </div>
-          <div class="legend-row">
-            <div class="legend-dot healthcenter"></div>
-            <span class="legend-label">Health Center</span>
-          </div>
-          <div class="legend-row">
-            <div class="legend-dot barangay"></div>
-            <span class="legend-label">Barangay Hall</span>
-          </div>
           <div class="legend-row" data-key="boundary">
             <div class="legend-dot boundary"></div>
-            <span class="legend-label">Barangay Boundary</span>
+            <span class="legend-label">Barangay boundary</span>
+          </div>
+          <div class="legend-row" data-key="selected-boundary">
+            <div class="legend-dot selected-boundary"></div>
+            <span class="legend-label">Selected barangay</span>
+          </div>
+          <div class="legend-row">
+            <div class="legend-dot police">P</div>
+            <span class="legend-label">Police stations</span>
+          </div>
+          <div class="legend-row">
+            <div class="legend-dot fire">F</div>
+            <span class="legend-label">Fire stations</span>
+          </div>
+          <div class="legend-row">
+            <div class="legend-dot hospital">H</div>
+            <span class="legend-label">Public hospital</span>
+          </div>
+          <div class="legend-row">
+            <div class="legend-dot healthcenter"><i class="fa-solid fa-plus"></i></div>
+            <span class="legend-label">Health centers</span>
+          </div>
+          <div class="legend-row">
+            <div class="legend-dot cdrrmo"><i class="fa-solid fa-triangle-exclamation"></i></div>
+            <span class="legend-label">CDRRMO / Rescue</span>
+          </div>
+          <div class="legend-row">
+            <div class="legend-dot barangay"><i class="fa-solid fa-landmark"></i></div>
+            <span class="legend-label">Barangay hall</span>
           </div>
         </div>
         
@@ -329,19 +864,6 @@
           </div>
         </div>
 
-        <!-- EMERGENCY FAB -->
-        <div id="emergency-fab">
-          <button
-            class="fab-btn"
-            data-bs-toggle="modal"
-            data-bs-target="#hotlines-modal"
-            aria-label="Emergency Hotlines"
-            id="btn-emergency-fab"
-          >
-            <span class="fab-dot"></span>
-            EMERGENCY HOTLINES
-          </button>
-        </div>
       </div>
 
       <!-- INFO PANEL (Side panel on desktop / Collapsible Bottom Sheet on mobile) -->
@@ -381,6 +903,193 @@
             <div class="info-panel-image-wrap">
               <img id="info-panel-image" src="" alt="Barangay or facility photo" />
               <div class="info-panel-image-label">Photo</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================
+       EMERGENCY SPEED-DIAL SHEET (1-Tap Direct Dial Action Sheet)
+       ============================================================ -->
+    <div
+      class="modal fade"
+      id="emergency-speed-dial-modal"
+      tabindex="-1"
+      aria-labelledby="emergency-speed-dial-label"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+        <div class="modal-content speed-dial-modal-content">
+          <div class="sheet-drag-handle d-md-none" style="margin: 8px auto 2px auto;"></div>
+          <div class="modal-header speed-dial-modal-header">
+            <div class="d-flex align-items-center gap-3">
+              <div class="speed-dial-icon-pulse">
+                <i class="fas fa-phone-volume"></i>
+              </div>
+              <div>
+                <h5 class="modal-title-custom mb-0 text-white" id="emergency-speed-dial-label">
+                  <span class="text-danger fw-bold">EMERGENCY</span> SPEED-DIAL
+                </h5>
+                <div class="speed-dial-modal-subtitle">
+                  <span class="live-indicator"><span class="live-dot pulse-red"></span> 24/7 ACTIVE DISPATCH</span>
+                  Tap any card to call immediately
+                </div>
+              </div>
+            </div>
+            <button
+              type="button"
+              class="btn-close btn-close-white"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body p-3 p-md-4">
+            <!-- Alert Banner -->
+            <div class="speed-dial-alert-banner">
+              <i class="fas fa-triangle-exclamation text-amber fs-5 mt-1"></i>
+              <div>
+                <strong>For Immediate Life-Threatening Emergencies:</strong> Tap the red <strong>CALL</strong> button. Your phone dialer will open instantly with the number ready.
+              </div>
+            </div>
+
+            <!-- Priority Speed-Dial Grid -->
+            <div class="speed-dial-cards-grid">
+              
+              <!-- 1. CDRRMO RESCUE -->
+              <div class="speed-dial-card card-cdrrmo">
+                <div class="speed-dial-card-top">
+                  <div class="speed-dial-agency-badge badge-cdrrmo">
+                    <i class="fas fa-life-ring me-1"></i> RESCUE &amp; DISASTER
+                  </div>
+                  <span class="speed-dial-status"><i class="fas fa-circle text-emerald me-1"></i> 24/7 Ready</span>
+                </div>
+                <div class="speed-dial-agency-name">CDRRMO Rescue Meycauayan</div>
+                <div class="speed-dial-desc">Medical emergencies, flood rescue, accidents &amp; typhoons</div>
+                <div class="speed-dial-phone-number">(044) 840-5000 / (044) 308-5690</div>
+                <div class="speed-dial-actions">
+                  <a href="tel:0448405000" class="btn-speed-dial-call call-cdrrmo" onclick="triggerHapticFeedback()">
+                    <i class="fas fa-phone-flip"></i> <span>CALL (044) 840-5000</span>
+                  </a>
+                  <button type="button" class="btn-speed-dial-copy" onclick="copyHotlineNumber('0448405000', this)" title="Copy number">
+                    <i class="fas fa-copy"></i>
+                  </button>
+                </div>
+              </div>
+
+              <!-- 2. BFP FIRE STATION -->
+              <div class="speed-dial-card card-fire">
+                <div class="speed-dial-card-top">
+                  <div class="speed-dial-agency-badge badge-fire">
+                    <i class="fas fa-fire-extinguisher me-1"></i> FIRE DEPARTMENT
+                  </div>
+                  <span class="speed-dial-status"><i class="fas fa-circle text-emerald me-1"></i> 24/7 Active</span>
+                </div>
+                <div class="speed-dial-agency-name">Bureau of Fire Protection (BFP)</div>
+                <div class="speed-dial-desc">Fire breakout, gas leaks, structural collapse &amp; hazmat</div>
+                <div class="speed-dial-phone-number">(044) 840-2001 / (044) 228-2999</div>
+                <div class="speed-dial-actions">
+                  <a href="tel:0448402001" class="btn-speed-dial-call call-fire" onclick="triggerHapticFeedback()">
+                    <i class="fas fa-phone-flip"></i> <span>CALL (044) 840-2001</span>
+                  </a>
+                  <button type="button" class="btn-speed-dial-copy" onclick="copyHotlineNumber('0448402001', this)" title="Copy number">
+                    <i class="fas fa-copy"></i>
+                  </button>
+                </div>
+              </div>
+
+              <!-- 3. POLICE STATION -->
+              <div class="speed-dial-card card-police">
+                <div class="speed-dial-card-top">
+                  <div class="speed-dial-agency-badge badge-police">
+                    <i class="fas fa-shield-halved me-1"></i> POLICE / PNP
+                  </div>
+                  <span class="speed-dial-status"><i class="fas fa-circle text-emerald me-1"></i> 24/7 Patrol</span>
+                </div>
+                <div class="speed-dial-agency-name">Meycauayan City Police Station</div>
+                <div class="speed-dial-desc">Crimes in progress, violence, disturbances &amp; security</div>
+                <div class="speed-dial-phone-number">(044) 840-0001 / (044) 308-5188</div>
+                <div class="speed-dial-actions">
+                  <a href="tel:0448400001" class="btn-speed-dial-call call-police" onclick="triggerHapticFeedback()">
+                    <i class="fas fa-phone-flip"></i> <span>CALL (044) 840-0001</span>
+                  </a>
+                  <button type="button" class="btn-speed-dial-copy" onclick="copyHotlineNumber('0448400001', this)" title="Copy number">
+                    <i class="fas fa-copy"></i>
+                  </button>
+                </div>
+              </div>
+
+              <!-- 4. PUBLIC HOSPITAL / ER -->
+              <div class="speed-dial-card card-hospital">
+                <div class="speed-dial-card-top">
+                  <div class="speed-dial-agency-badge badge-hospital">
+                    <i class="fas fa-hospital me-1"></i> EMERGENCY ROOM
+                  </div>
+                  <span class="speed-dial-status"><i class="fas fa-circle text-emerald me-1"></i> 24/7 ER</span>
+                </div>
+                <div class="speed-dial-agency-name">Ospital ng Meycauayan (District Hospital)</div>
+                <div class="speed-dial-desc">Trauma, ambulance dispatch, cardiac &amp; urgent medical care</div>
+                <div class="speed-dial-phone-number">(044) 840-3001 / (044) 935-4422</div>
+                <div class="speed-dial-actions">
+                  <a href="tel:0448403001" class="btn-speed-dial-call call-hospital" onclick="triggerHapticFeedback()">
+                    <i class="fas fa-phone-flip"></i> <span>CALL (044) 840-3001</span>
+                  </a>
+                  <button type="button" class="btn-speed-dial-copy" onclick="copyHotlineNumber('0448403001', this)" title="Copy number">
+                    <i class="fas fa-copy"></i>
+                  </button>
+                </div>
+              </div>
+
+              <!-- 5. RED CROSS BULACAN -->
+              <div class="speed-dial-card card-redcross">
+                <div class="speed-dial-card-top">
+                  <div class="speed-dial-agency-badge badge-redcross">
+                    <i class="fas fa-square-plus me-1"></i> RED CROSS
+                  </div>
+                  <span class="speed-dial-status"><i class="fas fa-circle text-emerald me-1"></i> Hotline 143</span>
+                </div>
+                <div class="speed-dial-agency-name">Philippine Red Cross - Bulacan</div>
+                <div class="speed-dial-desc">Emergency blood supply, first aid &amp; ambulance transfer</div>
+                <div class="speed-dial-phone-number">(044) 791-0037 / Hotline: 143</div>
+                <div class="speed-dial-actions">
+                  <a href="tel:0447910037" class="btn-speed-dial-call call-redcross" onclick="triggerHapticFeedback()">
+                    <i class="fas fa-phone-flip"></i> <span>CALL (044) 791-0037</span>
+                  </a>
+                  <button type="button" class="btn-speed-dial-copy" onclick="copyHotlineNumber('0447910037', this)" title="Copy number">
+                    <i class="fas fa-copy"></i>
+                  </button>
+                </div>
+              </div>
+
+              <!-- 6. NATIONAL 911 -->
+              <div class="speed-dial-card card-national">
+                <div class="speed-dial-card-top">
+                  <div class="speed-dial-agency-badge badge-national">
+                    <i class="fas fa-tower-broadcast me-1"></i> NATIONAL HOTLINE
+                  </div>
+                  <span class="speed-dial-status"><i class="fas fa-circle text-emerald me-1"></i> Toll-Free</span>
+                </div>
+                <div class="speed-dial-agency-name">National Emergency Hotline 911</div>
+                <div class="speed-dial-desc">Nationwide multi-agency emergency response &amp; dispatch</div>
+                <div class="speed-dial-phone-number">Dial 911 (All mobile networks)</div>
+                <div class="speed-dial-actions">
+                  <a href="tel:911" class="btn-speed-dial-call call-national" onclick="triggerHapticFeedback()">
+                    <i class="fas fa-phone-flip"></i> <span>DIAL 911</span>
+                  </a>
+                  <button type="button" class="btn-speed-dial-copy" onclick="copyHotlineNumber('911', this)" title="Copy number">
+                    <i class="fas fa-copy"></i>
+                  </button>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Footer: Switch to full directory -->
+            <div class="speed-dial-footer">
+              <span class="speed-dial-footer-hint">Need City Hall departments, Meralco, or Maynilad?</span>
+              <button type="button" class="btn-switch-full-directory" onclick="switchToFullHotlines()">
+                <i class="fas fa-book-bookmark me-1"></i> View Full Directory &amp; Utilities &rarr;
+              </button>
             </div>
           </div>
         </div>
@@ -429,6 +1138,162 @@
     </div>
 
     <!-- ============================================================
+       FIND NEAREST EMERGENCY FACILITY MODAL
+       ============================================================ -->
+    <div
+      class="modal fade"
+      id="nearest-modal"
+      tabindex="-1"
+      aria-labelledby="nearest-modal-label"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+        <div class="modal-content nearest-modal-content">
+          <div class="sheet-drag-handle d-md-none" style="margin: 8px auto 2px auto;"></div>
+          <div class="modal-header nearest-modal-header">
+            <div class="d-flex align-items-center gap-3">
+              <div class="nearest-icon-circle">
+                <i class="fas fa-location-crosshairs"></i>
+              </div>
+              <div>
+                <h5 class="modal-title-custom mb-0" id="nearest-modal-label">
+                  <span>FIND NEAREST</span> EMERGENCY FACILITY
+                </h5>
+                <div class="nearest-modal-subtitle">
+                  <span class="live-indicator"><span class="live-dot pulse-blue"></span> GPS PROXIMITY</span>
+                  Spatial Distance & Emergency Response Time
+                </div>
+              </div>
+            </div>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body p-3 p-md-4">
+            <!-- Location Status Banner -->
+            <div class="nearest-location-banner" id="nearest-location-banner">
+              <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+                <div class="d-flex align-items-center gap-2">
+                  <i class="fas fa-location-dot text-cyan fs-5" id="nearest-loc-icon"></i>
+                  <div>
+                    <div class="nearest-loc-status" id="nearest-loc-status">Detecting your GPS position...</div>
+                    <div class="nearest-loc-coords" id="nearest-loc-coords">Please allow location access when prompted</div>
+                  </div>
+                </div>
+                <div class="nearest-loc-actions d-flex gap-2">
+                  <button type="button" class="btn-nearest-action" id="btn-refresh-gps" onclick="refreshUserLocation()">
+                    <i class="fas fa-rotate"></i> <span>Refresh GPS</span>
+                  </button>
+                  <button type="button" class="btn-nearest-action secondary" id="btn-pick-map-loc" onclick="startPickLocationMode()">
+                    <i class="fas fa-map-pin"></i> <span>Pick on Map</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Accuracy Notice (Dynamically shown if ISP GeoIP or low precision) -->
+              <div id="nearest-accuracy-notice" class="nearest-accuracy-notice" style="display:none;"></div>
+
+              <!-- Set My Barangay Direct Selector (Ensures 100% precision anywhere in Meycauayan) -->
+              <div class="nearest-brgy-selector-container">
+                <div class="d-flex align-items-center gap-2 flex-wrap">
+                  <span class="nearest-brgy-select-label">
+                    <i class="fas fa-city text-cyan me-1"></i><strong>Set My Barangay:</strong>
+                  </span>
+                  <select id="select-my-barangay" class="nearest-brgy-dropdown" onchange="handleBarangaySelect(this.value)">
+                    <option value="">-- Select Your Barangay (e.g. Libtong) --</option>
+                  </select>
+                </div>
+                <div class="nearest-quick-chips mt-2 d-flex flex-wrap gap-1 align-items-center">
+                  <span class="nearest-chips-label">Quick Pin:</span>
+                  <button type="button" class="btn-quick-chip" onclick="handleBarangaySelect('Libtong')">📍 Libtong</button>
+                  <button type="button" class="btn-quick-chip" onclick="handleBarangaySelect('Malhacan')">📍 Malhacan</button>
+                  <button type="button" class="btn-quick-chip" onclick="handleBarangaySelect('Saluysoy')">📍 Saluysoy</button>
+                  <button type="button" class="btn-quick-chip" onclick="handleBarangaySelect('Calvario')">📍 Calvario</button>
+                  <button type="button" class="btn-quick-chip" onclick="handleBarangaySelect('Poblacion')">📍 Poblacion</button>
+                  <button type="button" class="btn-quick-chip" onclick="handleBarangaySelect('Perez')">📍 Perez</button>
+                  <button type="button" class="btn-quick-chip" onclick="handleBarangaySelect('Bangkal')">📍 Bangkal</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Category Filter Tabs -->
+            <div class="nearest-filter-tabs" id="nearest-filter-tabs">
+              <button class="nearest-tab-btn active" data-type="all" onclick="filterNearestCategory('all')">
+                All Facilities <span class="nearest-tab-count" id="count-nearest-all">0</span>
+              </button>
+              <button class="nearest-tab-btn" data-type="hospital" onclick="filterNearestCategory('hospital')">
+                <i class="fas fa-hospital text-red me-1"></i> Hospitals <span class="nearest-tab-count" id="count-nearest-hospital">0</span>
+              </button>
+              <button class="nearest-tab-btn" data-type="police" onclick="filterNearestCategory('police')">
+                <i class="fas fa-shield-halved text-blue me-1"></i> Police <span class="nearest-tab-count" id="count-nearest-police">0</span>
+              </button>
+              <button class="nearest-tab-btn" data-type="fire" onclick="filterNearestCategory('fire')">
+                <i class="fas fa-fire text-amber me-1"></i> Fire <span class="nearest-tab-count" id="count-nearest-fire">0</span>
+              </button>
+              <button class="nearest-tab-btn" data-type="healthCenter" onclick="filterNearestCategory('healthCenter')">
+                <i class="fas fa-kit-medical text-emerald me-1"></i> Health <span class="nearest-tab-count" id="count-nearest-health">0</span>
+              </button>
+              <button class="nearest-tab-btn" data-type="cdrrmo" onclick="filterNearestCategory('cdrrmo')">
+                <i class="fas fa-triangle-exclamation text-yellow me-1"></i> CDRRMO
+              </button>
+            </div>
+
+            <!-- Facilities List Container -->
+            <div class="nearest-results-list" id="nearest-results-list">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================
+       ANNOUNCEMENTS MODAL
+       ============================================================ -->
+    <div
+      class="modal fade"
+      id="announcements-modal"
+      tabindex="-1"
+      aria-labelledby="announcements-modal-label"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content bulletin-modal-content">
+          <div class="modal-header bulletin-modal-header">
+            <div class="d-flex align-items-center gap-3">
+              <div class="bulletin-icon-circle">
+                <i class="fas fa-bullhorn"></i>
+              </div>
+              <div>
+                <h5 class="modal-title-custom mb-0" id="announcements-modal-label">
+                  <span>CITY</span> ANNOUNCEMENTS & ADVISORIES
+                </h5>
+                <div class="bulletin-modal-subtitle">
+                  <span class="live-indicator"><span class="live-dot"></span> LIVE FEED</span>
+                  Official Public Advisories & Disaster Bulletins
+                </div>
+              </div>
+            </div>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body p-3 p-md-4">
+            <div id="announcements-modal-list" class="bulletin-cards-container">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================
        ABOUT MODAL
        ============================================================ -->
     <div
@@ -440,6 +1305,7 @@
     >
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
+          <div class="sheet-drag-handle d-md-none" style="margin: 8px auto 2px auto;"></div>
           <div class="modal-header">
             <h5 class="modal-title-custom" id="about-modal-label">
               <i
@@ -456,35 +1322,28 @@
             ></button>
           </div>
           <div class="modal-body">
-            <div style="display: flex; flex-direction: column; gap: 10px">
+            <div style="display: flex; flex-direction: column; gap: 8px">
               <div class="modal-info-box">
                 <div class="modal-info-box-title">SYSTEM OVERVIEW</div>
                 <p class="modal-info-box-text">
-                  The Meycauayan City Emergency Facility Portal is an
-                  interactive Geographic Information System (GIS) platform
-                  designed to provide residents with quick access to emergency
-                  facility information across all 26 barangays of Meycauayan
-                  City, Bulacan.
+                  Interactive Geographic Information System (GIS) providing quick access to emergency facilities, contact hotlines, and coverage across all 26 barangays of Meycauayan City, Bulacan.
                 </p>
               </div>
               <div class="modal-info-box">
-                <div class="modal-info-box-title">FEATURES</div>
-                <ul class="modal-info-box-list">
-                  <li>Interactive GIS map with barangay boundaries</li>
-                  <li>Barangay Focus Mode with detailed information</li>
-                  <li>Directory of all emergency facilities</li>
-                  <li>Real-time search across all categories</li>
-                  <li>Emergency hotline quick reference</li>
-                  <li>Google Maps integration</li>
-                </ul>
+                <div class="modal-info-box-title">KEY CAPABILITIES</div>
+                <div class="about-feature-chips">
+                  <span class="about-chip"><i class="fas fa-draw-polygon text-cyan"></i> 26 Barangays GIS</span>
+                  <span class="about-chip"><i class="fas fa-shield-halved text-cyan"></i> Emergency POIs</span>
+                  <span class="about-chip"><i class="fas fa-crosshairs text-cyan"></i> Barangay Focus</span>
+                  <span class="about-chip"><i class="fas fa-magnifying-glass text-cyan"></i> Live Search</span>
+                  <span class="about-chip"><i class="fas fa-phone text-cyan"></i> 24/7 Hotlines</span>
+                  <span class="about-chip"><i class="fas fa-diamond-turn-right text-cyan"></i> Google Maps</span>
+                </div>
               </div>
               <div class="modal-info-box danger-accent">
-                <div class="modal-info-box-title">DISCLAIMER</div>
+                <div class="modal-info-box-title">ACADEMIC DISCLAIMER</div>
                 <p class="modal-info-box-text" style="font-size: 11px;">
-                  This system is developed as an academic capstone project for
-                  Grade 12. All data presented is for demonstration purposes.
-                  For actual emergencies, always contact official emergency
-                  services immediately.
+                  Academic capstone project for Grade 12. Data is for demonstration. In actual emergencies, call official emergency hotlines immediately.
                 </p>
               </div>
             </div>
@@ -503,11 +1362,11 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
     <!-- Data Files -->
-    <script src="data/barangays.js"></script>
-    <script src="data/facilities.js"></script>
+    <script src="data/barangays.js?v=2.4"></script>
+    <script src="data/facilities.js?v=3.3"></script>
 
     <!-- Main Script -->
-    <script src="assets/js/script.js?v=2.1"></script>
+    <script src="assets/js/script.js?v=10.0"></script>
     <script>
       setTimeout(() => {
         const overlay = document.getElementById('loading-overlay');

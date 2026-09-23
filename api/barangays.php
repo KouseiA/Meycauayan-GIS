@@ -33,6 +33,36 @@ if ($method === 'GET') {
     jsonResponse($rows);
 }
 
+// POST — create new barangay (admin)
+if ($method === 'POST') {
+    $body = getRequestBody();
+    $name = trim($body['name'] ?? '');
+    if (!$name) jsonResponse(['error' => 'Barangay name is required.'], 400);
+
+    $captain     = $body['captain'] ?? null;
+    $population  = isset($body['population']) && $body['population'] !== '' ? (int)$body['population'] : null;
+    $area        = $body['area'] ?? null;
+    $address     = $body['address'] ?? null;
+    $contact     = $body['contact'] ?? null;
+    $description = $body['description'] ?? null;
+    $geojson     = isset($body['geojson']) ? json_encode($body['geojson']) : null;
+
+    try {
+        $stmt = $pdo->prepare("
+            INSERT INTO barangays (name, captain, population, area, address, contact, description, geojson)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        ");
+        $stmt->execute([$name, $captain, $population, $area, $address, $contact, $description, $geojson]);
+
+        jsonResponse(['success' => true, 'id' => (int)$pdo->lastInsertId(), 'message' => 'Barangay created successfully.']);
+    } catch (PDOException $e) {
+        if ($e->getCode() == 23000) {
+            jsonResponse(['error' => 'A barangay with this name already exists.'], 400);
+        }
+        jsonResponse(['error' => 'Database error: ' . $e->getMessage()], 500);
+    }
+}
+
 // PUT — update barangay info (admin)
 if ($method === 'PUT') {
     $body = getRequestBody();
@@ -57,6 +87,18 @@ if ($method === 'PUT') {
     $params[] = $id;
     $pdo->prepare("UPDATE barangays SET " . implode(', ', $set) . " WHERE id = ?")->execute($params);
     jsonResponse(['success' => true, 'message' => 'Barangay updated.']);
+}
+
+// DELETE — delete barangay (admin)
+if ($method === 'DELETE') {
+    $body = getRequestBody();
+    $id   = (int)($body['id'] ?? $_GET['id'] ?? 0);
+    if (!$id) jsonResponse(['error' => 'Barangay ID required.'], 400);
+
+    $stmt = $pdo->prepare("DELETE FROM barangays WHERE id = ?");
+    $stmt->execute([$id]);
+
+    jsonResponse(['success' => true, 'message' => 'Barangay deleted.']);
 }
 
 jsonResponse(['error' => 'Method not allowed.'], 405);
