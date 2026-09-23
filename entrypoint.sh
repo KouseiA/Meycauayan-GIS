@@ -4,6 +4,10 @@ set -e
 # Suppress ServerName warning
 echo "ServerName localhost" >> /etc/apache2/apache2.conf
 
+# 100% guaranteed fix for Apache MPM conflict: remove all MPMs and enable only prefork
+rm -f /etc/apache2/mods-enabled/mpm_*.load /etc/apache2/mods-enabled/mpm_*.conf
+a2enmod mpm_prefork
+
 # Ensure Apache listens on BOTH 80, 8080, and dynamic $PORT
 echo "Listen 80" >> /etc/apache2/ports.conf
 echo "Listen 8080" >> /etc/apache2/ports.conf
