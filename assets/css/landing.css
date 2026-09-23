@@ -201,109 +201,15 @@ body {
   min-height: 52px;
 }
 
-/* ============================================================
-   1. NAVBAR
-   ============================================================ */
-.landing-header {
-  position: sticky;
-  top: 1rem;
-  z-index: 100;
-  width: 100%;
-  padding: 0 1rem;
-}
-
-.nav-glass {
-  max-width: 1160px;
-  margin: 0 auto;
-  background: rgba(12, 18, 32, 0.82);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-full);
-  padding: 0.65rem 1.25rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
-  position: relative;
-}
-
-.nav-brand {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  text-decoration: none;
-}
-
-.brand-icon-box {
-  width: 38px;
-  height: 38px;
-  background: linear-gradient(135deg, rgba(2, 132, 199, 0.3) 0%, rgba(56, 189, 248, 0.15) 100%);
-  border: 1px solid rgba(56, 189, 248, 0.4);
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--accent-cyan);
-  font-size: 1.15rem;
-}
-
-.brand-titles {
-  display: flex;
-  flex-direction: column;
-}
-
-.brand-name {
-  font-family: var(--font-heading);
-  font-weight: 800;
-  font-size: 1.15rem;
-  color: var(--text-white);
-  letter-spacing: 0.05em;
-  line-height: 1.1;
-}
-
-.brand-tag {
-  font-size: 0.7rem;
-  color: var(--accent-cyan);
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.nav-menu {
-  display: flex;
-  align-items: center;
-  gap: 1.75rem;
-  list-style: none;
-}
-
-.nav-link {
-  color: var(--text-muted);
-  text-decoration: none;
-  font-size: 0.9rem;
-  font-weight: 500;
-  transition: color var(--transition-fast);
-}
-
-.nav-link:hover {
-  color: var(--text-white);
-}
-
-.nav-right {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-}
-
 .badge-pill {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.35rem 0.85rem;
+  padding: 0.4rem 0.95rem;
   border-radius: var(--radius-full);
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid var(--border-subtle);
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   font-weight: 600;
   color: var(--text-light);
 }
@@ -323,22 +229,11 @@ body {
   100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
 }
 
-.mobile-toggle {
-  display: none;
-  background: transparent;
-  border: none;
-  color: var(--text-light);
-  font-size: 1.25rem;
-  cursor: pointer;
-  padding: 0.4rem;
-  border-radius: 8px;
-}
-
 /* ============================================================
-   2. HERO SECTION
+   HERO SECTION (Immediate Action)
    ============================================================ */
 .hero-section {
-  padding: 4.5rem 0 3rem 0;
+  padding: 3.5rem 0 2.5rem 0;
   text-align: center;
 }
 
