@@ -100,7 +100,7 @@ Write-Host ''
 Write-Host '  NEXT STEPS:' -ForegroundColor Yellow
 Write-Host "  1. Upload $zipName to your hosting via cPanel File Manager" -ForegroundColor White
 Write-Host '  2. Extract to public_html/' -ForegroundColor White
-Write-Host '  3. Set up MySQL database (import database/schema.sql)' -ForegroundColor White
+Write-Host '  3. Set up MySQL database (import database/meycauayan_gis.sql)' -ForegroundColor White
 Write-Host '  4. Configure environment variables (see .env.example)' -ForegroundColor White
 Write-Host '  5. Run database/seed.php once to populate data' -ForegroundColor White
 Write-Host '  6. Change the default admin password' -ForegroundColor Red

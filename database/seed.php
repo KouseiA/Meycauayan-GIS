@@ -13,7 +13,7 @@ try {
     die("<h2 style='color:red'>DB Error: " . htmlspecialchars($e->getMessage()) . "</h2>
          <p>Make sure you have:<br>
          1. Started MySQL or linked your database<br>
-         2. Imported <code>database/schema.sql</code> first</p>");
+         2. Imported <code>database/meycauayan_gis.sql</code> first</p>");
 }
 
 $pdo->exec("SET FOREIGN_KEY_CHECKS = 0; TRUNCATE TABLE facilities; TRUNCATE TABLE barangays; SET FOREIGN_KEY_CHECKS = 1;");
