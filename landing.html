@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
     <meta
       name="description"
-      content="MEYCMAP — A Web-Based Mapping and Locator System for Emergency Services in Meycauayan, Bulacan. Real-time emergency triage, facility locators, and 1-tap dispatch."
+      content="MEYCMAP — A Web-Based Mapping and Locator System for Emergency Services in Meycauayan, Bulacan. Locate hospitals, fire stations, and police headquarters in real time."
     />
     <meta
       name="keywords"
-      content="MEYCMAP, Meycauayan, Emergency GIS, Bulacan, Triage Locator, Police Station, Fire Station, Hospital, CDRRMO"
+      content="MEYCMAP, Meycauayan, Emergency GIS, Bulacan, Barangay map, Police Station, Fire Station, Hospital, CDRRMO"
     />
     <title>MEYCMAP — Emergency Services Mapping System | Meycauayan, Bulacan</title>
 
@@ -17,7 +17,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@600;700;800;900&display=swap"
       rel="stylesheet"
     />
 
@@ -28,7 +28,7 @@
     />
 
     <!-- Custom Landing Page Styles -->
-    <link rel="stylesheet" href="assets/css/landing.css?v=3.0" />
+    <link rel="stylesheet" href="assets/css/landing.css?v=2.0" />
 
     <!-- Favicon -->
     <link
@@ -37,56 +37,29 @@
     />
   </head>
   <body>
-    <!-- Ambient Background Lighting Orbs & Grid -->
+    <!-- Ambient Background Lighting Orbs -->
     <div class="ambient-glow" aria-hidden="true">
       <div class="glow-orb orb-1"></div>
       <div class="glow-orb orb-2"></div>
       <div class="glow-orb orb-3"></div>
-      <div class="carto-grid"></div>
     </div>
 
-    <!-- ============================================================
-       TOP TELEMETRY DISPATCH HUD (Mission-Critical Strip)
-       ============================================================ -->
-    <div class="telemetry-bar">
-      <div class="container telemetry-inner">
-        <div class="telemetry-left">
-          <span class="telemetry-status-badge">
-            <span class="pulse-dot"></span>
-            DISPATCH ACTIVE
-          </span>
-          <span class="telemetry-divider d-none d-sm-inline">|</span>
-          <span class="telemetry-coords d-none d-md-inline">
-            <i class="fas fa-satellite text-cyan"></i> 14.7350° N, 120.9575° E
-          </span>
-          <span class="telemetry-divider d-none d-md-inline">|</span>
-          <span class="telemetry-coverage">
-            <i class="fas fa-shield-halved text-cyan"></i> 26 BARANGAYS READY
-          </span>
-        </div>
-        <div class="telemetry-right">
-          <a href="#hotlines" class="telemetry-link">
-            <i class="fas fa-phone-volume text-danger"></i>
-            <span>Emergency Hotlines</span>
-          </a>
-        </div>
-      </div>
-    </div>
+
 
     <!-- ============================================================
-       HERO SECTION (High-Urgency Command Center)
+       2. HERO SECTION (Direct, Bold & Action-Oriented)
        ============================================================ -->
     <section class="hero-section" id="hero">
       <div class="container">
         <div class="hero-content">
           <div class="hero-badge-wrap">
-            <span class="badge-pill hero-urgent-badge">
-              <span class="pulse-dot-red"></span>
-              LEVEL 1 DISPATCH READINESS
+            <span class="badge-pill hero-live-badge">
+              <span class="pulse-dot"></span>
+              24/7 Live Emergency Portal
             </span>
             <span class="badge-pill hero-location-badge">
               <i class="fas fa-location-dot text-cyan"></i>
-              City of Meycauayan • Bulacan
+              Meycauayan City • Bulacan
             </span>
           </div>
 
@@ -99,7 +72,7 @@
           </p>
 
           <p class="hero-subtitle">
-            Interactive geospatial triage and locator portal. Detect your coordinates or pick your barangay to identify the closest emergency response stations in real time with 1-tap dispatch calling.
+            Instantly locate the nearest hospitals, fire stations, police headquarters, and health centers in real time with distance estimation and 1-tap emergency dispatch calling.
           </p>
 
           <!-- Primary Hero Actions -->
@@ -109,9 +82,9 @@
               <span>Launch Live GIS Map</span>
               <i class="fas fa-arrow-right"></i>
             </a>
-            <a href="#triage" class="btn btn-danger-glow btn-lg">
-              <i class="fas fa-crosshairs"></i>
-              <span>Instant Emergency Triage</span>
+            <a href="#hotlines" class="btn btn-danger-glow btn-lg">
+              <i class="fas fa-phone-volume"></i>
+              <span>Call Emergency Hotlines</span>
             </a>
           </div>
         </div>
@@ -119,184 +92,139 @@
     </section>
 
     <!-- ============================================================
-       LIVE TRIAGE LOCATOR (Star Feature — Citizen App Style)
+       3. DIRECT EMERGENCY QUICK-LAUNCHER (Direct to Map by Category)
        ============================================================ -->
-    <section class="triage-section" id="triage">
+    <section class="quick-launch-section" id="quick-launch">
       <div class="container">
-        <div class="triage-box">
-          <div class="triage-header">
-            <div>
-              <span class="section-tag tag-emergency"><i class="fas fa-bolt me-1"></i> Real-Time Emergency Triage</span>
-              <h2 class="triage-title">Locate Your Closest Responders</h2>
-              <p class="triage-desc">Detect your GPS or select your barangay to calculate distances to the nearest hospital, fire station, and police precinct instantly.</p>
-            </div>
+        <div class="section-header">
+          <span class="section-tag"><i class="fas fa-bolt me-1"></i> Quick Facility Finder</span>
+          <h2 class="section-title">Select Emergency Service</h2>
+          <p class="section-desc">
+            Tap a service below to open the interactive map instantly filtered to that facility type.
+          </p>
+        </div>
 
-            <!-- Triage Controls -->
-            <div class="triage-controls">
-              <button type="button" class="btn btn-gps" id="btn-detect-gps" title="Detect your exact location with device GPS">
-                <i class="fas fa-location-crosshairs"></i>
-                <span>Use My Live GPS</span>
-              </button>
-              <div class="select-wrap">
-                <i class="fas fa-map-pin select-icon"></i>
-                <select id="triage-barangay-select" class="triage-select" aria-label="Select your barangay">
-                  <option value="">Select Barangay (26 Areas)...</option>
-                  <!-- Populated by JavaScript -->
-                </select>
+        <div class="quick-grid">
+          <!-- Medical / Hospitals -->
+          <a href="index.html?type=hospital" class="quick-card card-hospital">
+            <div class="quick-card-top">
+              <div class="quick-icon-box">
+                <i class="fas fa-hospital"></i>
+              </div>
+              <span class="quick-arrow"><i class="fas fa-arrow-right"></i></span>
+            </div>
+            <div class="quick-card-body">
+              <h3 class="quick-name">Hospitals & Trauma</h3>
+              <p class="quick-desc">Emergency rooms, private & public hospitals, 24/7 care</p>
+              <div class="quick-badge">
+                <i class="fas fa-location-dot"></i> View on Map
               </div>
             </div>
+          </a>
+
+          <!-- Fire Stations -->
+          <a href="index.html?type=fire" class="quick-card card-fire">
+            <div class="quick-card-top">
+              <div class="quick-icon-box">
+                <i class="fas fa-fire-extinguisher"></i>
+              </div>
+              <span class="quick-arrow"><i class="fas fa-arrow-right"></i></span>
+            </div>
+            <div class="quick-card-body">
+              <h3 class="quick-name">Fire Stations</h3>
+              <p class="quick-desc">BFP Central Station & community fire substations</p>
+              <div class="quick-badge">
+                <i class="fas fa-location-dot"></i> View on Map
+              </div>
+            </div>
+          </a>
+
+          <!-- Police Stations -->
+          <a href="index.html?type=police" class="quick-card card-police">
+            <div class="quick-card-top">
+              <div class="quick-icon-box">
+                <i class="fas fa-shield-halved"></i>
+              </div>
+              <span class="quick-arrow"><i class="fas fa-arrow-right"></i></span>
+            </div>
+            <div class="quick-card-body">
+              <h3 class="quick-name">Police Headquarters</h3>
+              <p class="quick-desc">PNP Meycauayan central station & community police precincts</p>
+              <div class="quick-badge">
+                <i class="fas fa-location-dot"></i> View on Map
+              </div>
+            </div>
+          </a>
+
+          <!-- Health Centers / Clinics -->
+          <a href="index.html?type=healthCenter" class="quick-card card-health">
+            <div class="quick-card-top">
+              <div class="quick-icon-box">
+                <i class="fas fa-kit-medical"></i>
+              </div>
+              <span class="quick-arrow"><i class="fas fa-arrow-right"></i></span>
+            </div>
+            <div class="quick-card-body">
+              <h3 class="quick-name">Barangay Health Centers</h3>
+              <p class="quick-desc">Local primary health units & maternal care centers</p>
+              <div class="quick-badge">
+                <i class="fas fa-location-dot"></i> View on Map
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+       4. COMPACT STATS STRIP (Mobile 2x2 Grid)
+       ============================================================ -->
+    <section class="metric-strip-section">
+      <div class="container">
+        <div class="metric-grid">
+          <div class="metric-card">
+            <div class="metric-number" data-target="26">26</div>
+            <div class="metric-label">Barangays Mapped</div>
           </div>
-
-          <!-- Status Banner -->
-          <div class="triage-status-banner" id="triage-status-banner">
-            <i class="fas fa-circle-check text-cyan"></i>
-            <span id="triage-status-text">Displaying nearest stations from <strong>Poblacion (City Center)</strong>. Tap GPS or select your barangay above to customize.</span>
+          <div class="metric-card">
+            <div class="metric-number" data-target="36" data-suffix="+">36+</div>
+            <div class="metric-label">Emergency Facilities</div>
           </div>
-
-          <!-- Triage Results Grid (Populated dynamically) -->
-          <div class="triage-results-grid" id="triage-results">
-            <!-- Medical Card -->
-            <div class="triage-card triage-medical" id="triage-card-hosp">
-              <div class="triage-card-header">
-                <div class="triage-icon-box"><i class="fas fa-hospital"></i></div>
-                <div class="triage-card-meta">
-                  <span class="triage-category-tag">Nearest Medical Center</span>
-                  <h3 class="triage-station-name" id="triage-hosp-name">Ospital ng Meycauayan</h3>
-                  <div class="triage-station-addr" id="triage-hosp-addr">Poblacion, Meycauayan City</div>
-                </div>
-              </div>
-              <div class="triage-telemetry-strip">
-                <div class="triage-stat">
-                  <span class="triage-stat-label">Distance</span>
-                  <span class="triage-stat-val text-cyan" id="triage-hosp-dist">0.8 km</span>
-                </div>
-                <div class="triage-stat">
-                  <span class="triage-stat-label">Drive Time</span>
-                  <span class="triage-stat-val text-emerald" id="triage-hosp-time">~2 mins</span>
-                </div>
-                <div class="triage-stat">
-                  <span class="triage-stat-label">Status</span>
-                  <span class="triage-stat-val text-emerald">24/7 ER</span>
-                </div>
-              </div>
-              <div class="triage-card-actions">
-                <a href="tel:0448403001" class="btn btn-triage-call" id="triage-hosp-call">
-                  <i class="fas fa-phone"></i> Call Emergency
-                </a>
-                <a href="index.html?type=hospital" class="btn btn-triage-map" id="triage-hosp-map">
-                  <i class="fas fa-route"></i> View Route
-                </a>
-              </div>
-            </div>
-
-            <!-- Fire Station Card -->
-            <div class="triage-card triage-fire" id="triage-card-fire">
-              <div class="triage-card-header">
-                <div class="triage-icon-box"><i class="fas fa-fire-extinguisher"></i></div>
-                <div class="triage-card-meta">
-                  <span class="triage-category-tag">Nearest Fire Station</span>
-                  <h3 class="triage-station-name" id="triage-fire-name">BFP Central Fire Station</h3>
-                  <div class="triage-station-addr" id="triage-fire-addr">Malhacan Road, Meycauayan City</div>
-                </div>
-              </div>
-              <div class="triage-telemetry-strip">
-                <div class="triage-stat">
-                  <span class="triage-stat-label">Distance</span>
-                  <span class="triage-stat-val text-cyan" id="triage-fire-dist">0.9 km</span>
-                </div>
-                <div class="triage-stat">
-                  <span class="triage-stat-label">Drive Time</span>
-                  <span class="triage-stat-val text-emerald" id="triage-fire-time">~3 mins</span>
-                </div>
-                <div class="triage-stat">
-                  <span class="triage-stat-label">Status</span>
-                  <span class="triage-stat-val text-amber">On Duty</span>
-                </div>
-              </div>
-              <div class="triage-card-actions">
-                <a href="tel:0443202222" class="btn btn-triage-call btn-call-fire" id="triage-fire-call">
-                  <i class="fas fa-phone"></i> Call Fire Dept
-                </a>
-                <a href="index.html?type=fire" class="btn btn-triage-map" id="triage-fire-map">
-                  <i class="fas fa-route"></i> View Route
-                </a>
-              </div>
-            </div>
-
-            <!-- Police Station Card -->
-            <div class="triage-card triage-police" id="triage-card-police">
-              <div class="triage-card-header">
-                <div class="triage-icon-box"><i class="fas fa-shield-halved"></i></div>
-                <div class="triage-card-meta">
-                  <span class="triage-category-tag">Nearest Police Precinct</span>
-                  <h3 class="triage-station-name" id="triage-police-name">Meycauayan City Police Station</h3>
-                  <div class="triage-station-addr" id="triage-police-addr">Hulo-Banga Road, Poblacion</div>
-                </div>
-              </div>
-              <div class="triage-telemetry-strip">
-                <div class="triage-stat">
-                  <span class="triage-stat-label">Distance</span>
-                  <span class="triage-stat-val text-cyan" id="triage-police-dist">0.5 km</span>
-                </div>
-                <div class="triage-stat">
-                  <span class="triage-stat-label">Drive Time</span>
-                  <span class="triage-stat-val text-emerald" id="triage-police-time">~1 min</span>
-                </div>
-                <div class="triage-stat">
-                  <span class="triage-stat-label">Status</span>
-                  <span class="triage-stat-val text-cyan">Patrol Active</span>
-                </div>
-              </div>
-              <div class="triage-card-actions">
-                <a href="tel:0447693393" class="btn btn-triage-call btn-call-police" id="triage-police-call">
-                  <i class="fas fa-phone"></i> Call Police
-                </a>
-                <a href="index.html?type=police" class="btn btn-triage-map" id="triage-police-map">
-                  <i class="fas fa-route"></i> View Route
-                </a>
-              </div>
-            </div>
+          <div class="metric-card">
+            <div class="metric-number" data-target="4">4</div>
+            <div class="metric-label">Key Service Types</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-number" data-prefix="< " data-target="3" data-suffix="s">&lt; 3s</div>
+            <div class="metric-label">GPS Route Calculation</div>
           </div>
         </div>
       </div>
     </section>
 
     <!-- ============================================================
-       1-TAP EMERGENCY HOTLINES WITH REAL-TIME SEARCH
+       5. 1-TAP EMERGENCY HOTLINES DIRECTORY (High Priority)
        ============================================================ -->
     <section class="directory-section" id="hotlines">
       <div class="container">
         <div class="section-header">
           <span class="section-tag tag-emergency"><i class="fas fa-phone-volume me-1"></i> Direct 24/7 Dispatch</span>
-          <h2 class="section-title">Emergency Hotline Directory</h2>
+          <h2 class="section-title">Emergency Hotlines</h2>
           <p class="section-desc">
-            Tap any hotline card below to dial directly on your smartphone. Available 24 hours a day, 7 days a week.
+            Tap any hotline below to dial directly on your phone. Available 24 hours a day, 7 days a week.
           </p>
-
-          <!-- Real-Time Hotline Search Input -->
-          <div class="hotline-search-wrap">
-            <i class="fas fa-magnifying-glass search-icon"></i>
-            <input
-              type="text"
-              id="hotline-search"
-              class="hotline-search-input"
-              placeholder="Filter by agency or keyword (e.g. fire, police, hospital, rescue)..."
-              autocomplete="off"
-            />
-            <span class="search-badge" id="hotline-counter">6 Lines</span>
-          </div>
         </div>
 
-        <div class="hotline-grid" id="hotline-grid">
+        <div class="hotline-grid">
           <!-- CDRRMO Rescue -->
-          <a href="tel:0443057281" class="hotline-card hotline-cdrrmo" data-keywords="cdrrmo rescue disaster flood medical emergency bulacan ambulance">
+          <a href="tel:0443057281" class="hotline-card hotline-cdrrmo">
             <div class="hotline-card-header">
               <div class="hotline-icon">
                 <i class="fas fa-truck-medical"></i>
               </div>
               <div class="hotline-info">
                 <div class="hotline-agency">CDRRMO Rescue</div>
-                <div class="hotline-desc">City Disaster Risk Reduction Office</div>
+                <div class="hotline-desc">Disaster Risk Reduction & Management</div>
               </div>
             </div>
             <div class="hotline-number-box">
@@ -306,14 +234,14 @@
           </a>
 
           <!-- BFP Fire Protection -->
-          <a href="tel:0443202222" class="hotline-card hotline-fire" data-keywords="bfp fire station bureau protection firefighter bumbero arson">
+          <a href="tel:0443202222" class="hotline-card hotline-fire">
             <div class="hotline-card-header">
               <div class="hotline-icon">
                 <i class="fas fa-fire-extinguisher"></i>
               </div>
               <div class="hotline-info">
                 <div class="hotline-agency">BFP Meycauayan</div>
-                <div class="hotline-desc">Bureau of Fire Protection Station</div>
+                <div class="hotline-desc">Bureau of Fire Protection</div>
               </div>
             </div>
             <div class="hotline-number-box">
@@ -323,7 +251,7 @@
           </a>
 
           <!-- PNP City Police -->
-          <a href="tel:0447693393" class="hotline-card hotline-police" data-keywords="pnp police station pulis patrol crime law precinct meycauayan">
+          <a href="tel:0447693393" class="hotline-card hotline-police">
             <div class="hotline-card-header">
               <div class="hotline-icon">
                 <i class="fas fa-handcuffs"></i>
@@ -340,13 +268,13 @@
           </a>
 
           <!-- Meycauayan Doctors Hospital -->
-          <a href="tel:0448152500" class="hotline-card hotline-hospital" data-keywords="meycauayan doctors hospital medical er emergency trauma health clinic">
+          <a href="tel:0448152500" class="hotline-card hotline-hospital">
             <div class="hotline-card-header">
               <div class="hotline-icon">
                 <i class="fas fa-hospital"></i>
               </div>
               <div class="hotline-info">
-                <div class="hotline-agency">Meycauayan Doctors</div>
+                <div class="hotline-agency">Meycauayan Doctors Hospital</div>
                 <div class="hotline-desc">Emergency Room & Trauma Center</div>
               </div>
             </div>
@@ -357,14 +285,14 @@
           </a>
 
           <!-- Mary Mount Hospital -->
-          <a href="tel:0447696279" class="hotline-card hotline-hospital" data-keywords="mary mount hospital emergency medical clinic doctor trauma camalig">
+          <a href="tel:0447696279" class="hotline-card hotline-hospital">
             <div class="hotline-card-header">
               <div class="hotline-icon">
                 <i class="fas fa-staff-snake"></i>
               </div>
               <div class="hotline-info">
                 <div class="hotline-agency">Mary Mount Hospital</div>
-                <div class="hotline-desc">Emergency Medical Services</div>
+                <div class="hotline-desc">Emergency Medical Department</div>
               </div>
             </div>
             <div class="hotline-number-box">
@@ -374,7 +302,7 @@
           </a>
 
           <!-- Philippine Red Cross -->
-          <a href="tel:0447910563" class="hotline-card hotline-cdrrmo" data-keywords="red cross bulacan blood ambulance rescue disaster first aid">
+          <a href="tel:0447910563" class="hotline-card hotline-cdrrmo">
             <div class="hotline-card-header">
               <div class="hotline-icon">
                 <i class="fas fa-square-plus"></i>
@@ -394,102 +322,58 @@
     </section>
 
     <!-- ============================================================
-       DIRECT EMERGENCY QUICK-LAUNCHER (Direct to Map by Category)
+       6. 3-STEP USER WORKFLOW (Clean & Direct)
        ============================================================ -->
-    <section class="quick-launch-section" id="quick-launch">
+    <section class="how-it-works-section" id="how-it-works">
       <div class="container">
         <div class="section-header">
-          <span class="section-tag"><i class="fas fa-layer-group me-1"></i> Categorized Mapping</span>
-          <h2 class="section-title">Explore Emergency Layers</h2>
+          <span class="section-tag"><i class="fas fa-route me-1"></i> User Journey</span>
+          <h2 class="section-title">How MEYCMAP Works</h2>
           <p class="section-desc">
-            Tap a service card to open the interactive map pre-filtered with highlighted spatial coordinates.
+            Simple 3-step workflow designed to save time during critical situations.
           </p>
         </div>
 
-        <div class="quick-grid">
-          <!-- Hospitals -->
-          <a href="index.html?type=hospital" class="quick-card card-hospital">
-            <div class="quick-card-top">
-              <div class="quick-icon-box"><i class="fas fa-hospital"></i></div>
-              <span class="quick-arrow"><i class="fas fa-arrow-right"></i></span>
-            </div>
-            <div class="quick-card-body">
-              <h3 class="quick-name">Hospitals & Trauma</h3>
-              <p class="quick-desc">Emergency rooms, district hospitals, and surgical clinics</p>
-              <div class="quick-badge"><i class="fas fa-location-dot"></i> View on Map</div>
-            </div>
-          </a>
+        <div class="steps-grid">
+          <div class="step-card">
+            <div class="step-badge">1</div>
+            <div class="step-icon"><i class="fas fa-crosshairs"></i></div>
+            <h3>Detect Location</h3>
+            <p>Tap the GPS button to detect your current position, or pick your barangay from the 26-barangay directory.</p>
+          </div>
 
-          <!-- Fire -->
-          <a href="index.html?type=fire" class="quick-card card-fire">
-            <div class="quick-card-top">
-              <div class="quick-icon-box"><i class="fas fa-fire-extinguisher"></i></div>
-              <span class="quick-arrow"><i class="fas fa-arrow-right"></i></span>
-            </div>
-            <div class="quick-card-body">
-              <h3 class="quick-name">Fire Stations</h3>
-              <p class="quick-desc">BFP Central Station and community fire brigades</p>
-              <div class="quick-badge"><i class="fas fa-location-dot"></i> View on Map</div>
-            </div>
-          </a>
+          <div class="step-card">
+            <div class="step-badge">2</div>
+            <div class="step-icon"><i class="fas fa-filter"></i></div>
+            <h3>Filter Service</h3>
+            <p>Select Medical, Fire, Police, or Health Center to filter the map and highlight the nearest facility instantly.</p>
+          </div>
 
-          <!-- Police -->
-          <a href="index.html?type=police" class="quick-card card-police">
-            <div class="quick-card-top">
-              <div class="quick-icon-box"><i class="fas fa-shield-halved"></i></div>
-              <span class="quick-arrow"><i class="fas fa-arrow-right"></i></span>
-            </div>
-            <div class="quick-card-body">
-              <h3 class="quick-name">Police Headquarters</h3>
-              <p class="quick-desc">PNP Meycauayan central station and community precincts</p>
-              <div class="quick-badge"><i class="fas fa-location-dot"></i> View on Map</div>
-            </div>
-          </a>
+          <div class="step-card">
+            <div class="step-badge">3</div>
+            <div class="step-icon"><i class="fas fa-phone-volume"></i></div>
+            <h3>Route & Call</h3>
+            <p>View shortest route in meters, check travel time estimates, and tap the 1-touch Speed-Dial to contact responders.</p>
+          </div>
+        </div>
 
-          <!-- Health Centers -->
-          <a href="index.html?type=healthCenter" class="quick-card card-health">
-            <div class="quick-card-top">
-              <div class="quick-icon-box"><i class="fas fa-kit-medical"></i></div>
-              <span class="quick-arrow"><i class="fas fa-arrow-right"></i></span>
-            </div>
-            <div class="quick-card-body">
-              <h3 class="quick-name">Health Centers</h3>
-              <p class="quick-desc">Local primary health units and maternal care centers</p>
-              <div class="quick-badge"><i class="fas fa-location-dot"></i> View on Map</div>
-            </div>
+        <!-- Big Launch Banner inside Steps -->
+        <div class="map-cta-banner">
+          <div class="map-cta-text">
+            <h3>Ready to explore Meycauayan City's spatial network?</h3>
+            <p>Interactive vector map, 26 barangay polygons, and real-time proximity calculations.</p>
+          </div>
+          <a href="index.html" class="btn btn-primary btn-lg">
+            <i class="fas fa-map"></i>
+            <span>Open Interactive Map</span>
+            <i class="fas fa-arrow-right"></i>
           </a>
         </div>
       </div>
     </section>
 
     <!-- ============================================================
-       COMPACT METRIC STRIP (2x2 on Mobile)
-       ============================================================ -->
-    <section class="metric-strip-section">
-      <div class="container">
-        <div class="metric-grid">
-          <div class="metric-card">
-            <div class="metric-number" data-target="26">26</div>
-            <div class="metric-label">Barangays Mapped</div>
-          </div>
-          <div class="metric-card">
-            <div class="metric-number" data-target="36" data-suffix="+">36+</div>
-            <div class="metric-label">Geocoded Facilities</div>
-          </div>
-          <div class="metric-card">
-            <div class="metric-number" data-target="4">4</div>
-            <div class="metric-label">Emergency Networks</div>
-          </div>
-          <div class="metric-card">
-            <div class="metric-number" data-prefix="< " data-target="3" data-suffix="s">&lt; 3s</div>
-            <div class="metric-label">GPS Triage Calculation</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============================================================
-       SYSTEM ARCHITECTURE & CAPSTONE ACCREDITATION
+       7. SYSTEM ARCHITECTURE & CAPSTONE ACCREDITATION
        ============================================================ -->
     <section class="about-section" id="about">
       <div class="container">
@@ -497,7 +381,7 @@
           <span class="section-tag"><i class="fas fa-graduation-cap me-1"></i> Academic Research Capstone</span>
           <h2 class="about-title">MEYCMAP Project Overview</h2>
           <p class="about-desc">
-            <strong>MEYCMAP</strong> is a web-based geospatial information system (GIS) designed and developed for the city government, emergency responders, and civilians of <strong>Meycauayan City, Bulacan</strong> to provide rapid access to emergency facilities and communication channels.
+            <strong>MEYCMAP</strong> is a web-based geospatial information system (GIS) designed and developed to provide the residents, emergency personnel, and local government of <strong>Meycauayan City, Bulacan</strong> with rapid, accurate access to public emergency facilities and contact channels.
           </p>
 
           <div class="tech-stack-row">
@@ -505,15 +389,15 @@
             <span class="tech-badge"><i class="fas fa-database"></i> MySQL Database</span>
             <span class="tech-badge"><i class="fas fa-map"></i> Leaflet.js Mapping</span>
             <span class="tech-badge"><i class="fas fa-server"></i> Apache Web Server</span>
-            <span class="tech-badge"><i class="fas fa-draw-polygon"></i> GeoJSON Polygons</span>
-            <span class="tech-badge"><i class="fas fa-compass"></i> Haversine Mathematics</span>
+            <span class="tech-badge"><i class="fas fa-draw-polygon"></i> GeoJSON Boundaries</span>
+            <span class="tech-badge"><i class="fas fa-compass"></i> Haversine Algorithm</span>
           </div>
         </div>
       </div>
     </section>
 
     <!-- ============================================================
-       FOOTER
+       8. FOOTER
        ============================================================ -->
     <footer class="landing-footer">
       <div class="container">
@@ -543,6 +427,6 @@
     </footer>
 
     <!-- Landing Page Scripts -->
-    <script src="assets/js/landing.js?v=3.0"></script>
+    <script src="assets/js/landing.js?v=2.0"></script>
   </body>
 </html>

@@ -1,25 +1,23 @@
 /* ============================================================
    MEYCMAP — Emergency Services Mapping System
-   OPTION 3: Live Triage Dispatch Design System (Citizen/911 Hub)
+   Landing Page Design System (Mobile-First, Direct, High-Performance)
    ============================================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@600;700;800;900&display=swap');
 
 :root {
   --font-heading: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-mono: 'JetBrains Mono', monospace;
 
   /* Command Center Dark Theme */
-  --bg-canvas: #060911;
-  --bg-surface: #0a0f1d;
-  --bg-card: rgba(13, 20, 36, 0.82);
-  --bg-card-hover: rgba(20, 30, 52, 0.95);
+  --bg-canvas: #070b13;
+  --bg-surface: #0c1220;
+  --bg-card: rgba(15, 23, 42, 0.75);
+  --bg-card-hover: rgba(23, 34, 59, 0.9);
   
   --border-subtle: rgba(255, 255, 255, 0.08);
-  --border-glow-cyan: rgba(56, 189, 248, 0.35);
-  --border-glow-red: rgba(239, 68, 68, 0.45);
-  --border-glow-amber: rgba(245, 158, 11, 0.4);
+  --border-glow: rgba(56, 189, 248, 0.3);
+  --border-glow-red: rgba(239, 68, 68, 0.35);
 
   /* Accents */
   --accent-cyan: #38bdf8;
@@ -70,7 +68,7 @@ body {
   min-height: 100vh;
 }
 
-/* Background Ambient Lighting & Cartographic Grid */
+/* Ambient Background Glows */
 .ambient-glow {
   position: fixed;
   top: 0;
@@ -86,25 +84,25 @@ body {
   position: absolute;
   border-radius: 50%;
   filter: blur(120px);
-  opacity: 0.2;
+  opacity: 0.22;
   pointer-events: none;
 }
 
 .orb-1 {
-  width: 550px;
-  height: 550px;
+  width: 500px;
+  height: 500px;
   background: radial-gradient(circle, #0284c7 0%, transparent 70%);
-  top: -160px;
+  top: -150px;
   left: 50%;
   transform: translateX(-50%);
 }
 
 .orb-2 {
-  width: 450px;
-  height: 450px;
+  width: 400px;
+  height: 400px;
   background: radial-gradient(circle, #dc2626 0%, transparent 70%);
-  top: 30%;
-  right: -120px;
+  top: 35%;
+  right: -100px;
   opacity: 0.16;
 }
 
@@ -113,18 +111,8 @@ body {
   height: 450px;
   background: radial-gradient(circle, #059669 0%, transparent 70%);
   bottom: 10%;
-  left: -120px;
+  left: -100px;
   opacity: 0.14;
-}
-
-.carto-grid {
-  position: absolute;
-  inset: 0;
-  background-image: 
-    linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-  background-size: 40px 40px;
-  opacity: 0.7;
 }
 
 /* Container */
@@ -137,120 +125,13 @@ body {
   z-index: 1;
 }
 
-/* Utility Helpers */
+/* Typography Helpers */
 .text-cyan { color: var(--accent-cyan) !important; }
 .text-danger { color: var(--accent-red) !important; }
 .text-emerald { color: var(--accent-emerald) !important; }
 .text-amber { color: var(--accent-amber) !important; }
 
-/* Responsive Visibility Helpers */
-@media (max-width: 576px) { .d-none.d-sm-inline { display: none !important; } }
-@media (min-width: 577px) { .d-none.d-sm-inline { display: inline !important; } }
-@media (max-width: 768px) { .d-none.d-md-inline { display: none !important; } }
-@media (min-width: 769px) { .d-none.d-md-inline { display: inline !important; } }
-
-/* ============================================================
-   TOP TELEMETRY DISPATCH HUD (Command Center Strip)
-   ============================================================ */
-.telemetry-bar {
-  background: rgba(8, 14, 26, 0.95);
-  border-bottom: 1px solid rgba(56, 189, 248, 0.18);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  font-family: var(--font-mono);
-  font-size: 0.78rem;
-  color: var(--text-muted);
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-}
-
-.telemetry-inner {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-top: 0.55rem;
-  padding-bottom: 0.55rem;
-}
-
-.telemetry-left {
-  display: flex;
-  align-items: center;
-  gap: 0.85rem;
-}
-
-.telemetry-status-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-  background: rgba(16, 185, 129, 0.12);
-  border: 1px solid rgba(16, 185, 129, 0.35);
-  color: #6ee7b7;
-  padding: 0.2rem 0.65rem;
-  border-radius: var(--radius-full);
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  font-size: 0.72rem;
-}
-
-.pulse-dot {
-  width: 6px;
-  height: 6px;
-  background-color: var(--accent-emerald);
-  border-radius: 50%;
-  box-shadow: 0 0 8px var(--accent-emerald);
-  animation: pulseAnim 1.8s infinite;
-}
-
-.pulse-dot-red {
-  width: 7px;
-  height: 7px;
-  background-color: var(--accent-red);
-  border-radius: 50%;
-  box-shadow: 0 0 10px var(--accent-red);
-  animation: pulseRedAnim 1.5s infinite;
-}
-
-@keyframes pulseAnim {
-  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
-  70% { transform: scale(1.2); box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
-  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
-}
-
-@keyframes pulseRedAnim {
-  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.8); }
-  70% { transform: scale(1.25); box-shadow: 0 0 0 8px rgba(239, 68, 68, 0); }
-  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
-}
-
-.telemetry-divider {
-  color: rgba(255, 255, 255, 0.15);
-}
-
-.telemetry-right {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.telemetry-link {
-  color: #fca5a5;
-  text-decoration: none;
-  font-weight: 700;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  transition: color var(--transition-fast);
-}
-
-.telemetry-link:hover {
-  color: #ffffff;
-}
-
-/* ============================================================
-   BUTTONS
-   ============================================================ */
+/* Buttons */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -268,19 +149,19 @@ body {
   white-space: nowrap;
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
-  min-height: 48px;
+  min-height: 48px; /* Touch target standard */
 }
 
 .btn-primary {
   background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
   color: #ffffff;
   border-color: rgba(56, 189, 248, 0.5);
-  box-shadow: 0 4px 20px rgba(2, 132, 199, 0.45);
+  box-shadow: 0 4px 20px rgba(2, 132, 199, 0.4);
 }
 
 .btn-primary:hover {
   background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);
-  box-shadow: 0 6px 28px rgba(56, 189, 248, 0.6);
+  box-shadow: 0 6px 28px rgba(56, 189, 248, 0.55);
   transform: translateY(-2px);
   color: #ffffff;
 }
@@ -290,17 +171,17 @@ body {
 }
 
 .btn-danger-glow {
-  background: rgba(239, 68, 68, 0.14);
+  background: rgba(239, 68, 68, 0.12);
   color: #fca5a5;
-  border-color: rgba(239, 68, 68, 0.45);
-  box-shadow: 0 4px 18px rgba(239, 68, 68, 0.25);
+  border-color: rgba(239, 68, 68, 0.4);
+  box-shadow: 0 4px 18px rgba(239, 68, 68, 0.2);
 }
 
 .btn-danger-glow:hover {
-  background: rgba(239, 68, 68, 0.25);
+  background: rgba(239, 68, 68, 0.22);
   color: #ffffff;
-  border-color: rgba(239, 68, 68, 0.85);
-  box-shadow: 0 6px 26px rgba(239, 68, 68, 0.5);
+  border-color: rgba(239, 68, 68, 0.8);
+  box-shadow: 0 6px 26px rgba(239, 68, 68, 0.45);
   transform: translateY(-2px);
 }
 
@@ -308,32 +189,16 @@ body {
   transform: translateY(0);
 }
 
+.btn-sm {
+  padding: 0.55rem 1.15rem;
+  font-size: 0.85rem;
+  min-height: 40px;
+}
+
 .btn-lg {
   padding: 1rem 2rem;
   font-size: 1.05rem;
   min-height: 52px;
-}
-
-/* ============================================================
-   HERO SECTION
-   ============================================================ */
-.hero-section {
-  padding: 3.5rem 0 2.5rem 0;
-  text-align: center;
-}
-
-.hero-content {
-  max-width: 860px;
-  margin: 0 auto;
-}
-
-.hero-badge-wrap {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.75rem;
-  flex-wrap: wrap;
-  margin-bottom: 1.25rem;
 }
 
 .badge-pill {
@@ -349,49 +214,78 @@ body {
   color: var(--text-light);
 }
 
-.hero-urgent-badge {
-  background: rgba(239, 68, 68, 0.12);
-  border-color: rgba(239, 68, 68, 0.35);
-  color: #fca5a5;
-  font-family: var(--font-mono);
-  font-size: 0.76rem;
-  letter-spacing: 0.04em;
+.pulse-dot {
+  width: 7px;
+  height: 7px;
+  background-color: var(--accent-emerald);
+  border-radius: 50%;
+  box-shadow: 0 0 10px var(--accent-emerald);
+  animation: pulseAnim 2s infinite;
+}
+
+@keyframes pulseAnim {
+  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+  70% { transform: scale(1.15); box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+}
+
+/* ============================================================
+   HERO SECTION (Immediate Action)
+   ============================================================ */
+.hero-section {
+  padding: 3.5rem 0 2.5rem 0;
+  text-align: center;
+}
+
+.hero-content {
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+.hero-badge-wrap {
+  margin-bottom: 1.5rem;
 }
 
 .hero-location-badge {
   background: rgba(56, 189, 248, 0.1);
   border-color: rgba(56, 189, 248, 0.3);
   color: #bae6fd;
+  font-size: 0.82rem;
+  padding: 0.45rem 1rem;
+}
+
+.hero-title {
+  margin-bottom: 0.75rem;
 }
 
 .brand-highlight {
   font-family: var(--font-heading);
-  font-size: clamp(3.2rem, 10vw, 5.8rem);
+  font-size: clamp(3rem, 9vw, 5.5rem);
   font-weight: 900;
   letter-spacing: 0.08em;
-  background: linear-gradient(135deg, #ffffff 15%, #7dd3fc 50%, #38bdf8 100%);
+  background: linear-gradient(135deg, #ffffff 10%, #7dd3fc 50%, #38bdf8 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  text-shadow: 0 0 50px rgba(56, 189, 248, 0.35);
+  text-shadow: 0 0 40px rgba(56, 189, 248, 0.3);
   display: inline-block;
   line-height: 1;
-  margin-bottom: 0.6rem;
 }
 
 .hero-full-title {
   font-family: var(--font-heading);
-  font-size: clamp(1.15rem, 2.5vw, 1.45rem);
+  font-size: clamp(1.1rem, 2.5vw, 1.45rem);
   font-weight: 700;
   color: #e2e8f0;
-  margin-bottom: 1.15rem;
+  margin-bottom: 1.25rem;
   line-height: 1.4;
+  letter-spacing: 0.01em;
 }
 
 .hero-subtitle {
   font-size: clamp(0.95rem, 1.8vw, 1.1rem);
   color: var(--text-muted);
   line-height: 1.6;
-  max-width: 700px;
+  max-width: 680px;
   margin: 0 auto 2.25rem auto;
 }
 
@@ -404,312 +298,7 @@ body {
 }
 
 /* ============================================================
-   LIVE TRIAGE LOCATOR SECTION (Citizen / Dispatch App Box)
-   ============================================================ */
-.triage-section {
-  padding: 2.5rem 0 3.5rem 0;
-}
-
-.triage-box {
-  background: linear-gradient(180deg, rgba(15, 23, 42, 0.92) 0%, rgba(10, 15, 29, 0.96) 100%);
-  border: 1px solid rgba(56, 189, 248, 0.3);
-  border-radius: var(--radius-lg);
-  padding: 2.25rem;
-  box-shadow: 0 10px 45px rgba(0, 0, 0, 0.6), 0 0 30px rgba(56, 189, 248, 0.12);
-  position: relative;
-  overflow: hidden;
-}
-
-.triage-box::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, var(--accent-red), var(--accent-amber), var(--accent-cyan));
-}
-
-.triage-header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 1.5rem;
-  margin-bottom: 1.75rem;
-}
-
-.triage-title {
-  font-family: var(--font-heading);
-  font-size: clamp(1.4rem, 3vw, 1.85rem);
-  font-weight: 800;
-  color: #ffffff;
-  line-height: 1.25;
-  margin-bottom: 0.35rem;
-}
-
-.triage-desc {
-  font-size: 0.9rem;
-  color: var(--text-muted);
-  max-width: 520px;
-}
-
-.triage-controls {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  flex-wrap: wrap;
-}
-
-.btn-gps {
-  background: rgba(56, 189, 248, 0.12);
-  border: 1px solid rgba(56, 189, 248, 0.45);
-  color: var(--accent-cyan);
-  padding: 0.7rem 1.25rem;
-  border-radius: var(--radius-md);
-  font-family: var(--font-heading);
-  font-weight: 700;
-  font-size: 0.9rem;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  cursor: pointer;
-  transition: all var(--transition-fast);
-  min-height: 48px;
-}
-
-.btn-gps:hover {
-  background: rgba(56, 189, 248, 0.22);
-  border-color: var(--accent-cyan);
-  color: #ffffff;
-  box-shadow: 0 0 15px rgba(56, 189, 248, 0.35);
-}
-
-.select-wrap {
-  position: relative;
-  min-width: 220px;
-}
-
-.select-icon {
-  position: absolute;
-  left: 1rem;
-  top: 50%;
-  transform: translateY(-50%);
-  color: var(--accent-cyan);
-  pointer-events: none;
-  font-size: 0.9rem;
-}
-
-.triage-select {
-  width: 100%;
-  appearance: none;
-  -webkit-appearance: none;
-  background: rgba(8, 14, 26, 0.85);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  color: #ffffff;
-  padding: 0.75rem 2.5rem 0.75rem 2.6rem;
-  border-radius: var(--radius-md);
-  font-family: var(--font-body);
-  font-size: 0.9rem;
-  font-weight: 600;
-  cursor: pointer;
-  min-height: 48px;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2338bdf8'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2.5' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 1rem center;
-  background-size: 1rem;
-}
-
-.triage-select:focus {
-  outline: none;
-  border-color: var(--accent-cyan);
-  box-shadow: 0 0 16px rgba(56, 189, 248, 0.3);
-}
-
-.triage-select option {
-  background: #0b1220;
-  color: #ffffff;
-}
-
-/* Status Banner */
-.triage-status-banner {
-  background: rgba(56, 189, 248, 0.08);
-  border: 1px solid rgba(56, 189, 248, 0.2);
-  border-radius: var(--radius-sm);
-  padding: 0.7rem 1.1rem;
-  display: flex;
-  align-items: center;
-  gap: 0.65rem;
-  font-size: 0.85rem;
-  color: #bae6fd;
-  margin-bottom: 1.5rem;
-}
-
-/* Results Grid */
-.triage-results-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.25rem;
-}
-
-.triage-card {
-  background: rgba(8, 14, 26, 0.85);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-md);
-  padding: 1.35rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: 1.25rem;
-  position: relative;
-  transition: all var(--transition-fast);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-}
-
-.triage-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-}
-
-.triage-medical::before { background: var(--accent-red); }
-.triage-fire::before { background: var(--accent-amber); }
-.triage-police::before { background: var(--accent-cyan); }
-
-.triage-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
-}
-
-.triage-card-header {
-  display: flex;
-  gap: 0.85rem;
-}
-
-.triage-icon-box {
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.25rem;
-  flex-shrink: 0;
-}
-
-.triage-medical .triage-icon-box { background: rgba(239, 68, 68, 0.15); color: var(--accent-red); }
-.triage-fire .triage-icon-box { background: rgba(245, 158, 11, 0.15); color: var(--accent-amber); }
-.triage-police .triage-icon-box { background: rgba(56, 189, 248, 0.15); color: var(--accent-cyan); }
-
-.triage-card-meta {
-  overflow: hidden;
-}
-
-.triage-category-tag {
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--text-dim);
-  display: block;
-  margin-bottom: 0.2rem;
-}
-
-.triage-station-name {
-  font-family: var(--font-heading);
-  font-weight: 700;
-  font-size: 1.05rem;
-  color: #ffffff;
-  line-height: 1.25;
-  margin-bottom: 0.25rem;
-}
-
-.triage-station-addr {
-  font-size: 0.78rem;
-  color: var(--text-muted);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.triage-telemetry-strip {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  background: rgba(0, 0, 0, 0.45);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: var(--radius-sm);
-  padding: 0.65rem 0.5rem;
-  text-align: center;
-}
-
-.triage-stat-label {
-  font-family: var(--font-mono);
-  font-size: 0.65rem;
-  text-transform: uppercase;
-  color: var(--text-dim);
-  display: block;
-}
-
-.triage-stat-val {
-  font-family: var(--font-heading);
-  font-weight: 800;
-  font-size: 0.95rem;
-  line-height: 1.2;
-}
-
-.triage-card-actions {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.5rem;
-}
-
-.btn-triage-call {
-  background: var(--accent-red);
-  color: #ffffff;
-  padding: 0.5rem 0.75rem;
-  border-radius: var(--radius-sm);
-  font-size: 0.78rem;
-  font-weight: 700;
-  text-decoration: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.35rem;
-  min-height: 42px;
-}
-
-.btn-call-fire { background: var(--accent-amber); color: #000; }
-.btn-call-police { background: #0284c7; color: #fff; }
-
-.btn-triage-map {
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid var(--border-subtle);
-  color: #e2e8f0;
-  padding: 0.5rem 0.75rem;
-  border-radius: var(--radius-sm);
-  font-size: 0.78rem;
-  font-weight: 600;
-  text-decoration: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.35rem;
-  min-height: 42px;
-  transition: all var(--transition-fast);
-}
-
-.btn-triage-map:hover {
-  background: rgba(255, 255, 255, 0.12);
-  color: #ffffff;
-  border-color: rgba(255, 255, 255, 0.25);
-}
-
-/* ============================================================
-   SECTION HEADERS
+   SECTION HEADERS (Universal)
    ============================================================ */
 .section-header {
   text-align: center;
@@ -749,171 +338,7 @@ body {
 }
 
 /* ============================================================
-   1-TAP HOTLINE DIRECTORY WITH REAL-TIME SEARCH
-   ============================================================ */
-.directory-section {
-  padding: 3.5rem 0;
-  background: linear-gradient(180deg, transparent 0%, rgba(239, 68, 68, 0.03) 50%, transparent 100%);
-}
-
-.hotline-search-wrap {
-  position: relative;
-  max-width: 520px;
-  margin: 1.5rem auto 0 auto;
-}
-
-.search-icon {
-  position: absolute;
-  left: 1.25rem;
-  top: 50%;
-  transform: translateY(-50%);
-  color: var(--accent-cyan);
-  font-size: 1rem;
-}
-
-.hotline-search-input {
-  width: 100%;
-  background: rgba(12, 18, 32, 0.9);
-  border: 1px solid rgba(56, 189, 248, 0.3);
-  border-radius: var(--radius-full);
-  padding: 0.85rem 5.5rem 0.85rem 3rem;
-  color: #ffffff;
-  font-family: var(--font-body);
-  font-size: 0.92rem;
-  min-height: 50px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-  transition: all var(--transition-fast);
-}
-
-.hotline-search-input:focus {
-  outline: none;
-  border-color: var(--accent-cyan);
-  box-shadow: 0 0 25px rgba(56, 189, 248, 0.35);
-}
-
-.search-badge {
-  position: absolute;
-  right: 1rem;
-  top: 50%;
-  transform: translateY(-50%);
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-full);
-  padding: 0.25rem 0.65rem;
-  font-size: 0.72rem;
-  font-family: var(--font-mono);
-  color: var(--accent-cyan);
-}
-
-.hotline-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.25rem;
-  margin-top: 2rem;
-}
-
-.hotline-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-md);
-  padding: 1.35rem;
-  text-decoration: none;
-  color: inherit;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: 1.25rem;
-  transition: all var(--transition-fast);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-  -webkit-tap-highlight-color: transparent;
-}
-
-.hotline-card:hover {
-  transform: translateY(-2px);
-  border-color: rgba(239, 68, 68, 0.45);
-  box-shadow: 0 8px 25px rgba(239, 68, 68, 0.25);
-}
-
-.hotline-card-header {
-  display: flex;
-  align-items: center;
-  gap: 0.9rem;
-}
-
-.hotline-icon {
-  width: 46px;
-  height: 46px;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.25rem;
-  flex-shrink: 0;
-}
-
-.hotline-info {
-  overflow: hidden;
-}
-
-.hotline-agency {
-  font-family: var(--font-heading);
-  font-weight: 700;
-  font-size: 1.05rem;
-  color: var(--text-white);
-  line-height: 1.2;
-  margin-bottom: 0.2rem;
-}
-
-.hotline-desc {
-  font-size: 0.78rem;
-  color: var(--text-muted);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.hotline-number-box {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: rgba(0, 0, 0, 0.45);
-  padding: 0.65rem 0.9rem;
-  border-radius: var(--radius-sm);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-}
-
-.hotline-number {
-  font-family: var(--font-heading);
-  font-weight: 800;
-  font-size: 1.05rem;
-  color: #ffffff;
-  letter-spacing: 0.02em;
-}
-
-.hotline-call-btn {
-  background: var(--accent-red);
-  color: #ffffff;
-  padding: 0.4rem 0.85rem;
-  border-radius: var(--radius-full);
-  font-size: 0.75rem;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  gap: 0.35rem;
-  box-shadow: 0 2px 10px rgba(239, 68, 68, 0.4);
-}
-
-.btn-fire { background: var(--accent-amber); box-shadow: 0 2px 10px rgba(245, 158, 11, 0.4); color: #000; }
-.btn-police { background: var(--accent-blue); box-shadow: 0 2px 10px rgba(59, 130, 246, 0.4); }
-.btn-hospital { background: var(--accent-emerald); box-shadow: 0 2px 10px rgba(16, 185, 129, 0.4); }
-
-.hotline-cdrrmo .hotline-icon { background: rgba(239, 68, 68, 0.15); color: var(--accent-red); }
-.hotline-fire .hotline-icon { background: rgba(245, 158, 11, 0.15); color: var(--accent-amber); }
-.hotline-police .hotline-icon { background: rgba(59, 130, 246, 0.15); color: var(--accent-blue); }
-.hotline-hospital .hotline-icon { background: rgba(16, 185, 129, 0.15); color: var(--accent-emerald); }
-
-/* ============================================================
-   CATEGORIZED QUICK LAUNCH GRID
+   3. DIRECT EMERGENCY QUICK-LAUNCHER (Touch-First Cards)
    ============================================================ */
 .quick-launch-section {
   padding: 3.5rem 0;
@@ -949,6 +374,8 @@ body {
   left: 0;
   right: 0;
   height: 3px;
+  background: transparent;
+  transition: background var(--transition-fast);
 }
 
 .quick-card-top {
@@ -1006,28 +433,29 @@ body {
   width: fit-content;
 }
 
+/* Card Themes */
 .card-hospital::before { background: var(--accent-red); }
 .card-hospital .quick-icon-box { background: rgba(239, 68, 68, 0.15); color: var(--accent-red); }
 .card-hospital .quick-badge { background: rgba(239, 68, 68, 0.12); color: #fca5a5; }
-.card-hospital:hover { border-color: rgba(239, 68, 68, 0.5); transform: translateY(-3px); }
+.card-hospital:hover { border-color: rgba(239, 68, 68, 0.5); transform: translateY(-3px); box-shadow: 0 8px 30px rgba(239, 68, 68, 0.25); }
 
 .card-fire::before { background: var(--accent-amber); }
 .card-fire .quick-icon-box { background: rgba(245, 158, 11, 0.15); color: var(--accent-amber); }
 .card-fire .quick-badge { background: rgba(245, 158, 11, 0.12); color: #fcd34d; }
-.card-fire:hover { border-color: rgba(245, 158, 11, 0.5); transform: translateY(-3px); }
+.card-fire:hover { border-color: rgba(245, 158, 11, 0.5); transform: translateY(-3px); box-shadow: 0 8px 30px rgba(245, 158, 11, 0.25); }
 
 .card-police::before { background: var(--accent-blue); }
 .card-police .quick-icon-box { background: rgba(59, 130, 246, 0.15); color: var(--accent-blue); }
 .card-police .quick-badge { background: rgba(59, 130, 246, 0.12); color: #93c5fd; }
-.card-police:hover { border-color: rgba(59, 130, 246, 0.5); transform: translateY(-3px); }
+.card-police:hover { border-color: rgba(59, 130, 246, 0.5); transform: translateY(-3px); box-shadow: 0 8px 30px rgba(59, 130, 246, 0.25); }
 
 .card-health::before { background: var(--accent-emerald); }
 .card-health .quick-icon-box { background: rgba(16, 185, 129, 0.15); color: var(--accent-emerald); }
 .card-health .quick-badge { background: rgba(16, 185, 129, 0.12); color: #6ee7b7; }
-.card-health:hover { border-color: rgba(16, 185, 129, 0.5); transform: translateY(-3px); }
+.card-health:hover { border-color: rgba(16, 185, 129, 0.5); transform: translateY(-3px); box-shadow: 0 8px 30px rgba(16, 185, 129, 0.25); }
 
 /* ============================================================
-   METRIC STRIP
+   4. COMPACT STATS STRIP
    ============================================================ */
 .metric-strip-section {
   padding: 1.5rem 0 3.5rem 0;
@@ -1063,7 +491,221 @@ body {
 }
 
 /* ============================================================
-   ABOUT & CAPSTONE OVERVIEW
+   5. 1-TAP EMERGENCY HOTLINES DIRECTORY
+   ============================================================ */
+.directory-section {
+  padding: 3.5rem 0;
+  background: linear-gradient(180deg, transparent 0%, rgba(239, 68, 68, 0.03) 50%, transparent 100%);
+}
+
+.hotline-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+}
+
+.hotline-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 1.35rem;
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1.25rem;
+  transition: all var(--transition-fast);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.hotline-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(239, 68, 68, 0.4);
+  box-shadow: 0 8px 25px rgba(239, 68, 68, 0.2);
+}
+
+.hotline-card:active {
+  transform: translateY(0);
+}
+
+.hotline-card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+}
+
+.hotline-icon {
+  width: 46px;
+  height: 46px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  flex-shrink: 0;
+}
+
+.hotline-info {
+  overflow: hidden;
+}
+
+.hotline-agency {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--text-white);
+  line-height: 1.2;
+  margin-bottom: 0.2rem;
+}
+
+.hotline-desc {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.hotline-number-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 0.65rem 0.9rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.hotline-number {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 1.05rem;
+  color: #ffffff;
+  letter-spacing: 0.02em;
+}
+
+.hotline-call-btn {
+  background: var(--accent-red);
+  color: #ffffff;
+  padding: 0.4rem 0.85rem;
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  box-shadow: 0 2px 10px rgba(239, 68, 68, 0.4);
+}
+
+.btn-fire { background: var(--accent-amber); box-shadow: 0 2px 10px rgba(245, 158, 11, 0.4); color: #000; }
+.btn-police { background: var(--accent-blue); box-shadow: 0 2px 10px rgba(59, 130, 246, 0.4); }
+.btn-hospital { background: var(--accent-emerald); box-shadow: 0 2px 10px rgba(16, 185, 129, 0.4); }
+
+.hotline-cdrrmo .hotline-icon { background: rgba(239, 68, 68, 0.15); color: var(--accent-red); }
+.hotline-fire .hotline-icon { background: rgba(245, 158, 11, 0.15); color: var(--accent-amber); }
+.hotline-police .hotline-icon { background: rgba(59, 130, 246, 0.15); color: var(--accent-blue); }
+.hotline-hospital .hotline-icon { background: rgba(16, 185, 129, 0.15); color: var(--accent-emerald); }
+
+/* ============================================================
+   6. 3-STEP USER WORKFLOW
+   ============================================================ */
+.how-it-works-section {
+  padding: 3.5rem 0;
+}
+
+.steps-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.step-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 2rem 1.5rem;
+  position: relative;
+  text-align: center;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.step-badge {
+  position: absolute;
+  top: 1rem;
+  right: 1.25rem;
+  width: 28px;
+  height: 28px;
+  background: rgba(56, 189, 248, 0.15);
+  color: var(--accent-cyan);
+  border-radius: 50%;
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.step-icon {
+  width: 56px;
+  height: 56px;
+  margin: 0 auto 1.25rem auto;
+  border-radius: 16px;
+  background: rgba(56, 189, 248, 0.1);
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  color: var(--accent-cyan);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+}
+
+.step-card h3 {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: var(--text-white);
+  margin-bottom: 0.5rem;
+}
+
+.step-card p {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  line-height: 1.55;
+}
+
+/* Callout Map Banner */
+.map-cta-banner {
+  background: linear-gradient(135deg, rgba(2, 132, 199, 0.2) 0%, rgba(12, 18, 32, 0.8) 100%);
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  border-radius: var(--radius-lg);
+  padding: 2.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.5);
+}
+
+.map-cta-text h3 {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 1.35rem;
+  color: #ffffff;
+  margin-bottom: 0.35rem;
+}
+
+.map-cta-text p {
+  color: #bae6fd;
+  font-size: 0.9rem;
+}
+
+/* ============================================================
+   7. ABOUT & CAPSTONE OVERVIEW
    ============================================================ */
 .about-section {
   padding: 3rem 0;
@@ -1120,7 +762,7 @@ body {
 }
 
 /* ============================================================
-   FOOTER
+   8. FOOTER
    ============================================================ */
 .landing-footer {
   padding: 3.5rem 0 2rem 0;
@@ -1143,19 +785,6 @@ body {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-}
-
-.brand-icon-box {
-  width: 38px;
-  height: 38px;
-  background: linear-gradient(135deg, rgba(2, 132, 199, 0.3) 0%, rgba(56, 189, 248, 0.15) 100%);
-  border: 1px solid rgba(56, 189, 248, 0.4);
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--accent-cyan);
-  font-size: 1.15rem;
 }
 
 .footer-brand-title {
@@ -1203,12 +832,9 @@ body {
 }
 
 /* ============================================================
-   RESPONSIVENESS (Mobile-First Optimizations)
+   RESPONSIVENESS & MOBILE-FIRST OPTIMIZATION
    ============================================================ */
 @media (max-width: 992px) {
-  .triage-results-grid {
-    grid-template-columns: 1fr;
-  }
   .quick-grid {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -1218,8 +844,16 @@ body {
 }
 
 @media (max-width: 768px) {
+  .nav-menu {
+    display: none;
+  }
+
+  .mobile-toggle {
+    display: block;
+  }
+
   .hero-section {
-    padding: 2.25rem 0 1.5rem 0;
+    padding: 3rem 0 2rem 0;
   }
 
   .brand-highlight {
@@ -1236,24 +870,6 @@ body {
   }
 
   .hero-actions .btn {
-    width: 100%;
-  }
-
-  .triage-box {
-    padding: 1.5rem;
-  }
-
-  .triage-header {
-    flex-direction: column;
-    gap: 1rem;
-  }
-
-  .triage-controls {
-    width: 100%;
-    flex-direction: column;
-  }
-
-  .btn-gps, .select-wrap {
     width: 100%;
   }
 
@@ -1277,7 +893,7 @@ body {
   }
 
   .quick-desc {
-    display: none;
+    display: none; /* Hide verbose description on small screens for punchiness */
   }
 
   .metric-grid {
@@ -1285,9 +901,24 @@ body {
     gap: 0.75rem;
   }
 
+  .steps-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
   .hotline-grid {
     grid-template-columns: 1fr;
     gap: 0.85rem;
+  }
+
+  .map-cta-banner {
+    flex-direction: column;
+    text-align: center;
+    padding: 1.75rem;
+  }
+
+  .map-cta-banner .btn {
+    width: 100%;
   }
 
   .footer-top, .footer-bottom {
@@ -1306,13 +937,27 @@ body {
     padding: 0 1rem;
   }
 
-  .telemetry-bar {
-    font-size: 0.72rem;
+  .landing-header {
+    top: 0.5rem;
+    padding: 0 0.5rem;
   }
 
-  .telemetry-inner {
-    padding-top: 0.45rem;
-    padding-bottom: 0.45rem;
+  .nav-glass {
+    padding: 0.5rem 0.85rem;
+  }
+
+  .brand-icon-box {
+    width: 32px;
+    height: 32px;
+    font-size: 1rem;
+  }
+
+  .brand-name {
+    font-size: 1rem;
+  }
+
+  .brand-tag {
+    font-size: 0.65rem;
   }
 
   .quick-grid {
@@ -1329,11 +974,11 @@ body {
     padding: 0.25rem 0.45rem;
   }
 
-  .hotline-card {
-    padding: 1.1rem;
-  }
-
   .hotline-number {
     font-size: 0.95rem;
+  }
+
+  .hotline-card {
+    padding: 1.1rem;
   }
 }
