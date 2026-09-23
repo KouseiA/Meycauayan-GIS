@@ -2901,4 +2901,24 @@ function clearUserLocationAndRoute() {
   State.proximityRouteLine = null;
 }
 
+/* ============================================================
+   URL DEEP-LINKING (e.g. index.html?type=hospital)
+   ============================================================ */
+window.addEventListener('DOMContentLoaded', () => {
+  try {
+    const urlParams = new URLSearchParams(window.location.search);
+    const typeParam = urlParams.get('type');
+    if (typeParam) {
+      setTimeout(() => {
+        if (typeof filterFacilities === 'function') {
+          filterFacilities(typeParam);
+        }
+      }, 700);
+    }
+  } catch (err) {
+    console.warn('URL param filter error:', err);
+  }
+});
+
+
 
