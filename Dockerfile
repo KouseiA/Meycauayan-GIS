@@ -6,7 +6,7 @@ RUN docker-php-ext-install pdo pdo_mysql
 # Enable Apache rewrite and headers modules for .htaccess support
 RUN a2enmod rewrite headers
 
-# Ensure only mpm_prefork is enabled to prevent "More than one MPM loaded" error
+# Ensure only mpm_prefork is enabled
 RUN a2dismod mpm_event mpm_worker 2>/dev/null || true && a2enmod mpm_prefork
 
 # Allow .htaccess overrides in Apache
@@ -18,12 +18,12 @@ WORKDIR /var/www/html
 # Copy all application files
 COPY . /var/www/html/
 
-# Expose default HTTP port
-EXPOSE 80
+# Copy entrypoint script and make executable
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
 
-# Configure Apache port at runtime and start Apache with mpm_prefork
-CMD a2dismod mpm_event mpm_worker 2>/dev/null || true && \
-    a2enmod mpm_prefork 2>/dev/null || true && \
-    sed -i "s/Listen 80/Listen ${PORT:-80}/g" /etc/apache2/ports.conf && \
-    sed -i "s/:80/:${PORT:-80}/g" /etc/apache2/sites-available/000-default.conf && \
-    apache2-foreground
+# Expose HTTP ports
+EXPOSE 80 8080
+
+# Run entrypoint
+CMD ["/usr/local/bin/entrypoint.sh"]
