@@ -5,24 +5,15 @@
  * Delete or restrict this file after seeding.
  */
 
-// Direct DB connection (bypass config path issues)
-$host    = 'localhost';
-$user    = 'root';
-$pass    = '';
-$db      = 'meycauayan_gis';
-$charset = 'utf8mb4';
+require_once __DIR__ . '/../api/config.php';
 
 try {
-    $pdo = new PDO(
-        "mysql:host=$host;dbname=$db;charset=$charset",
-        $user, $pass,
-        [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC]
-    );
+    $pdo = getDB();
 } catch (PDOException $e) {
     die("<h2 style='color:red'>DB Error: " . htmlspecialchars($e->getMessage()) . "</h2>
          <p>Make sure you have:<br>
-         1. Started XAMPP Apache + MySQL<br>
-         2. Imported <code>database/schema.sql</code> in phpMyAdmin first</p>");
+         1. Started MySQL or linked your database<br>
+         2. Imported <code>database/schema.sql</code> first</p>");
 }
 
 $pdo->exec("SET FOREIGN_KEY_CHECKS = 0; TRUNCATE TABLE facilities; TRUNCATE TABLE barangays; SET FOREIGN_KEY_CHECKS = 1;");
@@ -180,12 +171,12 @@ if (file_exists($geojsonPath)) {
     <div class="ok">✔ <?= htmlspecialchars($l) ?></div>
   <?php endforeach; ?>
   <div class="warn">
-    <strong>Important:</strong> Delete or rename this file after seeding to prevent accidental re-runs.<br>
-    <code>C:\xampp\htdocs\kevin\database\seed.php</code>
+    <strong>Important:</strong> Delete or rename this file after seeding to prevent accidental re-runs.
   </div>
   <p>
-    <a href="http://localhost/kevin/">→ Open the portal</a> &nbsp;|&nbsp;
-    <a href="http://localhost/kevin/admin.html">→ Open Admin Panel</a>
+    <a href="../landing.html">→ Open the Landing Page</a> &nbsp;|&nbsp;
+    <a href="../index.html">→ Open Interactive Map</a> &nbsp;|&nbsp;
+    <a href="../admin.html">→ Open Admin Panel</a>
   </p>
 </body>
 </html>

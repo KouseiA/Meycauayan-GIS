@@ -23,6 +23,7 @@ New-Item -ItemType Directory -Path $outputDir | Out-Null
 # --- Files to INCLUDE ---
 $includeFiles = @(
     'index.html',
+    'landing.html',
     'admin.html',
     'meycauayan-barangays.geojson',
     '.htaccess'

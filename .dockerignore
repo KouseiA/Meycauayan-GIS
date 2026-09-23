@@ -1,0 +1,11 @@
+.git
+.agents
+.idea
+.vscode
+*.zip
+meycauayan-gis-deploy*
+deploy.ps1
+tools
+*.bat
+temp_*
+*.log

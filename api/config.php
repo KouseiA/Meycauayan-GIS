@@ -5,14 +5,39 @@
 // falls back to XAMPP defaults for local development.
 // -----------------------------------------------------------------
 
-// Detect environment: set GIS_ENV=production on your hosting
-define('APP_ENV', getenv('GIS_ENV') ?: 'development');
+// Detect environment: set GIS_ENV=production or auto-detect Railway environment
+define('APP_ENV', getenv('GIS_ENV') ?: (getenv('RAILWAY_ENVIRONMENT') ? 'production' : 'development'));
 
-// Database credentials — override via env vars on production
-define('DB_HOST',    getenv('GIS_DB_HOST')    ?: 'localhost');
-define('DB_USER',    getenv('GIS_DB_USER')    ?: 'root');
-define('DB_PASS',    getenv('GIS_DB_PASS')    ?: '');
-define('DB_NAME',    getenv('GIS_DB_NAME')    ?: 'meycauayan_gis');
+// Database credentials — support standard, Railway URL, and Railway MYSQL* env variables
+$dbUrl = getenv('DATABASE_URL');
+$dbHost = 'localhost';
+$dbPort = '3306';
+$dbUser = 'root';
+$dbPass = '';
+$dbName = 'meycauayan_gis';
+
+if ($dbUrl) {
+    $parsed = parse_url($dbUrl);
+    if ($parsed) {
+        $dbHost = $parsed['host'] ?? $dbHost;
+        $dbPort = (string)($parsed['port'] ?? $dbPort);
+        $dbUser = $parsed['user'] ?? $dbUser;
+        $dbPass = $parsed['pass'] ?? $dbPass;
+        $dbName = ltrim($parsed['path'] ?? $dbName, '/');
+    }
+} else {
+    $dbHost = getenv('GIS_DB_HOST') ?: (getenv('MYSQLHOST') ?: (getenv('MYSQL_HOST') ?: 'localhost'));
+    $dbPort = (string)(getenv('GIS_DB_PORT') ?: (getenv('MYSQLPORT') ?: (getenv('MYSQL_PORT') ?: '3306')));
+    $dbUser = getenv('GIS_DB_USER') ?: (getenv('MYSQLUSER') ?: (getenv('MYSQL_USER') ?: 'root'));
+    $dbPass = getenv('GIS_DB_PASS') ?: (getenv('MYSQLPASSWORD') ?: (getenv('MYSQL_PASSWORD') ?: ''));
+    $dbName = getenv('GIS_DB_NAME') ?: (getenv('MYSQLDATABASE') ?: (getenv('MYSQL_DATABASE') ?: 'meycauayan_gis'));
+}
+
+define('DB_HOST',    $dbHost);
+define('DB_PORT',    $dbPort);
+define('DB_USER',    $dbUser);
+define('DB_PASS',    $dbPass);
+define('DB_NAME',    $dbName);
 define('DB_CHARSET', 'utf8mb4');
 
 // CORS origin — set GIS_CORS_ORIGIN to your domain in production
@@ -24,7 +49,7 @@ define('CORS_ORIGIN', getenv('GIS_CORS_ORIGIN') ?: '*');
 function getDB(): PDO {
     static $pdo = null;
     if ($pdo === null) {
-        $dsn = "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=" . DB_CHARSET;
+        $dsn = "mysql:host=" . DB_HOST . ";port=" . DB_PORT . ";dbname=" . DB_NAME . ";charset=" . DB_CHARSET;
         $options = [
             PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,

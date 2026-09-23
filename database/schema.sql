@@ -4,11 +4,9 @@
 -- Run this in phpMyAdmin or MySQL CLI before using the app
 -- =============================================================
 
-CREATE DATABASE IF NOT EXISTS meycauayan_gis
-  CHARACTER SET utf8mb4
-  COLLATE utf8mb4_unicode_ci;
-
-USE meycauayan_gis;
+-- Uncomment the following lines only if creating a new database locally via raw MySQL CLI:
+-- CREATE DATABASE IF NOT EXISTS meycauayan_gis CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+-- USE meycauayan_gis;
 
 -- -----------------------------------------------------------------
 -- BARANGAYS
